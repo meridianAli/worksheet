@@ -315,7 +315,7 @@
         <li><a href="#stack">What a task costs: the loaded stack</a></li>
         <li><a href="#rework">Rework: half the labour bill</a></li>
         <li><a href="#people">Contributors: what drives cost</a></li>
-        <li><a href="#pertask">Cost per task, and the outliers</a></li>
+        <li><a href="#pertask">Cost per task, outliers, and the August AHT</a></li>
         <li><a href="#prompt">The prompt_tasker ledger</a></li>
         <li><a href="#decomp">Upstream waste: shells that never ship</a></li>
         <li><a href="#zero">Zero output</a></li>
@@ -988,7 +988,128 @@
         expensive one.</figcaption>
     </figure>
 
-    <h3>The outlier tasks, named</h3>
+<h3 id="august">August 2026 headline &mdash; <code>prompt_tasker</code> only, measured per task</h3>
+    <p>
+      The cleanest version of this number, and the one to quote. <strong>907 unique
+      tasks</strong> whose first entry into <code>audit</code> falls in August (ET),
+      each credited to the contributor whose work led it there &mdash; the last person
+      to move it out of <code>edit_task</code>/<code>redo_task</code> before approval.
+      Only contributors whose role is exactly <code>prompt_tasker</code>. Time is
+      measured <strong>on that task specifically</strong>, from the claims held on it.
+    </p>
+    <div class="kpi">
+      <div class="fig"><span class="k">Mean AHT</span><span class="v accent">1.98<span class="u"> h</span></span>
+        <span class="n">$323 per task</span></div>
+      <div class="fig"><span class="k">Median AHT</span><span class="v">1.52<span class="u"> h</span></span>
+        <span class="n">$248 per task</span></div>
+      <div class="fig"><span class="k">Tasks / people</span><span class="v">907</span>
+        <span class="n">50 prompt-only taskers</span></div>
+      <div class="fig"><span class="k">Basis</span><span class="v">1,789<span class="u"> h</span></span>
+        <span class="n">$291,936 &middot; $163.17/hr blended</span></div>
+    </div>
+    <p style="font-size:.86rem;color:var(--muted);margin:0 0 18px;max-width:80ch">
+      p25 0.70h &middot; median 1.52h &middot; p75 2.83h &middot; p90 4.19h &middot; max 12.53h.
+      Mean is 30% above median &mdash; right-skewed, so <strong>plan on the median</strong>.
+      Counting <em>every</em> contributor's time on the same tasks rather than just the
+      credited one raises it 1.29&times;, to about 2.54h mean / 2.01h median.
+    </p>
+
+    <figure>
+      <p class="figtitle">August per-task AHT distribution</p>
+      <p class="figsub">Share of the 905 tasks with claim data, by hours of measured work.</p>
+      <div class="scroll">
+        <svg viewBox="0 0 760 300" role="img" aria-label="August per-task AHT distribution: 21.5 percent of tasks under half an hour, 8.1 percent 0.5 to 1 hour, 18 percent 1 to 1.5, 16.4 percent 1.5 to 2, 15.8 percent 2 to 3, 14.7 percent 3 to 5, and 5.5 percent above 5 hours.">
+          <g stroke="var(--grid)" stroke-width="1">
+            <line x1="60" y1="106" x2="740" y2="106"/><line x1="60" y1="178" x2="740" y2="178"/>
+          </g>
+          <g class="ax" text-anchor="end">
+            <text x="52" y="110">20%</text><text x="52" y="182">10%</text><text x="52" y="254">0</text>
+          </g>
+          <line x1="60" y1="250" x2="740" y2="250" stroke="var(--axis)" stroke-width="1.5"/>
+          <path class="hit" d="M86.6 97.9 Q86.6 94.9 89.6 94.9 H127.6 Q130.6 94.9 130.6 97.9 V250 H86.6 Z" fill="var(--s1)" data-tip="<b><0.5h per task</b>195 tasks · 21.5% of August output" tabindex="0"/>
+          <text x="108.6" y="87.9" class="ax" text-anchor="middle" fill="var(--s1)" style="font-weight:600">21.5%</text>
+          <text x="108.6" y="272" class="ax" text-anchor="middle"><0.5h</text>
+          <path class="hit" d="M183.7 194.9 Q183.7 191.9 186.7 191.9 H224.7 Q227.7 191.9 227.7 194.9 V250 H183.7 Z" fill="var(--s1)" data-tip="<b>0.5-1h per task</b>73 tasks · 8.1% of August output" tabindex="0"/>
+          <text x="205.7" y="184.9" class="ax" text-anchor="middle" fill="var(--s1)" style="font-weight:600">8.1%</text>
+          <text x="205.7" y="272" class="ax" text-anchor="middle">0.5-1h</text>
+          <path class="hit" d="M280.8 123.3 Q280.8 120.3 283.8 120.3 H321.8 Q324.8 120.3 324.8 123.3 V250 H280.8 Z" fill="var(--s1)" data-tip="<b>1-1.5h per task</b>163 tasks · 18.0% of August output" tabindex="0"/>
+          <text x="302.8" y="113.3" class="ax" text-anchor="middle" fill="var(--s1)" style="font-weight:600">18.0%</text>
+          <text x="302.8" y="272" class="ax" text-anchor="middle">1-1.5h</text>
+          <path class="hit" d="M377.9 135.3 Q377.9 132.3 380.9 132.3 H418.9 Q421.9 132.3 421.9 135.3 V250 H377.9 Z" fill="var(--s1)" data-tip="<b>1.5-2h per task</b>148 tasks · 16.4% of August output" tabindex="0"/>
+          <text x="399.9" y="125.3" class="ax" text-anchor="middle" fill="var(--s1)" style="font-weight:600">16.4%</text>
+          <text x="399.9" y="272" class="ax" text-anchor="middle">1.5-2h</text>
+          <path class="hit" d="M475.0 139.2 Q475.0 136.2 478.0 136.2 H516.0 Q519.0 136.2 519.0 139.2 V250 H475.0 Z" fill="var(--s1)" data-tip="<b>2-3h per task</b>143 tasks · 15.8% of August output" tabindex="0"/>
+          <text x="497.0" y="129.2" class="ax" text-anchor="middle" fill="var(--s1)" style="font-weight:600">15.8%</text>
+          <text x="497.0" y="272" class="ax" text-anchor="middle">2-3h</text>
+          <path class="hit" d="M572.1 147.2 Q572.1 144.2 575.1 144.2 H613.1 Q616.1 144.2 616.1 147.2 V250 H572.1 Z" fill="var(--s2)" data-tip="<b>3-5h per task</b>133 tasks · 14.7% of August output" tabindex="0"/>
+          <text x="594.1" y="137.2" class="ax" text-anchor="middle" fill="var(--s2)" style="font-weight:600">14.7%</text>
+          <text x="594.1" y="272" class="ax" text-anchor="middle">3-5h</text>
+          <path class="hit" d="M669.2 213.2 Q669.2 210.2 672.2 210.2 H710.2 Q713.2 210.2 713.2 213.2 V250 H669.2 Z" fill="var(--s2)" data-tip="<b>5h+ per task</b>50 tasks · 5.5% of August output" tabindex="0"/>
+          <text x="691.2" y="203.2" class="ax" text-anchor="middle" fill="var(--s2)" style="font-weight:600">5.5%</text>
+          <text x="691.2" y="272" class="ax" text-anchor="middle">5h+</text>
+          <text x="400" y="294" class="ax" text-anchor="middle" style="font-size:11px;letter-spacing:.06em">HOURS OF MEASURED WORK PER TASK &middot; AUGUST 2026</text>
+        </svg>
+      </div>
+      <figcaption>
+        Two clusters. <strong>21.5% of tasks finish in under 30 minutes</strong>, while
+        <strong>20.2% take over 3 hours</strong> &mdash; and that upper fifth is where
+        the cost sits. There is no single &ldquo;typical&rdquo; task.
+      </figcaption>
+    </figure>
+
+    <div class="scroll">
+      <table class="dense">
+        <caption>August AHT by contributor (&ge;10 tasks), fastest median first. Covers 828 of 905 tasks.</caption>
+        <thead>
+          <tr><th>Contributor</th><th class="num">Tasks</th><th class="num">Mean h</th>
+              <th class="num">Median h</th><th class="num">Worst h</th><th class="num">Median $</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hero"><td>Alex Fey</td><td class="num">30</td><td class="num">0.93</td><td class="num"><strong>0.32</strong></td><td class="num">4.28</td><td class="num">52</td></tr>
+          <tr class="hero"><td>Daniel Zalevsky</td><td class="num">21</td><td class="num">0.94</td><td class="num"><strong>0.61</strong></td><td class="num">5.06</td><td class="num">99</td></tr>
+          <tr class="hero"><td>Alexander Koblansky</td><td class="num">23</td><td class="num">1.43</td><td class="num"><strong>1.14</strong></td><td class="num">8.70</td><td class="num">186</td></tr>
+          <tr class="hero"><td>Pravit Kochar</td><td class="num">16</td><td class="num">1.18</td><td class="num"><strong>1.16</strong></td><td class="num">2.97</td><td class="num">189</td></tr>
+          <tr><td>Frank Collier</td><td class="num">58</td><td class="num">2.02</td><td class="num"><strong>1.44</strong></td><td class="num">9.54</td><td class="num">235</td></tr>
+          <tr><td>Elliot Saye</td><td class="num">77</td><td class="num">1.48</td><td class="num"><strong>1.48</strong></td><td class="num">4.70</td><td class="num">242</td></tr>
+          <tr><td>Johnny Tran</td><td class="num">16</td><td class="num">1.46</td><td class="num"><strong>1.49</strong></td><td class="num">3.55</td><td class="num">243</td></tr>
+          <tr><td>Ran Meshulam</td><td class="num">31</td><td class="num">2.21</td><td class="num"><strong>1.49</strong></td><td class="num">7.55</td><td class="num">243</td></tr>
+          <tr><td>Joy Tokosi</td><td class="num">25</td><td class="num">2.33</td><td class="num"><strong>1.50</strong></td><td class="num">7.23</td><td class="num">245</td></tr>
+          <tr><td>David Hua</td><td class="num">42</td><td class="num">1.65</td><td class="num"><strong>1.50</strong></td><td class="num">6.09</td><td class="num">245</td></tr>
+          <tr><td>Charles Mack</td><td class="num">27</td><td class="num">2.03</td><td class="num"><strong>1.51</strong></td><td class="num">7.33</td><td class="num">246</td></tr>
+          <tr><td>Alex Moon</td><td class="num">35</td><td class="num">1.40</td><td class="num"><strong>1.51</strong></td><td class="num">4.38</td><td class="num">247</td></tr>
+          <tr><td>Siddhant Kumbhat</td><td class="num">44</td><td class="num">1.58</td><td class="num"><strong>1.57</strong></td><td class="num">4.46</td><td class="num">257</td></tr>
+          <tr><td>Diego Inaki Pardo de Orellana</td><td class="num">14</td><td class="num">1.52</td><td class="num"><strong>1.58</strong></td><td class="num">3.44</td><td class="num">258</td></tr>
+          <tr><td>Sutton Zhang</td><td class="num">95</td><td class="num">2.11</td><td class="num"><strong>1.61</strong></td><td class="num">6.73</td><td class="num">263</td></tr>
+          <tr><td>Artus Granier</td><td class="num">26</td><td class="num">2.20</td><td class="num"><strong>1.69</strong></td><td class="num">9.91</td><td class="num">275</td></tr>
+          <tr><td>Spencer Dumas</td><td class="num">26</td><td class="num">2.66</td><td class="num"><strong>1.71</strong></td><td class="num">10.54</td><td class="num">279</td></tr>
+          <tr><td>John Wang</td><td class="num">68</td><td class="num">1.97</td><td class="num"><strong>1.72</strong></td><td class="num">7.50</td><td class="num">281</td></tr>
+          <tr><td>Will Briley</td><td class="num">13</td><td class="num">2.29</td><td class="num"><strong>1.90</strong></td><td class="num">6.23</td><td class="num">311</td></tr>
+          <tr><td>Tyler Collingbourne</td><td class="num">17</td><td class="num">2.49</td><td class="num"><strong>2.02</strong></td><td class="num">10.90</td><td class="num">329</td></tr>
+          <tr><td>Jared Minor</td><td class="num">13</td><td class="num">2.10</td><td class="num"><strong>2.07</strong></td><td class="num">4.35</td><td class="num">338</td></tr>
+          <tr><td>Ethan Ohana</td><td class="num">34</td><td class="num">2.50</td><td class="num"><strong>2.17</strong></td><td class="num">10.28</td><td class="num">354</td></tr>
+          <tr><td>Melvan Hoo Jun Hong</td><td class="num">42</td><td class="num">2.63</td><td class="num"><strong>2.33</strong></td><td class="num">12.53</td><td class="num">380</td></tr>
+          <tr><td>Liam Tuohy</td><td class="num">25</td><td class="num">3.40</td><td class="num"><strong>2.86</strong></td><td class="num">10.28</td><td class="num">466</td></tr>
+          <tr><td>Andy Deng</td><td class="num">10</td><td class="num">2.78</td><td class="num"><strong>3.19</strong></td><td class="num">5.10</td><td class="num">520</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:18px">
+      A <strong>10&times; spread on median</strong> within one job title &mdash; Alex Fey
+      at 0.32h against Andy Deng at 3.19h. Two people are worth separating out:
+      <strong>Alex Fey (0.32h median, 0.93h mean)</strong> and
+      <strong>Frank Collier (1.44h median, 2.02h mean)</strong> have the widest gaps
+      between typical and average, so their opportunity is the tail, not the baseline.
+    </p>
+
+    <h3>How the per-task time was measured</h3>
+    <ul class="plain">
+      <li><strong>&ldquo;Led to audit&rdquo;, not &ldquo;clicked into audit&rdquo;.</strong> 97% of August audit entries (1,248 of 1,287) are triggered by a system account via <code>review_gate</code> &rarr; <code>APPROVE</code>; only 2 all month were pushed by a <code>prompt_tasker</code>, both admin overrides. So credit follows the sheets convention &mdash; the last person to move the task out of <code>edit_task</code>/<code>redo_task</code> before it was approved.</li>
+      <li><strong>Time comes from <code>tsip_task_claims</code> on that exact task</strong>, capped at 12h per claim. Raw claim-hold is wall-clock possession, not work &mdash; people keep tasks claimed overnight &mdash; so it runs ~8.5&times; paid time (raw mean 16.76 claim-hours, median 12.89).</li>
+      <li><strong>Calibrated against these same people's actual August payable hours</strong> (1,789.1h). That makes the <strong>mean exact</strong> &mdash; it is literally payable hours &divide; tasks, no modelling &mdash; and the median derived from the per-task distribution scaled by the same factor.</li>
+      <li><strong>The 12h cap is the main uncertainty in the median.</strong> Uncapped, raw mean rises to 50.5 claim-hours and median to 22.6. The mean does not depend on the cap at all.</li>
+    </ul>
+
+        <h3>The outlier tasks, named</h3>
     <p>
       The most expensive individual tasks held by a <code>prompt_tasker</code> &mdash; 18 of
       the pipeline&rsquo;s worst 20. <strong>Every one is a redo spiral</strong> &mdash; look at the redo column against the pipeline average of
