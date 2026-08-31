@@ -245,8 +245,10 @@
       the rest: <strong>qualifying yield</strong> is the contract-level lever;
       <strong>roughly half the labour bill is rework</strong>; and per-task cost is
       <strong>bimodal</strong> — 17% of tasks consume 46% of all effort. For labour
-      cost specifically, <strong>speed is the right thing to manage</strong>. All
-      figures verified live against production.
+      cost specifically, <strong>speed is the right thing to manage</strong>.
+      Contributor sections are restricted to <strong>role = <code>prompt_tasker</code>
+      only</strong> &mdash; 69 people, $550,278. All figures verified live against
+      production.
     </p>
   </header>
 
@@ -263,10 +265,48 @@
       <span class="n">below this the contract loses money</span></div>
   </div>
   <p style="font-size:.86rem;color:var(--muted);margin:0;max-width:80ch">
-    Measurement window 1 Jul &ndash; 31 Aug 2026: 6,699 payable hours, $1,121,528
-    labour, 172 contributors, 2,726 tasks reaching <code>audit</code>, 7,716
-    attributed send-backs, 20,944 task claims.
+    Measurement window 1 Jul &ndash; 31 Aug 2026. <strong>Pipeline totals</strong>
+    (sections 01&ndash;04, 06 distribution, 11&ndash;12): 6,699 payable hours,
+    $1,121,528 labour, 172 contributors, 2,726 tasks reaching <code>audit</code>,
+    7,716 send-backs, 20,944 claims. <strong>Contributor sections</strong>
+    (05&ndash;10): restricted to the 69 people whose sheets role is exactly
+    <code>prompt_tasker</code> &mdash; 3,358 payable hours, $550,278, 2,001 tasks,
+    blended <strong>$275/task</strong> at <strong>1.68h</strong> AHT.
   </p>
+
+  <div class="flag" style="border-left-color:var(--warn)">
+    <div class="hd">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+        <path d="M12 3 L22 20 H2 Z"/><line x1="12" y1="9.5" x2="12" y2="14.5"/><circle cx="12" cy="17.4" r="1.05" fill="var(--warn)" stroke="none"/>
+      </svg>
+      What the <code>prompt_tasker</code>-only filter excludes &mdash; read this
+    </div>
+    <p>
+      Roles on this project are <strong>single-valued</strong>: all 618 members have
+      exactly one role row, so &ldquo;multiple roles&rdquo; does not occur in the data
+      and nothing was dropped on that basis. The filter simply keeps
+      <code>prompt_tasker</code> and drops nine other roles.
+    </p>
+    <p>
+      <strong>That removes your single biggest producer.</strong> Jalaj Garg is
+      <code>beginner_tasker_reviewer</code>, not <code>prompt_tasker</code> &mdash;
+      284 tasks, $107,221, and the most consistent performer on the project. Also
+      excluded: Sophie Xiao (<code>decomp_prompt_reviewer</code>, $30,984), Charlotte
+      Laure FRANCOIS (<code>beginner_tasker_reviewer</code>, $25,867) and Elliott
+      Nederhood (<code>eval_hallucination_reviewer</code>, $18,448). In total
+      <strong>39 people and $247,384</strong> of prompt-shaped work sits outside this
+      cohort because of a role label. If the goal is to manage everyone doing prompt
+      work, the role field is the wrong filter &mdash; it is a permissions label, not
+      a description of what people actually do.
+    </p>
+    <p>
+      One genuinely useful thing the split reveals: <strong>the zero-output problem is
+      not a prompt-tasker problem.</strong> 57 <code>beginner_tasker</code> accounts
+      cost <strong>$107,050</strong> and produced <strong>2</strong> tasks to audit
+      between them. Inside the strict cohort only 4 people show zero output, totalling
+      $5,361. That money is an onboarding/ramp failure, not tasker performance.
+    </p>
+  </div>
 
   <nav class="toc"><h2 style="border:0;padding:0">Contents</h2>
     <ol>
@@ -274,11 +314,11 @@
         <li><a href="#yield">Contract economics: yield is the lever</a></li>
         <li><a href="#stack">What a task costs: the loaded stack</a></li>
         <li><a href="#rework">Rework: half the labour bill</a></li>
-        <li><a href="#people">Contributors: speed vs quality</a></li>
+        <li><a href="#people">Contributors: what drives cost</a></li>
         <li><a href="#pertask">Cost per task, and the outliers</a></li>
-        <li><a href="#prompt">The prompt-lane ledger</a></li>
-        <li><a href="#decomp">The decomp lane, and shell waste</a></li>
-        <li><a href="#zero">Zero output, named</a></li>
+        <li><a href="#prompt">The prompt_tasker ledger</a></li>
+        <li><a href="#decomp">Upstream waste: shells that never ship</a></li>
+        <li><a href="#zero">Zero output</a></li>
         <li><a href="#rates">Is the rate premium buying anything?</a></li>
         <li><a href="#gaming">Gaming signals</a></li>
         <li><a href="#levers">The levers, sized</a></li>
@@ -633,9 +673,9 @@
           <caption>Which metric predicts labour cost per finished task?</caption>
           <thead><tr><th>Metric</th><th class="num">Correlation with $/finished task</th><th>Verdict</th></tr></thead>
           <tbody>
-            <tr class="hero"><td>AHT (hours per finished task)</td><td class="num">+0.970</td>
+            <tr class="hero"><td>AHT (hours per finished task)</td><td class="num">+0.975</td>
               <td>Near-perfect. <strong>This is the labour-cost metric.</strong></td></tr>
-            <tr><td>First-pass yield</td><td class="num">+0.013</td>
+            <tr><td>First-pass yield</td><td class="num">&minus;0.076</td>
               <td>Essentially zero. Does not predict labour cost.</td></tr>
           </tbody>
         </table>
@@ -669,7 +709,7 @@
     </div>
     <p>
       Sutton is fast enough that three redos still land inside one hour of paid time,
-      which makes him the <strong>second-cheapest of 43</strong> per finished task
+      which makes him the <strong>third-cheapest of 37</strong> per finished task
       despite the worst-but-one quality in the pipeline. His FPY is a real problem —
       378 send-backs generate reviewer load and stretch cycle time, and low quality is
       exactly what depresses qualifying yield — but it is <strong>not</strong> a direct
@@ -677,10 +717,11 @@
     </p>
     <p>
       The genuinely expensive people are simply the <strong>slow</strong> ones:
-      <strong>Jared Minor $1,329/task</strong> (6.64h), Sophie Xiao $632, Joy Tokosi
-      $622, Johnny Tran $621, against a $249 lane average. Note Sophie Xiao is
-      expensive <em>and</em> high-quality (49% FPY at $220/hr) — a defensible trade;
-      Joy Tokosi is expensive <em>and</em> low-quality (3.7%) — not.
+      <strong>Jared Minor $1,329/task</strong> (6.64h), then Joy Tokosi $622 and
+      Johnny Tran $621, against a $275 cohort average. Joy Tokosi is expensive
+      <em>and</em> the lowest quality in the cohort (3.7% FPY) — the clearest
+      combined case. Jared Minor is on $200/hr while taking 6.64h per task, which is
+      4.3&times; the cohort median of 1.54h.
     </p>
 
     <figure>
@@ -949,13 +990,13 @@
 
     <h3>The outlier tasks, named</h3>
     <p>
-      The 20 most expensive individual tasks in the window. <strong>Every one is a redo
-      spiral</strong> &mdash; look at the redo column against the pipeline average of
+      The most expensive individual tasks held by a <code>prompt_tasker</code> &mdash; 18 of
+      the pipeline&rsquo;s worst 20. <strong>Every one is a redo spiral</strong> &mdash; look at the redo column against the pipeline average of
       2.4.
     </p>
     <div class="scroll">
       <table class="dense">
-        <caption>Worst 20 tasks by total effort. Cost = scaled payable-hour equivalents at the blended rate.</caption>
+        <caption>Worst tasks by total effort, held by a <code>prompt_tasker</code>. 18 of the pipeline&rsquo;s worst 20 qualify.</caption>
         <thead>
           <tr><th class="num">#</th><th>Task</th><th>Main holder</th><th class="num">Claim h</th>
               <th class="num">Scaled h</th><th class="num">Cost</th><th class="num">People</th>
@@ -968,27 +1009,25 @@
           <tr><td class="num">4</td><td><code>e64b26fc</code></td><td>Winston Curteza</td><td class="num">115.1</td><td class="num">15.5</td><td class="num"><strong>2,596</strong></td><td class="num">8</td><td class="num">18</td><td class="num">6</td><td class="num">29.4</td></tr>
           <tr><td class="num">5</td><td><code>0e532371</code></td><td>Artus Granier</td><td class="num">112.6</td><td class="num">15.2</td><td class="num"><strong>2,540</strong></td><td class="num">3</td><td class="num">13</td><td class="num">10</td><td class="num">8.0</td></tr>
           <tr><td class="num">6</td><td><code>9093afe4</code></td><td>Frank Collier</td><td class="num">105.0</td><td class="num">14.1</td><td class="num"><strong>2,368</strong></td><td class="num">3</td><td class="num">12</td><td class="num">8</td><td class="num">11.2</td></tr>
-          <tr><td class="num">7</td><td><code>5e968fd4</code></td><td>Sophie Xiao</td><td class="num">102.5</td><td class="num">13.8</td><td class="num"><strong>2,312</strong></td><td class="num">3</td><td class="num">12</td><td class="num">8</td><td class="num">4.1</td></tr>
-          <tr><td class="num">8</td><td><code>60835c62</code></td><td>David Hua</td><td class="num">101.7</td><td class="num">13.7</td><td class="num"><strong>2,294</strong></td><td class="num">3</td><td class="num">21</td><td class="num">18</td><td class="num">11.8</td></tr>
-          <tr><td class="num">9</td><td><code>7fdc284d</code></td><td>David Hua</td><td class="num">99.0</td><td class="num">13.3</td><td class="num"><strong>2,233</strong></td><td class="num">4</td><td class="num">26</td><td class="num">24</td><td class="num">6.3</td></tr>
-          <tr><td class="num">10</td><td><code>97696025</code></td><td>Charles Mack</td><td class="num">96.8</td><td class="num">13.0</td><td class="num"><strong>2,183</strong></td><td class="num">6</td><td class="num">18</td><td class="num">10</td><td class="num">24.6</td></tr>
-          <tr><td class="num">11</td><td><code>b5b30049</code></td><td>Melvan Hoo Jun Hong</td><td class="num">96.3</td><td class="num">13.0</td><td class="num"><strong>2,172</strong></td><td class="num">3</td><td class="num">23</td><td class="num">19</td><td class="num">29.0</td></tr>
-          <tr><td class="num">12</td><td><code>902bb8f5</code></td><td>Shreyas Rajkumar</td><td class="num">96.2</td><td class="num">13.0</td><td class="num"><strong>2,170</strong></td><td class="num">4</td><td class="num">12</td><td class="num">6</td><td class="num">37.2</td></tr>
-          <tr><td class="num">13</td><td><code>dc9b40f7</code></td><td>Ethan Ohana</td><td class="num">93.7</td><td class="num">12.6</td><td class="num"><strong>2,113</strong></td><td class="num">4</td><td class="num">18</td><td class="num">14</td><td class="num">4.3</td></tr>
-          <tr><td class="num">14</td><td><code>4bab9ff2</code></td><td>Tyler Collingbourne</td><td class="num">93.3</td><td class="num">12.6</td><td class="num"><strong>2,104</strong></td><td class="num">2</td><td class="num">13</td><td class="num">11</td><td class="num">26.9</td></tr>
-          <tr><td class="num">15</td><td><code>82325161</code></td><td>Kevin Cao</td><td class="num">91.3</td><td class="num">12.3</td><td class="num"><strong>2,059</strong></td><td class="num">5</td><td class="num">13</td><td class="num">4</td><td class="num">26.9</td></tr>
-          <tr><td class="num">16</td><td><code>60a4e196</code></td><td>Diego Inaki Pardo de Orellana</td><td class="num">90.4</td><td class="num">12.2</td><td class="num"><strong>2,039</strong></td><td class="num">4</td><td class="num">13</td><td class="num">9</td><td class="num">14.4</td></tr>
-          <tr><td class="num">17</td><td><code>1fe03f05</code></td><td>Spencer Dumas</td><td class="num">90.0</td><td class="num">12.1</td><td class="num"><strong>2,030</strong></td><td class="num">2</td><td class="num">11</td><td class="num">9</td><td class="num">22.0</td></tr>
-          <tr><td class="num">18</td><td><code>7a3998ac</code></td><td>Arjun Pathy</td><td class="num">89.5</td><td class="num">12.1</td><td class="num"><strong>2,019</strong></td><td class="num">4</td><td class="num">19</td><td class="num">15</td><td class="num">5.1</td></tr>
-          <tr><td class="num">19</td><td><code>f894aa6b</code></td><td>Tyler Collingbourne</td><td class="num">88.9</td><td class="num">12.0</td><td class="num"><strong>2,005</strong></td><td class="num">6</td><td class="num">16</td><td class="num">8</td><td class="num">7.6</td></tr>
-          <tr><td class="num">20</td><td><code>e76a0ebe</code></td><td>John Wang</td><td class="num">87.6</td><td class="num">11.8</td><td class="num"><strong>1,976</strong></td><td class="num">3</td><td class="num">20</td><td class="num">17</td><td class="num">9.2</td></tr>
+          <tr><td class="num">7</td><td><code>60835c62</code></td><td>David Hua</td><td class="num">101.7</td><td class="num">13.7</td><td class="num"><strong>2,294</strong></td><td class="num">3</td><td class="num">21</td><td class="num">18</td><td class="num">11.8</td></tr>
+          <tr><td class="num">8</td><td><code>7fdc284d</code></td><td>David Hua</td><td class="num">99.0</td><td class="num">13.3</td><td class="num"><strong>2,233</strong></td><td class="num">4</td><td class="num">26</td><td class="num">24</td><td class="num">6.3</td></tr>
+          <tr><td class="num">9</td><td><code>97696025</code></td><td>Charles Mack</td><td class="num">96.8</td><td class="num">13.0</td><td class="num"><strong>2,183</strong></td><td class="num">6</td><td class="num">18</td><td class="num">10</td><td class="num">24.6</td></tr>
+          <tr><td class="num">10</td><td><code>b5b30049</code></td><td>Melvan Hoo Jun Hong</td><td class="num">96.3</td><td class="num">13.0</td><td class="num"><strong>2,172</strong></td><td class="num">3</td><td class="num">23</td><td class="num">19</td><td class="num">29.0</td></tr>
+          <tr><td class="num">11</td><td><code>902bb8f5</code></td><td>Shreyas Rajkumar</td><td class="num">96.2</td><td class="num">13.0</td><td class="num"><strong>2,170</strong></td><td class="num">4</td><td class="num">12</td><td class="num">6</td><td class="num">37.2</td></tr>
+          <tr><td class="num">12</td><td><code>dc9b40f7</code></td><td>Ethan Ohana</td><td class="num">93.7</td><td class="num">12.6</td><td class="num"><strong>2,113</strong></td><td class="num">4</td><td class="num">18</td><td class="num">14</td><td class="num">4.3</td></tr>
+          <tr><td class="num">13</td><td><code>4bab9ff2</code></td><td>Tyler Collingbourne</td><td class="num">93.3</td><td class="num">12.6</td><td class="num"><strong>2,104</strong></td><td class="num">2</td><td class="num">13</td><td class="num">11</td><td class="num">26.9</td></tr>
+          <tr><td class="num">14</td><td><code>82325161</code></td><td>Kevin Cao</td><td class="num">91.3</td><td class="num">12.3</td><td class="num"><strong>2,059</strong></td><td class="num">5</td><td class="num">13</td><td class="num">4</td><td class="num">26.9</td></tr>
+          <tr><td class="num">15</td><td><code>60a4e196</code></td><td>Diego Inaki Pardo de Orellana</td><td class="num">90.4</td><td class="num">12.2</td><td class="num"><strong>2,039</strong></td><td class="num">4</td><td class="num">13</td><td class="num">9</td><td class="num">14.4</td></tr>
+          <tr><td class="num">16</td><td><code>1fe03f05</code></td><td>Spencer Dumas</td><td class="num">90.0</td><td class="num">12.1</td><td class="num"><strong>2,030</strong></td><td class="num">2</td><td class="num">11</td><td class="num">9</td><td class="num">22.0</td></tr>
+          <tr><td class="num">17</td><td><code>f894aa6b</code></td><td>Tyler Collingbourne</td><td class="num">88.9</td><td class="num">12.0</td><td class="num"><strong>2,005</strong></td><td class="num">6</td><td class="num">16</td><td class="num">8</td><td class="num">7.6</td></tr>
+          <tr><td class="num">18</td><td><code>e76a0ebe</code></td><td>John Wang</td><td class="num">87.6</td><td class="num">11.8</td><td class="num"><strong>1,976</strong></td><td class="num">3</td><td class="num">20</td><td class="num">17</td><td class="num">9.2</td></tr>
         </tbody>
       </table>
     </div>
     <p style="margin-top:18px">
       <strong>The worst task cost roughly $3,200 &mdash; about 10&times; the median
       task &mdash; and went round 31 times across 35 claims and 4 people.</strong>
-      <strong>Melvan Hoo Jun Hong holds 3 of the worst 11.</strong> Several tasks also
+      <strong>Melvan Hoo Jun Hong holds 3 of the worst 10.</strong> Several tasks also
       show the two failure modes separately: <code>902bb8f5</code> took 37.2 elapsed
       days on only 6 redos (it sat in queues), while <code>7fdc284d</code> burned 24
       redos in 6.3 days (it churned). Those need different fixes &mdash; queue TTLs
@@ -1004,180 +1043,147 @@
     </p>
     <div class="scroll">
       <table class="dense">
-        <caption>Contributors who were the main holder on &ge;8 tasks, sorted by outlier rate.</caption>
+        <caption><code>prompt_tasker</code>-only contributors who were the main holder on &ge;8 tasks, sorted by outlier rate.</caption>
         <thead>
-          <tr><th>Contributor</th><th>Lane</th><th class="num">$/h</th><th class="num">Tasks held</th>
+          <tr><th>Contributor</th><th class="num">$/h</th><th class="num">Tasks held</th>
               <th class="num">Median $</th><th class="num">Mean $</th><th class="num">p90 h</th>
               <th class="num">Worst h</th><th class="num">Worst $</th><th class="num">Outliers</th>
               <th class="num">%out</th><th class="num">Skew</th></tr>
         </thead>
         <tbody>
-          <tr class="hero"><td>Diogo Pires</td><td>PROMPT</td><td class="num">175</td><td class="num">10</td><td class="num">441</td><td class="num">610</td><td class="num">7.60</td><td class="num">9.76</td><td class="num">1,635</td><td class="num">3</td><td class="num"><strong>30%</strong></td><td class="num">1.38</td></tr>
-          <tr class="hero"><td>Francisco Cerqueira</td><td>PROMPT</td><td class="num">175</td><td class="num">14</td><td class="num">635</td><td class="num">644</td><td class="num">6.77</td><td class="num">6.85</td><td class="num">1,147</td><td class="num">4</td><td class="num"><strong>29%</strong></td><td class="num">1.01</td></tr>
-          <tr class="hero"><td>Mikel Pardo</td><td>PROMPT</td><td class="num">150</td><td class="num">19</td><td class="num">473</td><td class="num">544</td><td class="num">6.49</td><td class="num">8.05</td><td class="num">1,349</td><td class="num">5</td><td class="num"><strong>26%</strong></td><td class="num">1.15</td></tr>
-          <tr class="hero"><td>Joy Tokosi</td><td>PROMPT</td><td class="num">150</td><td class="num">37</td><td class="num">552</td><td class="num">678</td><td class="num">7.53</td><td class="num">8.87</td><td class="num">1,486</td><td class="num">9</td><td class="num"><strong>24%</strong></td><td class="num">1.23</td></tr>
-          <tr class="hero"><td>Melvan Hoo Jun Hong</td><td>PROMPT</td><td class="num">200</td><td class="num">96</td><td class="num">572</td><td class="num">651</td><td class="num">7.48</td><td class="num">19.11</td><td class="num">3,200</td><td class="num">20</td><td class="num"><strong>21%</strong></td><td class="num">1.14</td></tr>
-          <tr class="hero"><td>Charles Mack</td><td>PROMPT</td><td class="num">150</td><td class="num">65</td><td class="num">348</td><td class="num">492</td><td class="num">7.49</td><td class="num">13.04</td><td class="num">2,184</td><td class="num">13</td><td class="num"><strong>20%</strong></td><td class="num">1.41</td></tr>
-          <tr><td>Spencer Dumas</td><td>PROMPT</td><td class="num">150</td><td class="num">36</td><td class="num">522</td><td class="num">567</td><td class="num">5.91</td><td class="num">12.12</td><td class="num">2,030</td><td class="num">7</td><td class="num"><strong>19%</strong></td><td class="num">1.09</td></tr>
-          <tr><td>Alex Moon</td><td>PROMPT</td><td class="num">150</td><td class="num">52</td><td class="num">549</td><td class="num">562</td><td class="num">6.86</td><td class="num">9.31</td><td class="num">1,560</td><td class="num">10</td><td class="num"><strong>19%</strong></td><td class="num">1.02</td></tr>
-          <tr><td>Liam Tuohy</td><td>PROMPT</td><td class="num">150</td><td class="num">59</td><td class="num">513</td><td class="num">545</td><td class="num">7.37</td><td class="num">11.75</td><td class="num">1,968</td><td class="num">11</td><td class="num"><strong>19%</strong></td><td class="num">1.06</td></tr>
-          <tr><td>Will Briley</td><td>PROMPT</td><td class="num">150</td><td class="num">22</td><td class="num">484</td><td class="num">577</td><td class="num">7.20</td><td class="num">10.35</td><td class="num">1,734</td><td class="num">4</td><td class="num"><strong>18%</strong></td><td class="num">1.19</td></tr>
-          <tr><td>Frank Collier</td><td>PROMPT</td><td class="num">150</td><td class="num">85</td><td class="num">420</td><td class="num">587</td><td class="num">7.44</td><td class="num">16.45</td><td class="num">2,755</td><td class="num">15</td><td class="num"><strong>18%</strong></td><td class="num">1.40</td></tr>
-          <tr><td>Artus Granier</td><td>PROMPT</td><td class="num">150</td><td class="num">41</td><td class="num">352</td><td class="num">523</td><td class="num">6.69</td><td class="num">15.17</td><td class="num">2,540</td><td class="num">7</td><td class="num"><strong>17%</strong></td><td class="num">1.49</td></tr>
-          <tr><td>Yui Cheong Richards Chang</td><td>PROMPT</td><td class="num">150</td><td class="num">12</td><td class="num">338</td><td class="num">447</td><td class="num">6.34</td><td class="num">7.68</td><td class="num">1,286</td><td class="num">2</td><td class="num"><strong>17%</strong></td><td class="num">1.32</td></tr>
-          <tr><td>Tyler Collingbourne</td><td>PROMPT</td><td class="num">150</td><td class="num">25</td><td class="num">591</td><td class="num">688</td><td class="num">9.45</td><td class="num">12.57</td><td class="num">2,105</td><td class="num">4</td><td class="num"><strong>16%</strong></td><td class="num">1.17</td></tr>
-          <tr><td>Ali Mallick</td><td>PROMPT</td><td class="num">150</td><td class="num">45</td><td class="num">356</td><td class="num">472</td><td class="num">6.35</td><td class="num">9.64</td><td class="num">1,614</td><td class="num">7</td><td class="num"><strong>16%</strong></td><td class="num">1.33</td></tr>
-          <tr><td>Andy Deng</td><td>PROMPT</td><td class="num">150</td><td class="num">26</td><td class="num">345</td><td class="num">488</td><td class="num">5.65</td><td class="num">7.46</td><td class="num">1,249</td><td class="num">4</td><td class="num"><strong>15%</strong></td><td class="num">1.41</td></tr>
-          <tr><td>Ethan Ohana</td><td>PROMPT</td><td class="num">150</td><td class="num">62</td><td class="num">521</td><td class="num">585</td><td class="num">7.18</td><td class="num">12.62</td><td class="num">2,113</td><td class="num">9</td><td class="num"><strong>15%</strong></td><td class="num">1.12</td></tr>
-          <tr><td>David Hua</td><td>PROMPT</td><td class="num">200</td><td class="num">72</td><td class="num">363</td><td class="num">478</td><td class="num">6.38</td><td class="num">13.69</td><td class="num">2,293</td><td class="num">9</td><td class="num"><strong>12%</strong></td><td class="num">1.32</td></tr>
-          <tr><td>Manan Bhalerao</td><td>PROMPT</td><td class="num">175</td><td class="num">8</td><td class="num">0</td><td class="num">213</td><td class="num">3.51</td><td class="num">6.20</td><td class="num">1,038</td><td class="num">1</td><td class="num"><strong>12%</strong></td><td class="num">&ndash;</td></tr>
-          <tr><td>Ran Meshulam</td><td>PROMPT</td><td class="num">150</td><td class="num">82</td><td class="num">355</td><td class="num">468</td><td class="num">5.95</td><td class="num">9.25</td><td class="num">1,549</td><td class="num">10</td><td class="num"><strong>12%</strong></td><td class="num">1.32</td></tr>
-          <tr><td>Charlotte Laure FRANCOIS</td><td>PROMPT</td><td class="num">165</td><td class="num">50</td><td class="num">271</td><td class="num">353</td><td class="num">6.70</td><td class="num">9.60</td><td class="num">1,607</td><td class="num">6</td><td class="num"><strong>12%</strong></td><td class="num">1.30</td></tr>
-          <tr><td>Jared Minor</td><td>PROMPT</td><td class="num">200</td><td class="num">43</td><td class="num">271</td><td class="num">339</td><td class="num">5.31</td><td class="num">8.75</td><td class="num">1,465</td><td class="num">5</td><td class="num"><strong>12%</strong></td><td class="num">1.25</td></tr>
-          <tr><td>Johnny Tran</td><td>PROMPT</td><td class="num">150</td><td class="num">26</td><td class="num">464</td><td class="num">454</td><td class="num">5.31</td><td class="num">8.86</td><td class="num">1,484</td><td class="num">3</td><td class="num"><strong>12%</strong></td><td class="num">0.98</td></tr>
-          <tr><td>Sutton Zhang</td><td>PROMPT</td><td class="num">150</td><td class="num">113</td><td class="num">388</td><td class="num">493</td><td class="num">6.05</td><td class="num">9.43</td><td class="num">1,578</td><td class="num">13</td><td class="num"><strong>12%</strong></td><td class="num">1.27</td></tr>
-          <tr><td>Hinda Diakite</td><td>PROMPT</td><td class="num">150</td><td class="num">18</td><td class="num">579</td><td class="num">588</td><td class="num">5.83</td><td class="num">10.00</td><td class="num">1,674</td><td class="num">2</td><td class="num"><strong>11%</strong></td><td class="num">1.02</td></tr>
-          <tr><td>Jack Sorensen</td><td>PROMPT</td><td class="num">150</td><td class="num">9</td><td class="num">286</td><td class="num">369</td><td class="num">4.59</td><td class="num">6.71</td><td class="num">1,124</td><td class="num">1</td><td class="num"><strong>11%</strong></td><td class="num">1.29</td></tr>
-          <tr><td>John Wang</td><td>PROMPT</td><td class="num">175</td><td class="num">111</td><td class="num">282</td><td class="num">373</td><td class="num">5.58</td><td class="num">11.80</td><td class="num">1,975</td><td class="num">12</td><td class="num"><strong>11%</strong></td><td class="num">1.32</td></tr>
-          <tr><td>Nimisha Mekala</td><td>DECOMP</td><td class="num">150</td><td class="num">47</td><td class="num">193</td><td class="num">321</td><td class="num">4.02</td><td class="num">9.11</td><td class="num">1,525</td><td class="num">4</td><td class="num"><strong>9%</strong></td><td class="num">1.66</td></tr>
-          <tr><td>Diego Inaki Pardo de Orellana</td><td>PROMPT</td><td class="num">175</td><td class="num">38</td><td class="num">327</td><td class="num">433</td><td class="num">5.21</td><td class="num">12.18</td><td class="num">2,039</td><td class="num">3</td><td class="num"><strong>8%</strong></td><td class="num">1.32</td></tr>
-          <tr><td>Arjun Pathy</td><td>DECOMP</td><td class="num">150</td><td class="num">53</td><td class="num">311</td><td class="num">403</td><td class="num">3.64</td><td class="num">12.06</td><td class="num">2,019</td><td class="num">4</td><td class="num"><strong>8%</strong></td><td class="num">1.30</td></tr>
-          <tr><td>Pravit Kochar</td><td>PROMPT</td><td class="num">150</td><td class="num">40</td><td class="num">287</td><td class="num">390</td><td class="num">5.26</td><td class="num">11.11</td><td class="num">1,860</td><td class="num">3</td><td class="num"><strong>8%</strong></td><td class="num">1.36</td></tr>
-          <tr><td>Elliot Saye</td><td>PROMPT</td><td class="num">200</td><td class="num">108</td><td class="num">303</td><td class="num">385</td><td class="num">4.95</td><td class="num">11.66</td><td class="num">1,952</td><td class="num">8</td><td class="num"><strong>7%</strong></td><td class="num">1.27</td></tr>
-          <tr><td>Alexander Koblansky</td><td>PROMPT</td><td class="num">150</td><td class="num">43</td><td class="num">271</td><td class="num">293</td><td class="num">3.62</td><td class="num">9.94</td><td class="num">1,664</td><td class="num">3</td><td class="num"><strong>7%</strong></td><td class="num">1.08</td></tr>
-          <tr><td>Daniel Zalevsky</td><td>PROMPT</td><td class="num">150</td><td class="num">30</td><td class="num">262</td><td class="num">338</td><td class="num">4.26</td><td class="num">8.42</td><td class="num">1,409</td><td class="num">2</td><td class="num"><strong>7%</strong></td><td class="num">1.29</td></tr>
-          <tr><td>Megan Shuriah</td><td>DECOMP</td><td class="num">175</td><td class="num">31</td><td class="num">286</td><td class="num">351</td><td class="num">4.26</td><td class="num">10.05</td><td class="num">1,683</td><td class="num">2</td><td class="num"><strong>6%</strong></td><td class="num">1.23</td></tr>
-          <tr><td>Jack Colyar</td><td>PROMPT</td><td class="num">150</td><td class="num">16</td><td class="num">343</td><td class="num">386</td><td class="num">4.81</td><td class="num">5.60</td><td class="num">938</td><td class="num">1</td><td class="num"><strong>6%</strong></td><td class="num">1.13</td></tr>
-          <tr><td>Sophie Xiao</td><td>PROMPT</td><td class="num">220</td><td class="num">65</td><td class="num">271</td><td class="num">336</td><td class="num">3.65</td><td class="num">13.80</td><td class="num">2,311</td><td class="num">4</td><td class="num"><strong>6%</strong></td><td class="num">1.24</td></tr>
-          <tr><td>Spencer Howe</td><td>PROMPT</td><td class="num">200</td><td class="num">19</td><td class="num">120</td><td class="num">196</td><td class="num">2.03</td><td class="num">6.67</td><td class="num">1,117</td><td class="num">1</td><td class="num"><strong>5%</strong></td><td class="num">1.64</td></tr>
-          <tr><td>Ariya Savla</td><td>PROMPT</td><td class="num">150</td><td class="num">23</td><td class="num">278</td><td class="num">284</td><td class="num">3.70</td><td class="num">6.62</td><td class="num">1,109</td><td class="num">1</td><td class="num"><strong>4%</strong></td><td class="num">1.02</td></tr>
-          <tr><td>Jalaj Garg</td><td>PROMPT</td><td class="num">220</td><td class="num">266</td><td class="num">297</td><td class="num">380</td><td class="num">4.91</td><td class="num">8.02</td><td class="num">1,342</td><td class="num">11</td><td class="num"><strong>4%</strong></td><td class="num">1.28</td></tr>
-          <tr><td>Nicolas Herrerias</td><td>DECOMP</td><td class="num">175</td><td class="num">28</td><td class="num">164</td><td class="num">248</td><td class="num">3.31</td><td class="num">6.67</td><td class="num">1,117</td><td class="num">1</td><td class="num"><strong>4%</strong></td><td class="num">1.51</td></tr>
-          <tr><td>Elliott Nederhood</td><td>PROMPT</td><td class="num">150</td><td class="num">65</td><td class="num">391</td><td class="num">416</td><td class="num">4.18</td><td class="num">8.00</td><td class="num">1,339</td><td class="num">2</td><td class="num"><strong>3%</strong></td><td class="num">1.06</td></tr>
-          <tr><td>Siddhant Kumbhat</td><td>PROMPT</td><td class="num">150</td><td class="num">72</td><td class="num">307</td><td class="num">345</td><td class="num">4.61</td><td class="num">7.16</td><td class="num">1,198</td><td class="num">2</td><td class="num"><strong>3%</strong></td><td class="num">1.12</td></tr>
-          <tr><td>Pragyat Agrawal</td><td>DECOMP</td><td class="num">175</td><td class="num">88</td><td class="num">72</td><td class="num">189</td><td class="num">2.84</td><td class="num">6.86</td><td class="num">1,148</td><td class="num">2</td><td class="num"><strong>2%</strong></td><td class="num">2.64</td></tr>
-          <tr><td>Corey Schmidt</td><td>DECOMP</td><td class="num">200</td><td class="num">86</td><td class="num">7</td><td class="num">99</td><td class="num">1.97</td><td class="num">7.00</td><td class="num">1,172</td><td class="num">1</td><td class="num"><strong>1%</strong></td><td class="num">13.51</td></tr>
-          <tr><td>Che Wang</td><td>DECOMP</td><td class="num">150</td><td class="num">106</td><td class="num">289</td><td class="num">314</td><td class="num">3.69</td><td class="num">7.37</td><td class="num">1,234</td><td class="num">1</td><td class="num"><strong>1%</strong></td><td class="num">1.09</td></tr>
-          <tr><td>Mia Chamoun</td><td>PROMPT</td><td class="num">150</td><td class="num">20</td><td class="num">38</td><td class="num">60</td><td class="num">0.47</td><td class="num">2.17</td><td class="num">363</td><td class="num">0</td><td class="num"><strong>0%</strong></td><td class="num">1.59</td></tr>
-          <tr><td>Ava Zhu</td><td>PROMPT</td><td class="num">175</td><td class="num">14</td><td class="num">427</td><td class="num">443</td><td class="num">4.21</td><td class="num">5.07</td><td class="num">850</td><td class="num">0</td><td class="num"><strong>0%</strong></td><td class="num">1.04</td></tr>
-          <tr><td>Alec Tseung</td><td>DECOMP</td><td class="num">175</td><td class="num">30</td><td class="num">296</td><td class="num">326</td><td class="num">2.77</td><td class="num">4.74</td><td class="num">793</td><td class="num">0</td><td class="num"><strong>0%</strong></td><td class="num">1.10</td></tr>
-          <tr><td>Alex Fey</td><td>PROMPT</td><td class="num">200</td><td class="num">34</td><td class="num">280</td><td class="num">275</td><td class="num">3.46</td><td class="num">5.05</td><td class="num">845</td><td class="num">0</td><td class="num"><strong>0%</strong></td><td class="num">0.98</td></tr>
-          <tr><td>Andrew Holliday</td><td>DECOMP</td><td class="num">200</td><td class="num">30</td><td class="num">265</td><td class="num">248</td><td class="num">3.13</td><td class="num">5.15</td><td class="num">863</td><td class="num">0</td><td class="num"><strong>0%</strong></td><td class="num">0.94</td></tr>
+          <tr class="hero"><td>Diogo Pires</td><td class="num">175</td><td class="num">10</td><td class="num">441</td><td class="num">610</td><td class="num">7.60</td><td class="num">9.76</td><td class="num">1,635</td><td class="num">3</td><td class="num"><strong>30%</strong></td><td class="num">1.38</td></tr>
+          <tr class="hero"><td>Francisco Cerqueira</td><td class="num">175</td><td class="num">14</td><td class="num">635</td><td class="num">644</td><td class="num">6.77</td><td class="num">6.85</td><td class="num">1,147</td><td class="num">4</td><td class="num"><strong>29%</strong></td><td class="num">1.01</td></tr>
+          <tr class="hero"><td>Mikel Pardo</td><td class="num">150</td><td class="num">19</td><td class="num">473</td><td class="num">544</td><td class="num">6.49</td><td class="num">8.05</td><td class="num">1,349</td><td class="num">5</td><td class="num"><strong>26%</strong></td><td class="num">1.15</td></tr>
+          <tr class="hero"><td>Joy Tokosi</td><td class="num">150</td><td class="num">37</td><td class="num">552</td><td class="num">678</td><td class="num">7.53</td><td class="num">8.87</td><td class="num">1,486</td><td class="num">9</td><td class="num"><strong>24%</strong></td><td class="num">1.23</td></tr>
+          <tr class="hero"><td>Melvan Hoo Jun Hong</td><td class="num">200</td><td class="num">96</td><td class="num">572</td><td class="num">651</td><td class="num">7.48</td><td class="num">19.11</td><td class="num">3,200</td><td class="num">20</td><td class="num"><strong>21%</strong></td><td class="num">1.14</td></tr>
+          <tr class="hero"><td>Charles Mack</td><td class="num">150</td><td class="num">65</td><td class="num">348</td><td class="num">492</td><td class="num">7.49</td><td class="num">13.04</td><td class="num">2,184</td><td class="num">13</td><td class="num"><strong>20%</strong></td><td class="num">1.41</td></tr>
+          <tr><td>Spencer Dumas</td><td class="num">150</td><td class="num">36</td><td class="num">522</td><td class="num">567</td><td class="num">5.91</td><td class="num">12.12</td><td class="num">2,030</td><td class="num">7</td><td class="num"><strong>19%</strong></td><td class="num">1.09</td></tr>
+          <tr><td>Alex Moon</td><td class="num">150</td><td class="num">52</td><td class="num">549</td><td class="num">562</td><td class="num">6.86</td><td class="num">9.31</td><td class="num">1,560</td><td class="num">10</td><td class="num"><strong>19%</strong></td><td class="num">1.02</td></tr>
+          <tr><td>Liam Tuohy</td><td class="num">150</td><td class="num">59</td><td class="num">513</td><td class="num">545</td><td class="num">7.37</td><td class="num">11.75</td><td class="num">1,968</td><td class="num">11</td><td class="num"><strong>19%</strong></td><td class="num">1.06</td></tr>
+          <tr><td>Will Briley</td><td class="num">150</td><td class="num">22</td><td class="num">484</td><td class="num">577</td><td class="num">7.20</td><td class="num">10.35</td><td class="num">1,734</td><td class="num">4</td><td class="num"><strong>18%</strong></td><td class="num">1.19</td></tr>
+          <tr><td>Frank Collier</td><td class="num">150</td><td class="num">85</td><td class="num">420</td><td class="num">587</td><td class="num">7.44</td><td class="num">16.45</td><td class="num">2,755</td><td class="num">15</td><td class="num"><strong>18%</strong></td><td class="num">1.40</td></tr>
+          <tr><td>Artus Granier</td><td class="num">150</td><td class="num">41</td><td class="num">352</td><td class="num">523</td><td class="num">6.69</td><td class="num">15.17</td><td class="num">2,540</td><td class="num">7</td><td class="num"><strong>17%</strong></td><td class="num">1.49</td></tr>
+          <tr><td>Tyler Collingbourne</td><td class="num">150</td><td class="num">25</td><td class="num">591</td><td class="num">688</td><td class="num">9.45</td><td class="num">12.57</td><td class="num">2,105</td><td class="num">4</td><td class="num"><strong>16%</strong></td><td class="num">1.17</td></tr>
+          <tr><td>Ali Mallick</td><td class="num">150</td><td class="num">45</td><td class="num">356</td><td class="num">472</td><td class="num">6.35</td><td class="num">9.64</td><td class="num">1,614</td><td class="num">7</td><td class="num"><strong>16%</strong></td><td class="num">1.33</td></tr>
+          <tr><td>Andy Deng</td><td class="num">150</td><td class="num">26</td><td class="num">345</td><td class="num">488</td><td class="num">5.65</td><td class="num">7.46</td><td class="num">1,249</td><td class="num">4</td><td class="num"><strong>15%</strong></td><td class="num">1.41</td></tr>
+          <tr><td>Ethan Ohana</td><td class="num">150</td><td class="num">62</td><td class="num">521</td><td class="num">585</td><td class="num">7.18</td><td class="num">12.62</td><td class="num">2,113</td><td class="num">9</td><td class="num"><strong>15%</strong></td><td class="num">1.12</td></tr>
+          <tr><td>David Hua</td><td class="num">200</td><td class="num">72</td><td class="num">363</td><td class="num">478</td><td class="num">6.38</td><td class="num">13.69</td><td class="num">2,293</td><td class="num">9</td><td class="num"><strong>12%</strong></td><td class="num">1.32</td></tr>
+          <tr><td>Ran Meshulam</td><td class="num">150</td><td class="num">82</td><td class="num">355</td><td class="num">468</td><td class="num">5.95</td><td class="num">9.25</td><td class="num">1,549</td><td class="num">10</td><td class="num"><strong>12%</strong></td><td class="num">1.32</td></tr>
+          <tr><td>Jared Minor</td><td class="num">200</td><td class="num">43</td><td class="num">271</td><td class="num">339</td><td class="num">5.31</td><td class="num">8.75</td><td class="num">1,465</td><td class="num">5</td><td class="num"><strong>12%</strong></td><td class="num">1.25</td></tr>
+          <tr><td>Johnny Tran</td><td class="num">150</td><td class="num">26</td><td class="num">464</td><td class="num">454</td><td class="num">5.31</td><td class="num">8.86</td><td class="num">1,484</td><td class="num">3</td><td class="num"><strong>12%</strong></td><td class="num">0.98</td></tr>
+          <tr><td>Sutton Zhang</td><td class="num">150</td><td class="num">113</td><td class="num">388</td><td class="num">493</td><td class="num">6.05</td><td class="num">9.43</td><td class="num">1,578</td><td class="num">13</td><td class="num"><strong>12%</strong></td><td class="num">1.27</td></tr>
+          <tr><td>Hinda Diakite</td><td class="num">150</td><td class="num">18</td><td class="num">579</td><td class="num">588</td><td class="num">5.83</td><td class="num">10.00</td><td class="num">1,674</td><td class="num">2</td><td class="num"><strong>11%</strong></td><td class="num">1.02</td></tr>
+          <tr><td>Jack Sorensen</td><td class="num">150</td><td class="num">9</td><td class="num">286</td><td class="num">369</td><td class="num">4.59</td><td class="num">6.71</td><td class="num">1,124</td><td class="num">1</td><td class="num"><strong>11%</strong></td><td class="num">1.29</td></tr>
+          <tr><td>John Wang</td><td class="num">175</td><td class="num">111</td><td class="num">282</td><td class="num">373</td><td class="num">5.58</td><td class="num">11.80</td><td class="num">1,975</td><td class="num">12</td><td class="num"><strong>11%</strong></td><td class="num">1.32</td></tr>
+          <tr><td>Diego Inaki Pardo de Orellana</td><td class="num">175</td><td class="num">38</td><td class="num">327</td><td class="num">433</td><td class="num">5.21</td><td class="num">12.18</td><td class="num">2,039</td><td class="num">3</td><td class="num"><strong>8%</strong></td><td class="num">1.32</td></tr>
+          <tr><td>Pravit Kochar</td><td class="num">150</td><td class="num">40</td><td class="num">287</td><td class="num">390</td><td class="num">5.26</td><td class="num">11.11</td><td class="num">1,860</td><td class="num">3</td><td class="num"><strong>8%</strong></td><td class="num">1.36</td></tr>
+          <tr><td>Elliot Saye</td><td class="num">200</td><td class="num">108</td><td class="num">303</td><td class="num">385</td><td class="num">4.95</td><td class="num">11.66</td><td class="num">1,952</td><td class="num">8</td><td class="num"><strong>7%</strong></td><td class="num">1.27</td></tr>
+          <tr><td>Alexander Koblansky</td><td class="num">150</td><td class="num">43</td><td class="num">271</td><td class="num">293</td><td class="num">3.62</td><td class="num">9.94</td><td class="num">1,664</td><td class="num">3</td><td class="num"><strong>7%</strong></td><td class="num">1.08</td></tr>
+          <tr><td>Daniel Zalevsky</td><td class="num">150</td><td class="num">30</td><td class="num">262</td><td class="num">338</td><td class="num">4.26</td><td class="num">8.42</td><td class="num">1,409</td><td class="num">2</td><td class="num"><strong>7%</strong></td><td class="num">1.29</td></tr>
+          <tr><td>Jack Colyar</td><td class="num">150</td><td class="num">16</td><td class="num">343</td><td class="num">386</td><td class="num">4.81</td><td class="num">5.60</td><td class="num">938</td><td class="num">1</td><td class="num"><strong>6%</strong></td><td class="num">1.13</td></tr>
+          <tr><td>Spencer Howe</td><td class="num">200</td><td class="num">19</td><td class="num">120</td><td class="num">196</td><td class="num">2.03</td><td class="num">6.67</td><td class="num">1,117</td><td class="num">1</td><td class="num"><strong>5%</strong></td><td class="num">1.64</td></tr>
+          <tr><td>Ariya Savla</td><td class="num">150</td><td class="num">23</td><td class="num">278</td><td class="num">284</td><td class="num">3.70</td><td class="num">6.62</td><td class="num">1,109</td><td class="num">1</td><td class="num"><strong>4%</strong></td><td class="num">1.02</td></tr>
+          <tr><td>Siddhant Kumbhat</td><td class="num">150</td><td class="num">72</td><td class="num">307</td><td class="num">345</td><td class="num">4.61</td><td class="num">7.16</td><td class="num">1,198</td><td class="num">2</td><td class="num"><strong>3%</strong></td><td class="num">1.12</td></tr>
+          <tr><td>Mia Chamoun</td><td class="num">150</td><td class="num">20</td><td class="num">38</td><td class="num">60</td><td class="num">0.47</td><td class="num">2.17</td><td class="num">363</td><td class="num">0</td><td class="num"><strong>0%</strong></td><td class="num">1.59</td></tr>
+          <tr><td>Alex Fey</td><td class="num">200</td><td class="num">34</td><td class="num">280</td><td class="num">275</td><td class="num">3.46</td><td class="num">5.05</td><td class="num">845</td><td class="num">0</td><td class="num"><strong>0%</strong></td><td class="num">0.98</td></tr>
         </tbody>
       </table>
     </div>
     <ul class="plain" style="margin-top:20px">
       <li><strong>Melvan Hoo Jun Hong is the clearest problem at volume:</strong> 96 tasks held, median $572 (1.8&times; the pipeline median), <strong>20 outlier tasks (21%)</strong>, and the single worst task on the project. Consistently expensive, not unlucky &mdash; skew is only 1.14, meaning almost <em>all</em> his tasks run long.</li>
       <li><strong>Frank Collier and Artus Granier are the opposite shape:</strong> skew 1.40 and 1.49 with medians near the pipeline average. Their <em>typical</em> task is fine; a handful of disasters (122h and 113h worst cases) drags them. That is a triage-and-escalate fix, not retraining.</li>
-      <li><strong>Jalaj Garg is exceptional and should be protected:</strong> 266 tasks held &mdash; more than double anyone else &mdash; at a <strong>4% outlier rate</strong> and a median of $297, below the pipeline median. High volume normally degrades consistency; his doesn't.</li>
-      <li><strong>Che Wang (1%), Corey Schmidt (1%), Pragyat Agrawal (2%), Elliott Nederhood (3%) and Siddhant Kumbhat (3%)</strong> are the other consistency benchmarks.</li>
+      <li><strong>Consistency benchmarks in this cohort:</strong> Alex Fey and Mia Chamoun (0% outliers), Siddhant Kumbhat (3%, 72 tasks), Ariya Savla (4%) and Spencer Howe (5%). Siddhant is the strongest at real volume.</li>
+      <li><strong>Note the filter removes the pipeline&rsquo;s best benchmark.</strong> Jalaj Garg held 266 tasks at a 4% outlier rate &mdash; more volume than anyone here, at better consistency &mdash; but he is <code>beginner_tasker_reviewer</code> and therefore out of scope.</li>
       <li><strong>Small-sample flags to treat carefully:</strong> Diogo Pires (30%), Francisco Cerqueira (29%) and Mikel Pardo (26%) have the highest outlier rates but only 10&ndash;19 tasks each. Watch, don't act.</li>
-      <li><strong>Ignore the decomp medians here.</strong> Corey Schmidt's $7 median and 13.51 skew reflect shell work &mdash; many quick claims plus occasional long ones. Different work shape, not an anomaly.</li>
+      <li><strong>Mia Chamoun's $38 median is a data artifact, not a superpower</strong> &mdash; her claim record covers only 20 of her 41 tasks, so her per-task figures are thin. Her cohort-level $191/task is the reliable number.</li>
     </ul>
   </section>
 
   <!-- 07 -->
   <section>
-    <h2 id="prompt"><span class="num">07</span>The prompt-lane ledger</h2>
+    <h2 id="prompt"><span class="num">07</span>The prompt_tasker ledger</h2>
     <p class="dek">
-      105 people, $796,294. Ranked by <strong>cost per task fully finished</strong>
-      — all redos included. First-pass yield stays as a column because it explains
-      <em>why</em> someone is expensive, but it is no longer the ranking.
+      <strong>69 people with role exactly <code>prompt_tasker</code>, $550,278,
+      2,001 tasks.</strong> 37 have &ge;10 tasks and are rateable. Ranked by
+      <strong>cost per task fully finished</strong> — all redos included. First-pass
+      yield stays as a column because it explains <em>why</em> someone is expensive,
+      but it is not the ranking.
     </p>
     <div class="scroll">
       <table class="dense">
-        <caption>Prompt-lane contributors with &ge;10 tasks to audit, cheapest to most expensive per finished task.</caption>
+        <caption>All <code>prompt_tasker</code> contributors with &ge;10 tasks to audit, cheapest to most expensive per finished task.</caption>
         <thead>
-          <tr><th class="num">#</th><th>Contributor</th><th class="num">$/h</th><th class="num">Hours</th>
+          <tr><th class="num">#</th><th>Contributor</th><th class="num">$/h</th><th class="num">Days</th><th class="num">Hours</th>
               <th class="num">Cost</th><th class="num">Tasks</th><th class="num">AHT</th><th class="num">$/task</th>
               <th class="num">FPY %</th><th class="num">Redos/tk</th><th></th></tr>
         </thead>
         <tbody>
-          <tr class="hero"><td class="num">1</td><td>Spencer Dumas</td><td class="num">150</td><td class="num">43</td><td class="num">6,422</td><td class="num">52</td><td class="num">0.82</td><td class="num"><strong>124</strong></td><td class="num">17.3</td><td class="num">2.15</td><td><span class="tag use">cheapest</span></td></tr>
-          <tr class="hero"><td class="num">2</td><td>Luke Adams</td><td class="num">150</td><td class="num">19</td><td class="num">2,818</td><td class="num">22</td><td class="num">0.85</td><td class="num"><strong>128</strong></td><td class="num">63.6</td><td class="num">1.05</td><td><span class="tag use">cheapest</span></td></tr>
-          <tr class="hero"><td class="num">3</td><td>Sutton Zhang</td><td class="num">150</td><td class="num">95</td><td class="num">14,288</td><td class="num">98</td><td class="num">0.97</td><td class="num"><strong>146</strong></td><td class="num">4.1</td><td class="num">3.03</td><td><span class="tag use">cheapest</span></td></tr>
-          <tr class="hero"><td class="num">4</td><td>Yui Cheong Richards Chang</td><td class="num">150</td><td class="num">26</td><td class="num">3,950</td><td class="num">25</td><td class="num">1.05</td><td class="num"><strong>158</strong></td><td class="num">32.0</td><td class="num">1.68</td><td><span class="tag use">cheapest</span></td></tr>
-          <tr class="hero"><td class="num">5</td><td>Spencer Howe</td><td class="num">200</td><td class="num">41</td><td class="num">8,219</td><td class="num">49</td><td class="num">0.84</td><td class="num"><strong>168</strong></td><td class="num">20.4</td><td class="num">1.71</td><td><span class="tag use">cheapest</span></td></tr>
-          <tr class="hero"><td class="num">6</td><td>Ali Mallick</td><td class="num">150</td><td class="num">96</td><td class="num">14,435</td><td class="num">86</td><td class="num">1.12</td><td class="num"><strong>168</strong></td><td class="num">17.4</td><td class="num">3.23</td><td><span class="tag use">cheapest</span></td></tr>
-          <tr class="hero"><td class="num">7</td><td>Artus Granier</td><td class="num">150</td><td class="num">68</td><td class="num">10,132</td><td class="num">57</td><td class="num">1.19</td><td class="num"><strong>178</strong></td><td class="num">26.3</td><td class="num">2.37</td><td><span class="tag use">cheapest</span></td></tr>
-          <tr class="hero"><td class="num">8</td><td>Ariya Savla</td><td class="num">150</td><td class="num">36</td><td class="num">5,418</td><td class="num">30</td><td class="num">1.20</td><td class="num"><strong>181</strong></td><td class="num">26.7</td><td class="num">2.23</td><td><span class="tag use">cheapest</span></td></tr>
-          <tr class="hero"><td class="num">9</td><td>Aditya Vora</td><td class="num">150</td><td class="num">17</td><td class="num">2,612</td><td class="num">14</td><td class="num">1.24</td><td class="num"><strong>187</strong></td><td class="num">50.0</td><td class="num">0.71</td><td><span class="tag use">cheapest</span></td></tr>
-          <tr class="hero"><td class="num">10</td><td>Mia Chamoun</td><td class="num">150</td><td class="num">52</td><td class="num">7,816</td><td class="num">41</td><td class="num">1.27</td><td class="num"><strong>191</strong></td><td class="num">31.7</td><td class="num">2.10</td><td><span class="tag use">cheapest</span></td></tr>
-          <tr><td class="num">11</td><td>Ethan Ohana</td><td class="num">150</td><td class="num">72</td><td class="num">10,835</td><td class="num">53</td><td class="num">1.36</td><td class="num"><strong>204</strong></td><td class="num">9.4</td><td class="num">2.43</td><td></td></tr>
-          <tr><td class="num">12</td><td>Alexander Koblansky</td><td class="num">150</td><td class="num">96</td><td class="num">14,476</td><td class="num">69</td><td class="num">1.40</td><td class="num"><strong>210</strong></td><td class="num">20.3</td><td class="num">2.48</td><td></td></tr>
-          <tr><td class="num">13</td><td>John Wang</td><td class="num">175</td><td class="num">203</td><td class="num">35,600</td><td class="num">168</td><td class="num">1.21</td><td class="num"><strong>212</strong></td><td class="num">32.1</td><td class="num">2.05</td><td></td></tr>
-          <tr><td class="num">14</td><td>Elliot Saye</td><td class="num">200</td><td class="num">156</td><td class="num">31,158</td><td class="num">142</td><td class="num">1.10</td><td class="num"><strong>219</strong></td><td class="num">19.7</td><td class="num">2.42</td><td></td></tr>
-          <tr><td class="num">15</td><td>Will Briley</td><td class="num">150</td><td class="num">51</td><td class="num">7,590</td><td class="num">33</td><td class="num">1.53</td><td class="num"><strong>230</strong></td><td class="num">24.2</td><td class="num">2.03</td><td></td></tr>
-          <tr><td class="num">16</td><td>Diego Inaki Pardo de Orellana</td><td class="num">175</td><td class="num">71</td><td class="num">12,473</td><td class="num">54</td><td class="num">1.32</td><td class="num"><strong>231</strong></td><td class="num">14.8</td><td class="num">3.13</td><td></td></tr>
-          <tr><td class="num">17</td><td>Pravit Kochar</td><td class="num">150</td><td class="num">58</td><td class="num">8,666</td><td class="num">37</td><td class="num">1.56</td><td class="num"><strong>234</strong></td><td class="num">29.7</td><td class="num">2.14</td><td></td></tr>
-          <tr><td class="num">18</td><td>David Hua</td><td class="num">200</td><td class="num">102</td><td class="num">20,371</td><td class="num">86</td><td class="num">1.18</td><td class="num"><strong>237</strong></td><td class="num">11.6</td><td class="num">3.51</td><td></td></tr>
-          <tr><td class="num">19</td><td>Liam Tuohy</td><td class="num">150</td><td class="num">80</td><td class="num">12,060</td><td class="num">50</td><td class="num">1.61</td><td class="num"><strong>241</strong></td><td class="num">18.0</td><td class="num">3.62</td><td></td></tr>
-          <tr><td class="num">20</td><td>Frank Collier</td><td class="num">150</td><td class="num">103</td><td class="num">15,505</td><td class="num">64</td><td class="num">1.62</td><td class="num"><strong>242</strong></td><td class="num">17.2</td><td class="num">2.13</td><td></td></tr>
-          <tr><td class="num">21</td><td>Francisco Cerqueira</td><td class="num">175</td><td class="num">26</td><td class="num">4,554</td><td class="num">18</td><td class="num">1.45</td><td class="num"><strong>253</strong></td><td class="num">22.2</td><td class="num">2.39</td><td></td></tr>
-          <tr><td class="num">22</td><td>Siddhant Kumbhat</td><td class="num">150</td><td class="num">121</td><td class="num">18,141</td><td class="num">71</td><td class="num">1.70</td><td class="num"><strong>256</strong></td><td class="num">29.6</td><td class="num">1.63</td><td></td></tr>
-          <tr><td class="num">23</td><td>Charles Mack</td><td class="num">150</td><td class="num">156</td><td class="num">23,387</td><td class="num">90</td><td class="num">1.73</td><td class="num"><strong>260</strong></td><td class="num">18.9</td><td class="num">3.70</td><td></td></tr>
-          <tr><td class="num">24</td><td>Jack Sorensen</td><td class="num">150</td><td class="num">18</td><td class="num">2,668</td><td class="num">10</td><td class="num">1.78</td><td class="num"><strong>267</strong></td><td class="num">30.0</td><td class="num">2.20</td><td></td></tr>
-          <tr><td class="num">25</td><td>Diogo Pires</td><td class="num">175</td><td class="num">26</td><td class="num">4,584</td><td class="num">17</td><td class="num">1.54</td><td class="num"><strong>270</strong></td><td class="num">23.5</td><td class="num">2.18</td><td></td></tr>
-          <tr><td class="num">26</td><td>Manan Bhalerao</td><td class="num">175</td><td class="num">20</td><td class="num">3,508</td><td class="num">13</td><td class="num">1.54</td><td class="num"><strong>270</strong></td><td class="num">23.1</td><td class="num">3.46</td><td></td></tr>
-          <tr><td class="num">27</td><td>Alex Fey</td><td class="num">200</td><td class="num">120</td><td class="num">24,081</td><td class="num">89</td><td class="num">1.35</td><td class="num"><strong>271</strong></td><td class="num">29.2</td><td class="num">2.20</td><td></td></tr>
-          <tr><td class="num">28</td><td>Daniel Zalevsky</td><td class="num">150</td><td class="num">75</td><td class="num">11,294</td><td class="num">39</td><td class="num">1.93</td><td class="num"><strong>290</strong></td><td class="num">28.2</td><td class="num">1.92</td><td></td></tr>
-          <tr><td class="num">29</td><td>Ran Meshulam</td><td class="num">150</td><td class="num">135</td><td class="num">20,188</td><td class="num">69</td><td class="num">1.95</td><td class="num"><strong>293</strong></td><td class="num">13.0</td><td class="num">2.62</td><td></td></tr>
-          <tr><td class="num">30</td><td>Elliott Nederhood</td><td class="num">150</td><td class="num">123</td><td class="num">18,448</td><td class="num">63</td><td class="num">1.95</td><td class="num"><strong>293</strong></td><td class="num">19.0</td><td class="num">2.27</td><td></td></tr>
-          <tr><td class="num">31</td><td>Tyler Collingbourne</td><td class="num">150</td><td class="num">36</td><td class="num">5,361</td><td class="num">18</td><td class="num">1.99</td><td class="num"><strong>298</strong></td><td class="num">11.1</td><td class="num">2.89</td><td></td></tr>
-          <tr><td class="num">32</td><td>Marc Levy</td><td class="num">150</td><td class="num">21</td><td class="num">3,167</td><td class="num">10</td><td class="num">2.11</td><td class="num"><strong>317</strong></td><td class="num">10.0</td><td class="num">2.90</td><td></td></tr>
-          <tr><td class="num">33</td><td>Andy Deng</td><td class="num">150</td><td class="num">56</td><td class="num">8,464</td><td class="num">26</td><td class="num">2.17</td><td class="num"><strong>326</strong></td><td class="num">23.1</td><td class="num">3.46</td><td></td></tr>
-          <tr><td class="num">34</td><td>Melvan Hoo Jun Hong</td><td class="num">200</td><td class="num">135</td><td class="num">26,972</td><td class="num">78</td><td class="num">1.73</td><td class="num"><strong>346</strong></td><td class="num">7.7</td><td class="num">4.37</td><td></td></tr>
-          <tr><td class="num">35</td><td>Jalaj Garg</td><td class="num">220</td><td class="num">514</td><td class="num">107,221</td><td class="num">284</td><td class="num">1.81</td><td class="num"><strong>378</strong></td><td class="num">29.6</td><td class="num">1.39</td><td></td></tr>
-          <tr><td class="num">36</td><td>Jack Colyar</td><td class="num">150</td><td class="num">49</td><td class="num">7,400</td><td class="num">19</td><td class="num">2.60</td><td class="num"><strong>389</strong></td><td class="num">52.6</td><td class="num">1.00</td><td></td></tr>
-          <tr><td class="num">37</td><td>Alex Moon</td><td class="num">150</td><td class="num">146</td><td class="num">21,856</td><td class="num">53</td><td class="num">2.75</td><td class="num"><strong>412</strong></td><td class="num">28.3</td><td class="num">1.64</td><td></td></tr>
-          <tr><td class="num">38</td><td>Charlotte Laure FRANCOIS</td><td class="num">165</td><td class="num">163</td><td class="num">25,867</td><td class="num">58</td><td class="num">2.81</td><td class="num"><strong>446</strong></td><td class="num">29.3</td><td class="num">2.10</td><td></td></tr>
-          <tr><td class="num">39</td><td>Mikel Pardo</td><td class="num">150</td><td class="num">45</td><td class="num">6,761</td><td class="num">15</td><td class="num">3.00</td><td class="num"><strong>451</strong></td><td class="num">26.7</td><td class="num">2.33</td><td></td></tr>
-          <tr><td class="num">40</td><td>Johnny Tran</td><td class="num">150</td><td class="num">95</td><td class="num">14,276</td><td class="num">23</td><td class="num">4.14</td><td class="num"><strong>621</strong></td><td class="num">17.4</td><td class="num">2.70</td><td><span class="tag no">costly</span></td></tr>
-          <tr><td class="num">41</td><td>Joy Tokosi</td><td class="num">150</td><td class="num">112</td><td class="num">16,785</td><td class="num">27</td><td class="num">4.14</td><td class="num"><strong>622</strong></td><td class="num">3.7</td><td class="num">2.48</td><td><span class="tag no">costly</span></td></tr>
-          <tr><td class="num">42</td><td>Sophie Xiao</td><td class="num">220</td><td class="num">147</td><td class="num">30,984</td><td class="num">49</td><td class="num">2.99</td><td class="num"><strong>632</strong></td><td class="num">49.0</td><td class="num">0.90</td><td><span class="tag no">costly</span></td></tr>
-          <tr><td class="num">43</td><td>Jared Minor</td><td class="num">200</td><td class="num">206</td><td class="num">41,187</td><td class="num">31</td><td class="num">6.64</td><td class="num"><strong>1,329</strong></td><td class="num">25.8</td><td class="num">2.52</td><td><span class="tag no">costly</span></td></tr>
+          <tr class="hero"><td class="num">1</td><td>Spencer Dumas</td><td class="num">150</td><td class="num">34</td><td class="num">43</td><td class="num">6,422</td><td class="num">52</td><td class="num">0.82</td><td class="num"><strong>124</strong></td><td class="num">17.3</td><td class="num">2.15</td><td><span class="tag use">cheapest</span></td></tr>
+          <tr class="hero"><td class="num">2</td><td>Luke Adams</td><td class="num">150</td><td class="num">14</td><td class="num">19</td><td class="num">2,818</td><td class="num">22</td><td class="num">0.85</td><td class="num"><strong>128</strong></td><td class="num">63.6</td><td class="num">1.05</td><td><span class="tag use">cheapest</span></td></tr>
+          <tr class="hero"><td class="num">3</td><td>Sutton Zhang</td><td class="num">150</td><td class="num">20</td><td class="num">95</td><td class="num">14,288</td><td class="num">98</td><td class="num">0.97</td><td class="num"><strong>146</strong></td><td class="num">4.1</td><td class="num">3.03</td><td><span class="tag use">cheapest</span></td></tr>
+          <tr class="hero"><td class="num">4</td><td>Spencer Howe</td><td class="num">200</td><td class="num">20</td><td class="num">41</td><td class="num">8,219</td><td class="num">49</td><td class="num">0.84</td><td class="num"><strong>168</strong></td><td class="num">20.4</td><td class="num">1.71</td><td><span class="tag use">cheapest</span></td></tr>
+          <tr class="hero"><td class="num">5</td><td>Ali Mallick</td><td class="num">150</td><td class="num">21</td><td class="num">96</td><td class="num">14,435</td><td class="num">86</td><td class="num">1.12</td><td class="num"><strong>168</strong></td><td class="num">17.4</td><td class="num">3.23</td><td><span class="tag use">cheapest</span></td></tr>
+          <tr class="hero"><td class="num">6</td><td>Artus Granier</td><td class="num">150</td><td class="num">44</td><td class="num">68</td><td class="num">10,132</td><td class="num">57</td><td class="num">1.19</td><td class="num"><strong>178</strong></td><td class="num">26.3</td><td class="num">2.37</td><td><span class="tag use">cheapest</span></td></tr>
+          <tr class="hero"><td class="num">7</td><td>Ariya Savla</td><td class="num">150</td><td class="num">26</td><td class="num">36</td><td class="num">5,418</td><td class="num">30</td><td class="num">1.20</td><td class="num"><strong>181</strong></td><td class="num">26.7</td><td class="num">2.23</td><td><span class="tag use">cheapest</span></td></tr>
+          <tr class="hero"><td class="num">8</td><td>Aditya Vora</td><td class="num">150</td><td class="num">12</td><td class="num">17</td><td class="num">2,612</td><td class="num">14</td><td class="num">1.24</td><td class="num"><strong>187</strong></td><td class="num">50.0</td><td class="num">0.71</td><td><span class="tag use">cheapest</span></td></tr>
+          <tr class="hero"><td class="num">9</td><td>Mia Chamoun</td><td class="num">150</td><td class="num">19</td><td class="num">52</td><td class="num">7,816</td><td class="num">41</td><td class="num">1.27</td><td class="num"><strong>191</strong></td><td class="num">31.7</td><td class="num">2.10</td><td><span class="tag use">cheapest</span></td></tr>
+          <tr><td class="num">10</td><td>Ethan Ohana</td><td class="num">150</td><td class="num">39</td><td class="num">72</td><td class="num">10,835</td><td class="num">53</td><td class="num">1.36</td><td class="num"><strong>204</strong></td><td class="num">9.4</td><td class="num">2.43</td><td></td></tr>
+          <tr><td class="num">11</td><td>Alexander Koblansky</td><td class="num">150</td><td class="num">30</td><td class="num">96</td><td class="num">14,476</td><td class="num">69</td><td class="num">1.40</td><td class="num"><strong>210</strong></td><td class="num">20.3</td><td class="num">2.48</td><td></td></tr>
+          <tr><td class="num">12</td><td>John Wang</td><td class="num">175</td><td class="num">50</td><td class="num">203</td><td class="num">35,600</td><td class="num">168</td><td class="num">1.21</td><td class="num"><strong>212</strong></td><td class="num">32.1</td><td class="num">2.05</td><td></td></tr>
+          <tr><td class="num">13</td><td>Elliot Saye</td><td class="num">200</td><td class="num">52</td><td class="num">156</td><td class="num">31,158</td><td class="num">142</td><td class="num">1.10</td><td class="num"><strong>219</strong></td><td class="num">19.7</td><td class="num">2.42</td><td></td></tr>
+          <tr><td class="num">14</td><td>Will Briley</td><td class="num">150</td><td class="num">42</td><td class="num">51</td><td class="num">7,590</td><td class="num">33</td><td class="num">1.53</td><td class="num"><strong>230</strong></td><td class="num">24.2</td><td class="num">2.03</td><td></td></tr>
+          <tr><td class="num">15</td><td>Diego Inaki Pardo de Orellana</td><td class="num">175</td><td class="num">35</td><td class="num">71</td><td class="num">12,473</td><td class="num">54</td><td class="num">1.32</td><td class="num"><strong>231</strong></td><td class="num">14.8</td><td class="num">3.13</td><td></td></tr>
+          <tr><td class="num">16</td><td>Pravit Kochar</td><td class="num">150</td><td class="num">28</td><td class="num">58</td><td class="num">8,666</td><td class="num">37</td><td class="num">1.56</td><td class="num"><strong>234</strong></td><td class="num">29.7</td><td class="num">2.14</td><td></td></tr>
+          <tr><td class="num">17</td><td>David Hua</td><td class="num">200</td><td class="num">25</td><td class="num">102</td><td class="num">20,371</td><td class="num">86</td><td class="num">1.18</td><td class="num"><strong>237</strong></td><td class="num">11.6</td><td class="num">3.51</td><td></td></tr>
+          <tr><td class="num">18</td><td>Liam Tuohy</td><td class="num">150</td><td class="num">39</td><td class="num">80</td><td class="num">12,060</td><td class="num">50</td><td class="num">1.61</td><td class="num"><strong>241</strong></td><td class="num">18.0</td><td class="num">3.62</td><td></td></tr>
+          <tr><td class="num">19</td><td>Frank Collier</td><td class="num">150</td><td class="num">34</td><td class="num">103</td><td class="num">15,505</td><td class="num">64</td><td class="num">1.62</td><td class="num"><strong>242</strong></td><td class="num">17.2</td><td class="num">2.13</td><td></td></tr>
+          <tr><td class="num">20</td><td>Francisco Cerqueira</td><td class="num">175</td><td class="num">25</td><td class="num">26</td><td class="num">4,554</td><td class="num">18</td><td class="num">1.45</td><td class="num"><strong>253</strong></td><td class="num">22.2</td><td class="num">2.39</td><td></td></tr>
+          <tr><td class="num">21</td><td>Siddhant Kumbhat</td><td class="num">150</td><td class="num">37</td><td class="num">121</td><td class="num">18,141</td><td class="num">71</td><td class="num">1.70</td><td class="num"><strong>256</strong></td><td class="num">29.6</td><td class="num">1.63</td><td></td></tr>
+          <tr><td class="num">22</td><td>Charles Mack</td><td class="num">150</td><td class="num">48</td><td class="num">156</td><td class="num">23,387</td><td class="num">90</td><td class="num">1.73</td><td class="num"><strong>260</strong></td><td class="num">18.9</td><td class="num">3.70</td><td></td></tr>
+          <tr><td class="num">23</td><td>Jack Sorensen</td><td class="num">150</td><td class="num">19</td><td class="num">18</td><td class="num">2,668</td><td class="num">10</td><td class="num">1.78</td><td class="num"><strong>267</strong></td><td class="num">30.0</td><td class="num">2.20</td><td></td></tr>
+          <tr><td class="num">24</td><td>Diogo Pires</td><td class="num">175</td><td class="num">29</td><td class="num">26</td><td class="num">4,584</td><td class="num">17</td><td class="num">1.54</td><td class="num"><strong>270</strong></td><td class="num">23.5</td><td class="num">2.18</td><td></td></tr>
+          <tr><td class="num">25</td><td>Alex Fey</td><td class="num">200</td><td class="num">52</td><td class="num">120</td><td class="num">24,081</td><td class="num">89</td><td class="num">1.35</td><td class="num"><strong>271</strong></td><td class="num">29.2</td><td class="num">2.20</td><td></td></tr>
+          <tr><td class="num">26</td><td>Daniel Zalevsky</td><td class="num">150</td><td class="num">37</td><td class="num">75</td><td class="num">11,294</td><td class="num">39</td><td class="num">1.93</td><td class="num"><strong>290</strong></td><td class="num">28.2</td><td class="num">1.92</td><td></td></tr>
+          <tr><td class="num">27</td><td>Ran Meshulam</td><td class="num">150</td><td class="num">45</td><td class="num">135</td><td class="num">20,188</td><td class="num">69</td><td class="num">1.95</td><td class="num"><strong>293</strong></td><td class="num">13.0</td><td class="num">2.62</td><td></td></tr>
+          <tr><td class="num">28</td><td>Tyler Collingbourne</td><td class="num">150</td><td class="num">13</td><td class="num">36</td><td class="num">5,361</td><td class="num">18</td><td class="num">1.99</td><td class="num"><strong>298</strong></td><td class="num">11.1</td><td class="num">2.89</td><td></td></tr>
+          <tr><td class="num">29</td><td>Marc Levy</td><td class="num">150</td><td class="num">19</td><td class="num">21</td><td class="num">3,167</td><td class="num">10</td><td class="num">2.11</td><td class="num"><strong>317</strong></td><td class="num">10.0</td><td class="num">2.90</td><td></td></tr>
+          <tr><td class="num">30</td><td>Andy Deng</td><td class="num">150</td><td class="num">34</td><td class="num">56</td><td class="num">8,464</td><td class="num">26</td><td class="num">2.17</td><td class="num"><strong>326</strong></td><td class="num">23.1</td><td class="num">3.46</td><td></td></tr>
+          <tr><td class="num">31</td><td>Melvan Hoo Jun Hong</td><td class="num">200</td><td class="num">42</td><td class="num">135</td><td class="num">26,972</td><td class="num">78</td><td class="num">1.73</td><td class="num"><strong>346</strong></td><td class="num">7.7</td><td class="num">4.37</td><td></td></tr>
+          <tr><td class="num">32</td><td>Jack Colyar</td><td class="num">150</td><td class="num">19</td><td class="num">49</td><td class="num">7,400</td><td class="num">19</td><td class="num">2.60</td><td class="num"><strong>389</strong></td><td class="num">52.6</td><td class="num">1.00</td><td></td></tr>
+          <tr><td class="num">33</td><td>Alex Moon</td><td class="num">150</td><td class="num">38</td><td class="num">146</td><td class="num">21,856</td><td class="num">53</td><td class="num">2.75</td><td class="num"><strong>412</strong></td><td class="num">28.3</td><td class="num">1.64</td><td><span class="tag no">costly</span></td></tr>
+          <tr><td class="num">34</td><td>Mikel Pardo</td><td class="num">150</td><td class="num">34</td><td class="num">45</td><td class="num">6,761</td><td class="num">15</td><td class="num">3.00</td><td class="num"><strong>451</strong></td><td class="num">26.7</td><td class="num">2.33</td><td><span class="tag no">costly</span></td></tr>
+          <tr><td class="num">35</td><td>Johnny Tran</td><td class="num">150</td><td class="num">29</td><td class="num">95</td><td class="num">14,276</td><td class="num">23</td><td class="num">4.14</td><td class="num"><strong>621</strong></td><td class="num">17.4</td><td class="num">2.70</td><td><span class="tag no">costly</span></td></tr>
+          <tr><td class="num">36</td><td>Joy Tokosi</td><td class="num">150</td><td class="num">30</td><td class="num">112</td><td class="num">16,785</td><td class="num">27</td><td class="num">4.14</td><td class="num"><strong>622</strong></td><td class="num">3.7</td><td class="num">2.48</td><td><span class="tag no">costly</span></td></tr>
+          <tr><td class="num">37</td><td>Jared Minor</td><td class="num">200</td><td class="num">54</td><td class="num">206</td><td class="num">41,187</td><td class="num">31</td><td class="num">6.64</td><td class="num"><strong>1,329</strong></td><td class="num">25.8</td><td class="num">2.52</td><td><span class="tag no">costly</span></td></tr>
         </tbody>
       </table>
     </div>
     <p style="margin-top:18px">
-      <strong>The five worst on quality carry $69,868 of avoidable rework</strong>
-      between them, measured against Luke's 1.05 redos/task — 6.2% of the entire
-      labour bill in five people:
-      Melvan Hoo Jun Hong (259 excess redos &asymp; $23,306),
-      David Hua (212 &asymp; $19,040), Sutton Zhang (194 &asymp; $17,464),
-      Ethan Ohana (73 &asymp; $6,583), Joy Tokosi (39 &asymp; $3,475).
-      <strong>Two of the five are on $200/hr.</strong>
+      <strong>Spread within one job title:</strong> AHT runs 0.82h to 6.64h
+      (<strong>8.1&times;</strong>) and cost per finished task $124 to $1,329
+      (<strong>10.7&times;</strong>), median $242. That is a much tighter band than
+      the 26&times; I reported across the mixed cohort — most of that spread was
+      decomp taskers being measured on the wrong unit. Within a single role the real
+      spread is 8&times;, and it is still worth roughly $150k.
+    </p>
+    <p>
+      <strong>The expensive tail is four people:</strong> Jared Minor ($1,329/task,
+      6.64h, on $200/hr), Joy Tokosi ($622, and the cohort's worst quality at 3.7%
+      FPY), Johnny Tran ($621) and Mikel Pardo ($451). Together they cost
+      <strong>$79,209 for 96 tasks</strong>. At the cohort median of $242/task the
+      same output would cost $23,232 — a gap of about <strong>$56,000</strong>.
     </p>
   </section>
 
   <!-- 07 -->
   <section>
-    <h2 id="decomp"><span class="num">08</span>The decomp lane, and shell waste</h2>
+    <h2 id="decomp"><span class="num">08</span>Upstream waste: shells that never ship</h2>
     <p class="dek">
-      9 people, $240,811, measured per <strong>shell</strong> authored. There is no
-      individual performance problem in this lane — the whole group sits inside
-      0.28&ndash;0.50 hours per shell, a 1.8&times; spread. The waste is downstream.
+      The named decomp-lane ledger is out of scope under the
+      <code>prompt_tasker</code> filter — those 9 people hold
+      <code>decomp_prompt_tasker</code> and similar roles. But the waste they feed is
+      a pipeline cost that lands on every task in this document, so it stays.
     </p>
-    <div class="scroll">
-      <table class="dense">
-        <caption>All 9 decomp-lane contributors. Unit = shells advanced out of <code>needs_decomp</code>.</caption>
-        <thead>
-          <tr><th>Contributor</th><th class="num">$/h</th><th class="num">Hours</th><th class="num">Cost</th>
-              <th class="num">Shells</th><th class="num">Hours/shell</th><th class="num">$/shell</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Corey Schmidt</td><td class="num">200</td><td class="num">319</td><td class="num">63,771</td><td class="num">933</td><td class="num">0.34</td><td class="num">68</td></tr>
-          <tr><td>Pragyat Agrawal</td><td class="num">175</td><td class="num">267</td><td class="num">46,703</td><td class="num">957</td><td class="num">0.28</td><td class="num">49</td></tr>
-          <tr><td>Che Wang</td><td class="num">150</td><td class="num">214</td><td class="num">32,136</td><td class="num">681</td><td class="num">0.31</td><td class="num">47</td></tr>
-          <tr><td>Nicolas Herrerias</td><td class="num">175</td><td class="num">102</td><td class="num">17,887</td><td class="num">234</td><td class="num">0.44</td><td class="num">76</td></tr>
-          <tr><td>Andrew Holliday</td><td class="num">200</td><td class="num">89</td><td class="num">17,708</td><td class="num">185</td><td class="num">0.48</td><td class="num">96</td></tr>
-          <tr><td>Arjun Pathy</td><td class="num">150</td><td class="num">116</td><td class="num">17,427</td><td class="num">234</td><td class="num">0.50</td><td class="num">74</td></tr>
-          <tr><td>Megan Shuriah</td><td class="num">175</td><td class="num">94</td><td class="num">16,524</td><td class="num">289</td><td class="num">0.33</td><td class="num">57</td></tr>
-          <tr><td>Nimisha Mekala</td><td class="num">150</td><td class="num">104</td><td class="num">15,647</td><td class="num">353</td><td class="num">0.30</td><td class="num">44</td></tr>
-          <tr><td>Alec Tseung</td><td class="num">175</td><td class="num">74</td><td class="num">13,009</td><td class="num">173</td><td class="num">0.43</td><td class="num">75</td></tr>
-        </tbody>
-      </table>
-    </div>
     <div class="flag">
       <div class="hd">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
@@ -1194,111 +1200,119 @@
         <code>failed_*</code> states.
       </p>
       <p>
+        For context on the excluded lane: those 9 people cost $240,811 and are the
+        <strong>most consistent group on the project</strong> — 0.28 to 0.50 hours per
+        shell, a 1.8&times; spread. There is no individual performance problem
+        upstream; the waste is downstream cancellation.
         <strong>Do not add decomp headcount into a 60% funnel</strong> — you would buy
         more cancellations. Root-cause the 601 first.
       </p>
     </div>
   </section>
 
-  <!-- 08 -->
   <section>
-    <h2 id="zero"><span class="num">09</span>Zero output, named</h2>
+    <h2 id="zero"><span class="num">09</span>Zero output</h2>
     <p class="dek">
-      62 contributors at <code>tasking</code> stage delivered nothing in two months,
-      costing <strong>$107,255</strong>. The 23 with 5+ hours carry $96,660 — 90% of
-      the cost in a third of the people.
+      Restricted to <code>prompt_tasker</code>, this problem nearly disappears —
+      which is itself the finding.
     </p>
     <div class="scroll">
       <table class="dense">
-        <caption>Tasking-stage contributors, &ge;5 payable hours, zero tasks reaching audit.</caption>
+        <caption><code>prompt_tasker</code> accounts with &ge;5 payable hours and zero tasks reaching audit.</caption>
         <thead>
-          <tr><th>Contributor</th><th>Role</th><th class="num">$/h</th><th class="num">Days</th>
-              <th class="num">Hours</th><th class="num">h/day</th><th class="num">Cost</th>
-              <th class="num">Claims</th><th>What the data shows</th></tr>
+          <tr><th>Contributor</th><th class="num">$/h</th><th class="num">Days</th>
+              <th class="num">Hours</th><th class="num">Cost</th><th class="num">Claims</th></tr>
         </thead>
         <tbody>
-          <tr><td>Oliver Baverstam</td><td>beginner</td><td class="num">150</td><td class="num">19</td><td class="num">325.4</td><td class="num">17.1</td><td class="num">48,803</td><td class="num">2</td><td><span class="tag no">hours, almost no claims</span></td></tr>
-          <tr><td>Jefferson Herrera</td><td>beginner</td><td class="num">150</td><td class="num">16</td><td class="num">57.3</td><td class="num">3.6</td><td class="num">8,597</td><td class="num">6</td><td><span class="tag no">hours, almost no claims</span></td></tr>
-          <tr><td>Brian Feury</td><td>beginner</td><td class="num">150</td><td class="num">9</td><td class="num">29.3</td><td class="num">3.3</td><td class="num">4,395</td><td class="num">6</td><td><span class="tag no">hours, almost no claims</span></td></tr>
-          <tr><td>Wiley Davis</td><td>beginner</td><td class="num">150</td><td class="num">14</td><td class="num">27.6</td><td class="num">2.0</td><td class="num">4,147</td><td class="num">5</td><td><span class="tag no">hours, almost no claims</span></td></tr>
-          <tr><td>David Kogan</td><td>beginner</td><td class="num">150</td><td class="num">20</td><td class="num">26.6</td><td class="num">1.3</td><td class="num">3,989</td><td class="num">11</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Mike Zhao</td><td>beginner</td><td class="num">150</td><td class="num">31</td><td class="num">25.3</td><td class="num">0.8</td><td class="num">3,797</td><td class="num">2</td><td><span class="tag no">hours, almost no claims</span></td></tr>
-          <tr><td>Ana Fernández gomez</td><td>calibration_failed</td><td class="num">150</td><td class="num">9</td><td class="num">24.9</td><td class="num">2.8</td><td class="num">3,727</td><td class="num">12</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Yvan Nathanael Ngongang</td><td>prompt</td><td class="num">150</td><td class="num">7</td><td class="num">11.8</td><td class="num">1.7</td><td class="num">1,769</td><td class="num">8</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Lenny Griffith</td><td>beginner</td><td class="num">150</td><td class="num">4</td><td class="num">10.8</td><td class="num">2.7</td><td class="num">1,624</td><td class="num">12</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Jalen Gilmore</td><td>beginner</td><td class="num">150</td><td class="num">16</td><td class="num">10.4</td><td class="num">0.6</td><td class="num">1,556</td><td class="num">11</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Nate LaBombard</td><td>beginner</td><td class="num">150</td><td class="num">6</td><td class="num">10.3</td><td class="num">1.7</td><td class="num">1,553</td><td class="num">7</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Tim Marino</td><td>prompt</td><td class="num">150</td><td class="num">6</td><td class="num">8.2</td><td class="num">1.4</td><td class="num">1,224</td><td class="num">16</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Bastian Kneuse</td><td>beginner</td><td class="num">150</td><td class="num">7</td><td class="num">8.0</td><td class="num">1.1</td><td class="num">1,206</td><td class="num">7</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Troye Bullock</td><td>prompt</td><td class="num">150</td><td class="num">13</td><td class="num">8.0</td><td class="num">0.6</td><td class="num">1,203</td><td class="num">11</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Navjot Gill</td><td>beginner</td><td class="num">150</td><td class="num">6</td><td class="num">7.9</td><td class="num">1.3</td><td class="num">1,185</td><td class="num">9</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Yiming Ye</td><td>beginner</td><td class="num">150</td><td class="num">11</td><td class="num">7.8</td><td class="num">0.7</td><td class="num">1,176</td><td class="num">9</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Davit Hakobyan</td><td>prompt</td><td class="num">150</td><td class="num">7</td><td class="num">7.8</td><td class="num">1.1</td><td class="num">1,165</td><td class="num">11</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Ven Djukic</td><td>beginner</td><td class="num">150</td><td class="num">6</td><td class="num">7.1</td><td class="num">1.2</td><td class="num">1,067</td><td class="num">4</td><td>mostly non-task states</td></tr>
-          <tr><td>Justin Sullivan</td><td>beginner</td><td class="num">150</td><td class="num">7</td><td class="num">7.0</td><td class="num">1.0</td><td class="num">1,043</td><td class="num">5</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Aditi Agrawal</td><td>beginner</td><td class="num">150</td><td class="num">10</td><td class="num">6.8</td><td class="num">0.7</td><td class="num">1,016</td><td class="num">5</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Moby Sekenhamo</td><td>calibration_failed</td><td class="num">150</td><td class="num">5</td><td class="num">5.7</td><td class="num">1.1</td><td class="num">857</td><td class="num">2</td><td>mostly non-task states</td></tr>
-          <tr><td>Charlotte Ducommun</td><td>calibration_failed</td><td class="num">150</td><td class="num">4</td><td class="num">5.3</td><td class="num">1.3</td><td class="num">795</td><td class="num">4</td><td>worked tasks, none finished</td></tr>
-          <tr><td>Joon Lee</td><td>beginner</td><td class="num">150</td><td class="num">5</td><td class="num">5.1</td><td class="num">1.0</td><td class="num">767</td><td class="num">6</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Yvan Nathanael Ngongang</td><td class="num">150</td><td class="num">7</td><td class="num">11.8</td><td class="num">1,769</td><td class="num">8</td></tr>
+          <tr><td>Tim Marino</td><td class="num">150</td><td class="num">6</td><td class="num">8.2</td><td class="num">1,224</td><td class="num">16</td></tr>
+          <tr><td>Troye Bullock</td><td class="num">150</td><td class="num">13</td><td class="num">8.0</td><td class="num">1,203</td><td class="num">11</td></tr>
+          <tr><td>Davit Hakobyan</td><td class="num">150</td><td class="num">7</td><td class="num">7.8</td><td class="num">1,165</td><td class="num">11</td></tr>
         </tbody>
       </table>
     </div>
     <p style="margin-top:18px">
-      <strong>Oliver Baverstam is today's item:</strong> 325.4 hours over 19 days
-      — <strong>17.1 hours per active day</strong> — $48,803, with
-      <strong>2 claims and zero tasks</strong>. Nearly half this cohort's cost is one
-      person. Six others show the same shape (Jefferson Herrera, Brian Feury, Wiley
-      Davis, Mike Zhao and two more). <strong>Check for a permissions or routing bug
-      first</strong> — being <em>unable</em> to claim is indistinguishable in the data
-      from choosing not to. The remaining ~15 did work tasks and never finished one,
-      which reads as a ramp or routing problem rather than misconduct.
+      <strong>4 people, $5,361 — 1.0% of the cohort's labour.</strong> All four have
+      real claim activity (8&ndash;16 claims each), so they were working and simply
+      didn't finish anything in the window. That reads as ramp, not abuse.
     </p>
+    <div class="flag" style="border-left-color:var(--crit)">
+      <div class="hd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--crit)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/><line x1="12" y1="7.5" x2="12" y2="13"/><circle cx="12" cy="16.4" r="1.05" fill="var(--crit)" stroke="none"/>
+        </svg>
+        The $107,000 is an onboarding failure, not a tasker problem
+      </div>
+      <p>
+        Filtering by role relocates the zero-output money precisely.
+        <strong>57 <code>beginner_tasker</code> accounts cost $107,050 and produced
+        <em>2</em> tasks to audit between them.</strong> A further 15
+        <code>calibration_tasker</code> accounts cost $12,637 for zero, and 7
+        <code>calibration_failed</code> accounts cost $6,879 for zero.
+      </p>
+      <p>
+        That is <strong>~$126,500 sitting in pre-productive roles</strong>, against
+        $5,361 among actual prompt taskers. The single largest case —
+        <strong>Oliver Baverstam, 325.4 hours across 19 days ($48,803) with 2 claims
+        and zero tasks</strong> — is a <code>beginner_tasker</code>. Whatever is
+        happening there is happening in onboarding, before anyone reaches the
+        prompt-tasker role. That is where to look, and it is a different intervention
+        from anything else in this document.
+      </p>
+    </div>
   </section>
 
-  <!-- 09 -->
   <section>
     <h2 id="rates"><span class="num">10</span>Is the rate premium buying anything?</h2>
     <p class="dek">
-      Now measured on cost per task fully finished — the metric that actually drives
-      labour spend.
+      <code>prompt_tasker</code> only, on cost per task fully finished. Removing the
+      hybrid and reviewer roles empties the $210+ band entirely — everyone above $209
+      on this project carries a different role.
     </p>
     <div class="scroll">
       <table>
-        <caption>Prompt lane, contributors with &ge;10 tasks, grouped by pay rate.</caption>
+        <caption><code>prompt_tasker</code> contributors with &ge;10 tasks, grouped by pay rate.</caption>
         <thead>
           <tr><th>Rate band</th><th class="num">People</th><th class="num">Cost</th><th class="num">Tasks</th>
               <th class="num">$/finished task</th><th class="num">Median AHT</th><th class="num">Median FPY</th></tr>
         </thead>
         <tbody>
-          <tr class="hero"><td>$150&ndash;159</td><td class="num">29</td><td class="num">315,216</td>
-              <td class="num">1,264</td><td class="num"><strong>249</strong></td>
+          <tr><td>$150&ndash;159</td><td class="num">27</td><td class="num">292,819</td>
+              <td class="num">1,176</td><td class="num">249</td>
               <td class="num">1.62 h</td><td class="num">23.1%</td></tr>
-          <tr><td>$160&ndash;189</td><td class="num">6</td><td class="num">86,586</td>
-              <td class="num">328</td><td class="num">264</td><td class="num">1.49 h</td><td class="num">23.3%</td></tr>
+          <tr class="hero"><td>$160&ndash;189</td><td class="num">4</td><td class="num">57,211</td>
+              <td class="num">257</td><td class="num"><strong>223</strong></td>
+              <td class="num">1.38 h</td><td class="num">22.9%</td></tr>
           <tr><td>$190&ndash;209</td><td class="num">6</td><td class="num">151,988</td>
-              <td class="num">475</td><td class="num">320</td><td class="num">1.27 h</td><td class="num">20.0%</td></tr>
-          <tr><td>$210+</td><td class="num">2</td><td class="num">138,205</td>
-              <td class="num">333</td><td class="num">415</td><td class="num">2.40 h</td><td class="num">39.3%</td></tr>
+              <td class="num">475</td><td class="num"><strong>320</strong></td>
+              <td class="num">1.27 h</td><td class="num">20.0%</td></tr>
+          <tr class="void"><td>$210+</td><td class="num">0</td><td class="num">&mdash;</td>
+              <td class="num">&mdash;</td><td class="num">&mdash;</td>
+              <td class="num">&mdash;</td><td class="num">&mdash;</td></tr>
         </tbody>
       </table>
     </div>
     <p style="margin-top:18px">
-      <strong>Monotonic: every step up in rate costs more per finished task.</strong>
-      $249 &rarr; $264 &rarr; $320 &rarr; $415. The premium bands <em>are</em> modestly
-      faster in the middle (median AHT 1.27h at $190&ndash;209 versus 1.62h at $150),
-      but not nearly enough to offset the rate — a 21% speed gain against a 33% rate
-      increase. <strong>The premium does not pay for itself on throughput.</strong>
+      <strong>The $160&ndash;189 band is the best value on the project at $223 per
+      finished task</strong> — cheaper than the base band despite paying more, because
+      it is genuinely faster (1.38h median against 1.62h). That premium pays for
+      itself.
     </p>
     <p>
-      The one place it might be defensible is the $210+ band, where median FPY is
-      39.3% against 23.1% at the base rate. If that quality difference feeds
-      qualifying yield, it could be worth more than the labour premium costs — but
-      that link is unproven, because qualifying yield is not reproducible from the
-      database. <strong>Treat the premium bands as unjustified until someone can
-      measure that.</strong>
+      <strong>The $190&ndash;209 band does not.</strong> $320 per finished task —
+      <strong>29% above base and 44% above the $160&ndash;189 band</strong> — on
+      $151,988 across 6 people. They are the fastest group by median AHT (1.27h), but
+      not fast enough to cover a 33% rate premium, and they have the
+      <em>lowest</em> median FPY at 20.0%. On 475 tasks, paying them at the
+      $160&ndash;189 band's effective rate would have cost about
+      <strong>$46,000 less</strong>.
     </p>
-
-  <!-- 11 -->
+    <p style="font-size:.86rem;color:var(--muted)">
+      Caveat: the $190&ndash;209 band is 6 people, and Jared Minor alone ($200/hr,
+      6.64h, $41,187) accounts for much of it. Excluding him the band looks far
+      healthier — so treat this as &ldquo;review these six individually&rdquo;, not
+      &ldquo;cut the band&rdquo;.
+    </p>
   </section>
 
   <section>
@@ -1382,10 +1396,13 @@
               <td>Coaching. This is your task&nbsp;1.</td></tr>
           <tr><td>Everyone below 40% FPY up to 40%</td><td class="num">$121,729</td><td class="num">11%</td>
               <td>Realistic quality target.</td></tr>
-          <tr><td>Recover the 23 named zero-output people</td><td class="num">$96,660</td><td class="num">9%</td>
-              <td>Diagnose first — may be a platform bug.</td></tr>
-          <tr class="hero"><td>Fix the 5 slowest contributors to lane median</td><td class="num">~$96,000</td><td class="num">9%</td>
-              <td>Five conversations, and it lands on real labour cost.</td></tr>
+          
+          <tr class="hero"><td>Four slowest <code>prompt_tasker</code>s to cohort median</td><td class="num">~$56,000</td><td class="num">5%</td>
+              <td>Four conversations, landing on real labour cost.</td></tr>
+          <tr class="hero"><td>Fix the pre-productive-role spend</td><td class="num">~$126,500</td><td class="num">11%</td>
+              <td>Onboarding, not tasking. 57 beginner accounts produced 2 tasks.</td></tr>
+          <tr><td>Re-rate the $190&ndash;209 band</td><td class="num">~$46,000</td><td class="num">4%</td>
+              <td>Review six people individually; one of them dominates it.</td></tr>
           <tr><td>Everyone below p75 FPY up to p75</td><td class="num">$57,465</td><td class="num">5%</td>
               <td>Too timid a target to bother with alone.</td></tr>
           <tr><td>Stop the 601 cancelled shells</td><td class="num">$35,833</td><td class="num">3%</td>
@@ -1408,7 +1425,8 @@
     <ul class="plain">
       <li><strong>AHT is the right labour-cost metric — your instinct was correct.</strong> It correlates +0.970 with cost per finished task. Rank on it and message on it.</li>
       <li><strong>Track FPY too, but for cycle time and qualifying yield, not for labour cost</strong> (it correlates +0.013 with cost). Low FPY hurts you through reviewer load and the qualifying rate, which is where the contract margin lives.</li>
-      <li><strong>Rank outreach by cost, not by rate.</strong> The slowest people are the expensive ones: Jared Minor at $1,329/task, then Sophie Xiao, Joy Tokosi and Johnny Tran above $620 against a $249 lane average. The 23 named zero-output people carry $96,660.</li>
+      <li><strong>Rank outreach by cost, not by rate.</strong> Within <code>prompt_tasker</code> the expensive four are Jared Minor ($1,329/task), Joy Tokosi ($622), Johnny Tran ($621) and Mikel Pardo ($451) — $79,209 for 96 tasks, about <strong>$56,000 above</strong> what the cohort median would cost.</li>
+      <li><strong>Handle the pre-productive roles separately.</strong> ~$126,500 sits in <code>beginner_tasker</code>, <code>calibration_tasker</code> and <code>calibration_failed</code> accounts that produced almost nothing. That is an onboarding fix and it is larger than every prompt-tasker lever combined.</li>
       <li><strong>Chase the outlier tasks, not just the outlier people.</strong> 17% of tasks consume 46% of effort — see <a href="#pertask">section 06</a>. For people like Frank Collier and Artus Granier the median task is fine and a handful of disasters drags the average; that is triage-and-escalate, not retraining.</li>
       <li><strong>Give named targets:</strong> 1.61h AHT and 30%+ FPY for the prompt lane; 0.35h/shell for decomp. "Improve your AHT" moves nothing.</li>
       <li><strong>Use per-lane denominators.</strong> Decomp taskers must be measured per shell. Measuring them on tasks-to-audit is what produced my own wrong answer — see <a href="#corrections">section 13</a>.</li>
@@ -1455,7 +1473,7 @@
       <li><strong>Per-task cost is scaled, not directly measured.</strong> Claim-hold time is the only per-task signal available; it is capped at 12h/claim and scaled by 0.1347 to match total payable hours. The scaling reproduces the blended AHT to within 1%, but an individual task's figure carries real uncertainty — treat task-level numbers as indicative and contributor-level aggregates as solid.</li>
       <li><strong>I dropped "cost per clean task" as a headline.</strong> It counted only zero-redo tasks as output, which exaggerated differences between people. It survives nowhere in this document; cost per fully-finished task replaces it.</li>
       <li><strong>Qualifying yield comes from the Finance SSOT, not the database.</strong> There is no "qualifying" flag in the schema, so the most important metric here cannot be reproduced or audited from data.</li>
-      <li><strong>Lane assignment is inferred</strong> from where each person's claim time went, not their configured role — roles like <code>dec+pr</code> don't reliably indicate output unit. Someone straddling lanes is forced into one.</li>
+      <li><strong>Contributor sections use the configured role, not observed behaviour.</strong> <code>tsip_project_members.role</code> is single-valued (all 618 members have exactly one row), so no one was dropped for holding multiple roles. But the role is a <em>permissions label</em>, not a description of work: 39 people doing prompt-shaped work — $247,384, including the project's top producer — carry reviewer or beginner titles and are therefore excluded. Pipeline totals in sections 01&ndash;04 and 11&ndash;12 still cover everyone.</li>
       <li><strong>$464 is a floor.</strong> AI/compute untracked; internal ops labour barely booked.</li>
       <li><strong>Seed cost and task counts are period ratios, not cohort-matched.</strong> July's seeds are not July's audited tasks.</li>
       <li><strong>Everything is blended across task varieties</strong> — patch-based cannot be separated from greenfield.</li>
