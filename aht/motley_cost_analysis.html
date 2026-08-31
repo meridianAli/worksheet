@@ -1,0 +1,1223 @@
+<title>Motley Cost Analysis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --plane:#E9EEF2; --surface:#FCFDFE; --surface-2:#F2F6F9;
+    --ink:#0F171E; --ink-2:#495A68; --muted:#778896;
+    --grid:#DCE4EA; --axis:#C3CFD8; --ring:rgba(15,23,30,.11);
+    --s1:#0A6FA8; --s1-soft:#B9D6E7; --s2:#C2551F;
+    --t1:#0A6FA8; --t2:#3E8FC0; --t3:#6FAED4; --t4:#A0CCE5;
+    --crit:#D03B3B; --warn:#FAB219; --good:#0CA30C;
+    --crit-wash:rgba(208,59,59,.09);
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --plane:#0B0F13; --surface:#151B21; --surface-2:#1B232B;
+      --ink:#EEF3F7; --ink-2:#A8B8C4; --muted:#7E8F9C;
+      --grid:#25303A; --axis:#33414D; --ring:rgba(238,243,247,.13);
+      --s1:#3E9BD6; --s1-soft:#2A4657; --s2:#DC7440;
+      --t1:#3E9BD6; --t2:#2F7CAE; --t3:#245F86; --t4:#1B455F;
+      --crit:#D03B3B; --warn:#FAB219; --good:#0CA30C;
+      --crit-wash:rgba(208,59,59,.16);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --plane:#0B0F13; --surface:#151B21; --surface-2:#1B232B;
+    --ink:#EEF3F7; --ink-2:#A8B8C4; --muted:#7E8F9C;
+    --grid:#25303A; --axis:#33414D; --ring:rgba(238,243,247,.13);
+    --s1:#3E9BD6; --s1-soft:#2A4657; --s2:#DC7440;
+      --t1:#3E9BD6; --t2:#2F7CAE; --t3:#245F86; --t4:#1B455F;
+    --crit:#D03B3B; --warn:#FAB219; --good:#0CA30C;
+    --crit-wash:rgba(208,59,59,.16);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--plane); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:40px 24px 96px}
+
+  /* ---------- masthead ---------- */
+  .mast{
+    display:flex;flex-direction:column;gap:18px;
+    padding-bottom:26px;margin-bottom:34px;
+    border-bottom:2px solid var(--ink);
+  }
+  .eyebrow{
+    font-family:var(--cond);font-weight:600;font-size:12.5px;
+    letter-spacing:.13em;text-transform:uppercase;color:var(--s1);
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  }
+  .eyebrow .sep{color:var(--axis)}
+  .eyebrow .plain{color:var(--muted)}
+  h1{
+    font-family:var(--cond);font-weight:700;
+    font-size:clamp(2.1rem,5.6vw,3.4rem);line-height:1.03;
+    letter-spacing:-.018em;margin:0;text-wrap:balance;
+  }
+  .standfirst{
+    font-size:1.16rem;line-height:1.58;color:var(--ink-2);
+    max-width:64ch;margin:0;
+  }
+  .standfirst strong{color:var(--ink);font-weight:600}
+
+  /* ---------- verdict ---------- */
+  .verdict{
+    background:var(--surface);border:1px solid var(--ring);
+    border-left:4px solid var(--s1);border-radius:3px;
+    padding:26px 28px;margin-bottom:14px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:26px 30px;
+  }
+  .fig{display:flex;flex-direction:column;gap:5px}
+  .fig .k{
+    font-family:var(--cond);font-weight:600;font-size:11.5px;letter-spacing:.11em;
+    text-transform:uppercase;color:var(--muted);
+  }
+  .fig .v{
+    font-family:var(--cond);font-weight:700;font-size:2.35rem;line-height:1;
+    letter-spacing:-.02em;color:var(--ink);
+  }
+  .fig .v.accent{color:var(--s1)}
+  .fig .v.crit{color:var(--crit)}
+  .fig .u{font-size:.95rem;font-weight:500;color:var(--ink-2);font-family:var(--sans)}
+  .fig .n{font-size:.83rem;color:var(--muted);line-height:1.4}
+
+  /* ---------- sections ---------- */
+  section{margin-top:52px}
+  h2{
+    font-family:var(--cond);font-weight:700;font-size:1.62rem;
+    letter-spacing:-.012em;margin:0 0 6px;text-wrap:balance;
+  }
+  .dek{color:var(--ink-2);margin:0 0 22px;max-width:70ch;font-size:1.02rem}
+  h3{
+    font-family:var(--cond);font-weight:600;font-size:1.12rem;
+    margin:26px 0 8px;letter-spacing:-.005em;
+  }
+  p{max-width:70ch}
+  p+p{margin-top:.9em}
+
+  /* ---------- chart card ---------- */
+  figure{
+    margin:0;background:var(--surface);border:1px solid var(--ring);
+    border-radius:3px;padding:22px 20px 16px;
+  }
+  figure+figure{margin-top:18px}
+  .figtitle{
+    font-family:var(--cond);font-weight:600;font-size:1.02rem;
+    margin:0 0 3px;color:var(--ink);
+  }
+  .figsub{font-size:.86rem;color:var(--muted);margin:0 0 16px;max-width:74ch}
+  figcaption{
+    font-size:.83rem;color:var(--muted);margin-top:14px;
+    padding-top:12px;border-top:1px solid var(--grid);max-width:78ch;
+  }
+  .scroll{overflow-x:auto}
+  svg{display:block;width:100%;height:auto;min-width:520px}
+  .ax{font-family:var(--sans);font-size:11.5px;fill:var(--muted)}
+  .lbl{font-family:var(--sans);font-size:12.5px;fill:var(--ink-2)}
+  .lbl.on{fill:var(--ink);font-weight:600}
+  .val{font-family:var(--sans);font-size:12.5px;font-weight:600;fill:var(--ink)}
+  .val.dim{fill:var(--ink-2);font-weight:500}
+
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin:0 0 14px;padding:0;list-style:none}
+  .legend li{display:flex;align-items:center;gap:7px;font-size:.85rem;color:var(--ink-2)}
+  .swatch{width:11px;height:11px;border-radius:2px;flex:none}
+  .swatch.line{height:3px;width:16px;border-radius:2px}
+
+  /* ---------- table ---------- */
+  table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:560px}
+  table.dense{font-size:.79rem;min-width:840px}
+  table.dense th,table.dense td{padding:6px 8px}
+  table.dense tbody tr:hover td{background:var(--surface-2)}
+  caption{text-align:left;font-size:.83rem;color:var(--muted);padding-bottom:9px}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--grid)}
+  thead th{
+    font-family:var(--cond);font-weight:600;font-size:11.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--axis);
+  }
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tbody tr.hero td{background:var(--surface-2);font-weight:600;color:var(--ink)}
+  tbody tr.void td{color:var(--muted)}
+  .tag{
+    display:inline-block;font-family:var(--cond);font-weight:600;
+    font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    padding:2px 7px;border-radius:2px;white-space:nowrap;
+  }
+  .tag.use{background:var(--s1);color:#fff}
+  .tag.no{background:transparent;color:var(--crit);border:1px solid var(--crit)}
+  .tag.alt{background:transparent;color:var(--ink-2);border:1px solid var(--axis)}
+
+  /* ---------- callout ---------- */
+  .flag{
+    background:var(--surface);border:1px solid var(--ring);
+    border-left:4px solid var(--warn);border-radius:3px;
+    padding:20px 22px;margin:22px 0;
+  }
+  .flag .hd{
+    display:flex;align-items:center;gap:9px;margin-bottom:8px;
+    font-family:var(--cond);font-weight:700;font-size:1.04rem;color:var(--ink);
+  }
+  .flag .hd svg{width:18px;height:18px;flex:none;min-width:0}
+  .flag p{margin:0;font-size:.95rem;color:var(--ink-2);max-width:72ch}
+  .flag p+p{margin-top:.7em}
+  .flag strong{color:var(--ink)}
+
+  code{
+    font-family:var(--mono);font-size:.87em;
+    background:var(--surface-2);padding:1px 5px;border-radius:2px;
+    border:1px solid var(--grid);
+  }
+  .files{list-style:none;padding:0;margin:0;display:grid;gap:1px;background:var(--grid);border:1px solid var(--ring);border-radius:3px}
+  .files li{background:var(--surface);padding:14px 16px;display:grid;grid-template-columns:minmax(210px,auto) 1fr;gap:4px 20px;align-items:baseline}
+  .files .fn{font-family:var(--mono);font-size:.85rem;color:var(--s1);font-weight:500;word-break:break-all}
+  .files .fd{font-size:.9rem;color:var(--ink-2)}
+
+  ol.steps{padding-left:0;list-style:none;counter-reset:s;margin:0;display:grid;gap:14px}
+  ol.steps li{counter-increment:s;display:grid;grid-template-columns:26px 1fr;gap:14px;align-items:baseline}
+  ol.steps li::before{
+    content:counter(s);font-family:var(--cond);font-weight:700;font-size:.95rem;
+    color:var(--s1);border-bottom:2px solid var(--s1);text-align:center;
+  }
+  ol.steps p{margin:0;font-size:.96rem}
+
+  ul.plain{padding-left:0;list-style:none;margin:0;display:grid;gap:13px}
+  ul.plain li{padding-left:16px;position:relative;font-size:.96rem;max-width:72ch}
+  ul.plain li::before{
+    content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;
+    background:var(--axis);border-radius:1px;
+  }
+  ul.plain strong{color:var(--ink)}
+
+  nav.toc{background:var(--surface);border:1px solid var(--ring);border-radius:3px;padding:22px 24px;margin:30px 0 0}
+  nav.toc h2{font-size:1.02rem;margin:0 0 14px}
+  nav.toc ol{list-style:none;padding:0;margin:0;counter-reset:t;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:7px 26px}
+  nav.toc li{counter-increment:t;font-size:.9rem;display:grid;grid-template-columns:26px 1fr;gap:9px}
+  nav.toc li::before{content:counter(t,decimal-leading-zero);font-family:var(--cond);font-weight:600;
+    color:var(--muted);font-size:.8rem;padding-top:2px}
+  nav.toc a{color:var(--s1);text-decoration:none;border-bottom:1px solid transparent}
+  nav.toc a:hover,nav.toc a:focus-visible{border-bottom-color:var(--s1)}
+  h2 .num{font-family:var(--cond);color:var(--muted);font-weight:600;font-size:.8em;margin-right:10px}
+  .kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(146px,1fr));gap:20px 26px;
+    padding:22px 0;border-top:1px solid var(--grid);border-bottom:1px solid var(--grid);margin:26px 0}
+  .foot{
+    margin-top:60px;padding-top:20px;border-top:1px solid var(--axis);
+    font-size:.84rem;color:var(--muted);max-width:76ch;
+  }
+
+  #tip{
+    position:fixed;pointer-events:none;opacity:0;transition:opacity .1s;
+    background:var(--ink);color:var(--plane);font-size:12px;line-height:1.45;
+    padding:7px 10px;border-radius:3px;z-index:9;max-width:230px;
+    font-family:var(--sans);
+  }
+  #tip b{font-weight:600}
+  .hit{cursor:default}
+  .hit:focus-visible{outline:2px solid var(--s1);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  @media (max-width:560px){
+    .verdict{padding:20px}
+    .files li{grid-template-columns:1fr}
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div class="eyebrow">
+      <span>Cost analysis</span><span class="sep">/</span>
+      <span>Motley &middot; patch-based</span><span class="sep">/</span>
+      <span class="plain">tsip_prd + Finance SSOT &middot; 31 Aug 2026</span>
+    </div>
+    <h1>Motley cost analysis</h1>
+    <p class="standfirst">
+      Everything found across this investigation, in one place. Three findings drive
+      the rest: <strong>qualifying yield</strong> is the real cost lever, not AHT;
+      <strong>roughly half the labour bill is rework</strong>; and
+      <strong>ranking contributors on speed promotes the wrong people</strong>.
+      All figures verified live against production.
+    </p>
+  </header>
+
+  <div class="kpi">
+    <div class="fig"><span class="k">Contract</span><span class="v">$5.4M</span>
+      <span class="n">3,000 tasks &times; $1,800 &middot; 33% delivered</span></div>
+    <div class="fig"><span class="k">Cost / completed task</span><span class="v accent">$464</span>
+      <span class="n">$411 labour + $53 seeds</span></div>
+    <div class="fig"><span class="k">Cost / qualifying task</span><span class="v">$1,190</span>
+      <span class="n">at the recent 39% yield</span></div>
+    <div class="fig"><span class="k">Margin at $1,800</span><span class="v">33.9%</span>
+      <span class="n">$610 per qualifying task</span></div>
+    <div class="fig"><span class="k">Breakeven yield</span><span class="v crit">25.8%</span>
+      <span class="n">below this the contract loses money</span></div>
+  </div>
+  <p style="font-size:.86rem;color:var(--muted);margin:0;max-width:80ch">
+    Measurement window 1 Jul &ndash; 31 Aug 2026: 6,699 payable hours, $1,121,528
+    labour, 172 contributors, 2,726 tasks reaching <code>audit</code>, 7,716
+    attributed send-backs, 20,944 task claims.
+  </p>
+
+  <nav class="toc"><h2 style="border:0;padding:0">Contents</h2>
+    <ol>
+        <li><a href="#scope">What Motley is, and what can't be measured</a></li>
+        <li><a href="#yield">Contract economics: yield is the lever</a></li>
+        <li><a href="#stack">What a task costs: the loaded stack</a></li>
+        <li><a href="#rework">Rework: half the labour bill</a></li>
+        <li><a href="#people">Contributors: speed vs quality</a></li>
+        <li><a href="#prompt">The prompt-lane ledger</a></li>
+        <li><a href="#decomp">The decomp lane, and shell waste</a></li>
+        <li><a href="#zero">Zero output, named</a></li>
+        <li><a href="#rates">Is the rate premium buying anything?</a></li>
+        <li><a href="#gaming">Gaming signals</a></li>
+        <li><a href="#levers">The levers, sized</a></li>
+        <li><a href="#recs">Recommendations</a></li>
+        <li><a href="#corrections">Corrections I made along the way</a></li>
+        <li><a href="#distrust">What to distrust</a></li>
+        <li><a href="#repro">Reproducing this</a></li>
+    </ol>
+  </nav>
+
+  <!-- 01 -->
+  <section>
+    <h2 id="scope"><span class="num">01</span>What Motley is, and what can't be measured</h2>
+    <p class="dek">
+      Motley is not a project in the platform. It is the <strong>3,000-task
+      patch-based contract</strong>, delivered through the <code>sheets</code>
+      pipeline. "Patch-based" is a <em>task variety</em> inside that project; its
+      counterpart is "greenfield".
+    </p>
+    <p>
+      This matters because <strong>patch-based cannot be isolated in platform
+      data.</strong> Two independent reasons:
+    </p>
+    <ul class="plain">
+      <li><strong>Hours are project-grain, never task or variety grain.</strong>
+        <code>payable_time_revisions.task_type</code> — the one column that could carry
+        a variety — is populated on <strong>0 of 9,977</strong> rows.
+        <code>tsip_tasks.metadata</code> carries a variety marker on
+        <strong>0 of 8,058</strong> tasks. Patch-based and greenfield ran concurrently
+        with the same contributors, so their hours are commingled and unsplittable
+        even in principle.</li>
+      <li><strong>The only patch-based marker predates the hours data.</strong> It's a
+        legacy backfill of delivery ZIP filenames onto attempts
+        (<code>metadata-&gt;'tmp_deliveries'</code>, matching <code>patchbased</code>),
+        covering 3,050 tasks delivered to Meta 2026-02-09 &rarr; 2026-06-15. Sheets
+        payable-hours data effectively begins 2026-07. <strong>Zero months carry
+        both.</strong> The Feb&ndash;Jun work was paid off-platform via the ops claim
+        sheet. Greenfield has no marker at all.</li>
+    </ul>
+    <p>
+      So <strong>every figure in this document is the <code>sheets</code> pipeline —
+      Motley's delivery vehicle — blended across varieties.</strong> The strongest
+      evidence that this is the right basis: ops' own Finance SSOT independently
+      reports $354/task and $957&ndash;$1,500 per qualifying task; this analysis gets
+      $464 and $1,190 from completely different inputs.
+    </p>
+    <p>
+      One knock-on worth knowing: the <strong>2026-08-19 Google DeepMind batch</strong>
+      contains 1,900 tasks of which <strong>1,721 were already delivered to Meta</strong>
+      between February and June. That is existing inventory monetised a second time at
+      near-zero marginal labour. Never divide a period's labour by a delivery count
+      that includes resold tasks.
+    </p>
+  </section>
+
+  <!-- 02 -->
+  <section>
+    <h2 id="yield"><span class="num">02</span>Contract economics: yield is the lever</h2>
+    <p class="dek">
+      Revenue is paid per <strong>qualifying</strong> task, and only 36&ndash;54%
+      qualify. Unit cost is therefore
+      <code>cost per completed task &divide; yield</code> — yield is a
+      <em>divisor</em>, which is why it swamps everything else on this page.
+    </p>
+    <figure>
+      <p class="figtitle">Margin per task vs qualifying yield, at the $1,800 contract price</p>
+      <p class="figsub">
+        Cost per completed task held at $464. The shaded band is where yield has
+        actually run in the last week.
+      </p>
+      <div class="scroll">
+        <svg viewBox="0 0 760 350" role="img" aria-label="Margin rises steeply with qualifying yield: minus 28.9 percent at 20 percent yield, breakeven at 25.8 percent, 14.1 percent at 30, 33.9 percent at 39, 52.3 percent at 54, and 63.2 percent at 70 percent yield.">
+          <!-- recent-actual band 36-54% -->
+          <rect x="246" y="34" width="198" height="242" fill="var(--s1)" opacity=".07"/>
+          <text x="345" y="30" class="ax" text-anchor="middle" fill="var(--s1)" style="font-weight:600">recent actuals 36–54%</text>
+          <!-- grid -->
+          <g stroke="var(--grid)" stroke-width="1">
+            <line x1="70" y1="63.5" x2="740" y2="63.5"/><line x1="70" y1="116.7" x2="740" y2="116.7"/>
+            <line x1="70" y1="248.7" x2="740" y2="248.7"/>
+          </g>
+          <g class="ax" text-anchor="end">
+            <text x="62" y="67">+80%</text><text x="62" y="120">+40%</text>
+            <text x="62" y="197">0</text><text x="62" y="252">−40%</text>
+          </g>
+          <!-- zero line -->
+          <line x1="70" y1="193.3" x2="740" y2="193.3" stroke="var(--axis)" stroke-width="1.5"/>
+          <!-- breakeven marker -->
+          <line x1="133.8" y1="34" x2="133.8" y2="290" stroke="var(--crit)" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <text x="139" y="46" class="ax" fill="var(--crit)" style="font-weight:600">breakeven 25.8%</text>
+          <!-- the curve -->
+          <polyline points="70,248.7 133.8,193.1 180,166.3 246,142.7 279,128.3 345,111.5 444,93.1 510,84.1 620,72.2 730,63.5"
+            fill="none" stroke="var(--s1)" stroke-width="2.5" stroke-linejoin="round"/>
+          <!-- marked actuals -->
+          <g stroke="var(--surface)" stroke-width="2">
+            <circle cx="133.8" cy="193.1" r="5" fill="var(--crit)"/>
+            <circle cx="246" cy="142.7" r="5" fill="var(--s1)"/>
+            <circle cx="279" cy="128.3" r="5.5" fill="var(--s1)"/>
+            <circle cx="444" cy="93.1" r="5" fill="var(--s1)"/>
+          </g>
+          <text x="286" y="122" class="val" fill="var(--s1)">39% → +33.9%</text>
+          <text x="452" y="87" class="val" fill="var(--s1)">54% → +52.3%</text>
+          <text x="252" y="160" class="ax" fill="var(--muted)">36% → +28.4%</text>
+          <g class="ax" text-anchor="middle">
+            <text x="70" y="306">20%</text><text x="180" y="306">30%</text>
+            <text x="290" y="306">40%</text><text x="400" y="306">50%</text>
+            <text x="510" y="306">60%</text><text x="620" y="306">70%</text><text x="730" y="306">80%</text>
+            <text x="400" y="330" style="font-size:11px;letter-spacing:.06em">QUALIFYING YIELD</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption>
+        Ops' own SSOT figures reconcile with this independently: they report
+        $354/task and $957&ndash;$1,500 per qualifying task across two weeks; the
+        model gives $464 and $1,190 at 39%. Two different methods, same answer —
+        which is the strongest evidence here that the cost basis is right.
+      </figcaption>
+    </figure>
+    <div class="flag" style="border-left-color:var(--crit)">
+      <div class="hd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--crit)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/><line x1="12" y1="7.5" x2="12" y2="13"/><circle cx="12" cy="16.4" r="1.05" fill="var(--crit)" stroke="none"/>
+        </svg>
+        The number to put on a wall: 25.8%
+      </div>
+      <p>
+        Below <strong>25.8% qualifying yield</strong> Motley is underwater at contract
+        price. Recent readings: 54% (8/26), 36% (8/27), 39% (8/28). The working range
+        sits only 10&ndash;28 points above the cliff, so one bad week takes it within
+        10 points. Moving yield from 36% to 54% is worth more than eliminating rework
+        entirely. <strong>This is the single metric worth a daily alert</strong>, and
+        it is not currently reproducible from the database — see
+        <a href="#distrust">what to distrust</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section>
+    <h2 id="stack"><span class="num">03</span>What a task costs: the loaded stack</h2>
+    <p class="dek">
+      Per task reaching <code>audit</code>. <code>audit</code> = done, which is both
+      your instruction and canonical in sheets ground truth.
+    </p>
+    <figure>
+      <p class="figtitle">Cost per completed task by pipeline stage</p>
+      <p class="figsub">
+        Rework alone is $214 — more than the build and the outline combined.
+        Seeds (copper) are paid piece-rate in a separate acquisition project.
+      </p>
+      <ul class="legend">
+        <li><span class="swatch" style="background:var(--s1)"></span>Contributor labour, by stage</li>
+        <li><span class="swatch" style="background:var(--s2)"></span>Seed acquisition (piece-rate)</li>
+      </ul>
+      <div class="scroll">
+        <svg viewBox="0 0 760 330" role="img" aria-label="Cost per completed task by stage: redo 214 dollars, edit task 79, decomp 72, seed acquisition 53, calibration 27, unallocated 8, human review 7, failure states 4.">
+          <g stroke="var(--grid)" stroke-width="1">
+            <line x1="339" y1="24" x2="339" y2="292"/><line x1="458" y1="24" x2="458" y2="292"/>
+            <line x1="577" y1="24" x2="577" y2="292"/><line x1="696" y1="24" x2="696" y2="292"/>
+          </g>
+          <line x1="220" y1="24" x2="220" y2="292" stroke="var(--axis)" stroke-width="1.5"/>
+
+          <text x="208" y="43" class="lbl on" text-anchor="end">Redo (rework loop)</text>
+          <path class="hit" d="M220 30 H726 Q730 30 730 34 V42 Q730 46 726 46 H220 Z" fill="var(--s1)"
+            data-tip="<b>Redo — $214/task</b>$583,214 · 52% of labour · 3,460 allocated hours<br>6,472 redo events at ~$90 each" tabindex="0"/>
+          <text x="738" y="43" class="val">$214</text>
+
+          <text x="208" y="75" class="lbl" text-anchor="end">Edit task (build sheet)</text>
+          <path class="hit" d="M220 62 H404 Q408 62 408 66 V74 Q408 78 404 78 H220 Z" fill="var(--s1)" opacity=".78"
+            data-tip="<b>Edit task — $79/task</b>$215,858 · 19% of labour<br>The actual first build of the workbook." tabindex="0"/>
+          <text x="416" y="75" class="val dim">$79</text>
+
+          <text x="208" y="107" class="lbl" text-anchor="end">Decomp (author outline)</text>
+          <path class="hit" d="M220 94 H388 Q392 94 392 98 V106 Q392 110 388 110 H220 Z" fill="var(--s1)" opacity=".62"
+            data-tip="<b>Decomp — $72/task</b>$195,645 · 17% of labour<br>Task creation: authoring the outline/shell." tabindex="0"/>
+          <text x="400" y="107" class="val dim">$72</text>
+
+          <text x="208" y="139" class="lbl" text-anchor="end">Seed acquisition</text>
+          <path class="hit" d="M220 126 H342 Q346 126 346 130 V138 Q346 142 342 142 H220 Z" fill="var(--s2)"
+            data-tip="<b>Seed acquisition — $53/task</b>$144,006 net, piece-rate in sheets-artifact-collection<br>Excluded from the labour figure entirely." tabindex="0"/>
+          <text x="354" y="139" class="val dim">$53</text>
+
+          <text x="208" y="171" class="lbl" text-anchor="end">Calibration / onboarding</text>
+          <path class="hit" d="M220 158 H280 Q284 158 284 162 V170 Q284 174 280 174 H220 Z" fill="var(--s1)" opacity=".46"
+            data-tip="<b>Calibration / onboarding — $27/task</b>$73,635 · 7% of labour<br>Ramp cost carried by delivered tasks." tabindex="0"/>
+          <text x="292" y="171" class="val dim">$27</text>
+
+          <text x="208" y="203" class="lbl" text-anchor="end">Unallocated</text>
+          <path class="hit" d="M220 190 H235 Q239 190 239 194 V202 Q239 206 235 206 H220 Z" fill="var(--s1)" opacity=".34"
+            data-tip="<b>Unallocated — $8/task</b>Hours with no overlapping claim, so no stage could be inferred." tabindex="0"/>
+          <text x="247" y="203" class="val dim">$8</text>
+
+          <text x="208" y="235" class="lbl" text-anchor="end">Human review</text>
+          <path class="hit" d="M220 222 H233 Q237 222 237 226 V234 Q237 238 233 238 H220 Z" fill="var(--s1)" opacity=".34"
+            data-tip="<b>Human review — $7/task</b>$18,977 · 2% of labour.<br>Review is already cheap and already fast (median 0.17h in state)." tabindex="0"/>
+          <text x="245" y="235" class="val dim">$7</text>
+
+          <text x="208" y="267" class="lbl" text-anchor="end">Failure / retry states</text>
+          <path class="hit" d="M220 254 H227 Q231 254 231 258 V266 Q231 270 227 270 H220 Z" fill="var(--s1)" opacity=".34"
+            data-tip="<b>Failure / retry — $4/task</b>$11,432. Cheap in labour, but these states sit for days (see cycle time)." tabindex="0"/>
+          <text x="239" y="267" class="val dim">$4</text>
+
+          <g class="ax" text-anchor="middle">
+            <text x="220" y="310">$0</text><text x="339" y="310">$50</text><text x="458" y="310">$100</text>
+            <text x="577" y="310">$150</text><text x="696" y="310">$200</text>
+            <text x="470" y="326" style="font-size:11px;letter-spacing:.06em">USD PER COMPLETED TASK</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption>
+        <strong>Automated gates cost essentially nothing</strong> — $7 total across
+        <code>rubric_eval</code>, <code>review_gate</code> and
+        <code>initial_rubric_eval</code>, and they clear in under 0.2h. The expensive
+        parts are all human. That matters for the auto-review plan below.
+      </figcaption>
+    </figure>
+    <div class="flag">
+      <div class="hd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <path d="M12 3 L22 20 H2 Z"/><line x1="12" y1="9.5" x2="12" y2="14.5"/><circle cx="12" cy="17.4" r="1.05" fill="var(--warn)" stroke="none"/>
+        </svg>
+        Two cost buckets are missing entirely
+      </div>
+      <p>
+        <strong>AI / compute is not tracked anywhere.</strong>
+        <code>tsip_ai_spend_events</code> has <strong>0 rows, all time</strong>. Every
+        model call — rubric generation, prompt generation, SOTA eval, auto-review — is
+        invisible. So $464 is a <em>floor</em>.
+      </p>
+      <p>
+        <strong>Internal ops labour is barely booked</strong> — 5 rows, $254 across two
+        months, which cannot be the real figure for SDL and pod-lead time. Both gaps
+        mean the true loaded cost is higher than anything here.
+      </p>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section>
+    <h2 id="rework"><span class="num">04</span>Rework: half the labour bill</h2>
+    <p class="dek">
+      Only <strong>23.7%</strong> of tasks reach audit without a redo. 6,472 redo
+      events at roughly $90 each. Rework is simultaneously the cost problem
+      <em>and</em> the cycle-time problem, which is why it is the highest-leverage
+      operational fix.
+    </p>
+    <figure>
+      <p class="figtitle">Task share and cycle time by redo count</p>
+      <p class="figsub">
+        Two panels, two units. Top: share of tasks. Bottom: median days from first
+        <code>edit_task</code> to <code>audit</code>.
+      </p>
+      <div class="scroll">
+        <svg viewBox="0 0 760 400" role="img" aria-label="Top panel, share of tasks by redo count: 23.7 percent with zero redos, 23.3 with one, 17.9 with two, 20.1 with three to four, 12.9 with five to nine, 2.0 with ten or more. Bottom panel, median days from edit to audit: 1.0, 1.5, 1.9, 2.8, 4.1 and 9.1 days respectively.">
+          <text x="60" y="22" class="ax" fill="var(--s1)" style="font-weight:600;letter-spacing:.06em">SHARE OF TASKS REACHING AUDIT</text>
+          <line x1="60" y1="150" x2="740" y2="150" stroke="var(--axis)" stroke-width="1.5"/>
+          <line x1="60" y1="30" x2="740" y2="30" stroke="var(--grid)" stroke-width="1"/>
+          <text x="52" y="34" class="ax" text-anchor="end">25%</text><text x="52" y="154" class="ax" text-anchor="end">0</text>
+
+          <path class="hit" d="M96.7 40.2 Q96.7 36.2 100.7 36.2 H132.7 Q136.7 36.2 136.7 40.2 V150 H96.7 Z" fill="var(--s1)"
+            data-tip="<b>0 redos — first pass</b>657 tasks · 23.7%<br>median 1.0 day edit→audit" tabindex="0"/>
+          <text x="116.7" y="30" class="val" text-anchor="middle">23.7%</text>
+          <path class="hit" d="M210 42.2 Q210 38.2 214 38.2 H246 Q250 38.2 250 42.2 V150 H210 Z" fill="var(--s1)" opacity=".8"
+            data-tip="<b>1 redo</b>646 tasks · 23.3%<br>median 1.5 days" tabindex="0"/>
+          <text x="230" y="32" class="val dim" text-anchor="middle">23.3%</text>
+          <path class="hit" d="M323.3 68.1 Q323.3 64.1 327.3 64.1 H359.3 Q363.3 64.1 363.3 68.1 V150 H323.3 Z" fill="var(--s1)" opacity=".8"
+            data-tip="<b>2 redos</b>496 tasks · 17.9%<br>median 1.9 days" tabindex="0"/>
+          <text x="343.3" y="58" class="val dim" text-anchor="middle">17.9%</text>
+          <path class="hit" d="M436.7 57.5 Q436.7 53.5 440.7 53.5 H472.7 Q476.7 53.5 476.7 57.5 V150 H436.7 Z" fill="var(--s1)" opacity=".8"
+            data-tip="<b>3–4 redos</b>557 tasks · 20.1% · 1,885 redo events<br>median 2.8 days" tabindex="0"/>
+          <text x="456.7" y="47" class="val dim" text-anchor="middle">20.1%</text>
+          <path class="hit" d="M550 88.1 Q550 84.1 554 84.1 H586 Q590 84.1 590 88.1 V150 H550 Z" fill="var(--s2)"
+            data-tip="<b>5–9 redos</b>357 tasks · 12.9% · 2,229 redo events<br>median 4.1 days" tabindex="0"/>
+          <text x="570" y="78" class="val dim" text-anchor="middle">12.9%</text>
+          <path class="hit" d="M663.3 136.4 Q663.3 132.4 667.3 132.4 H699.3 Q703.3 132.4 703.3 136.4 V150 H663.3 Z" fill="var(--s2)"
+            data-tip="<b>10+ redos</b>55 tasks · 2.0% · 720 redo events<br>median 9.1 days — 9x the first-pass task" tabindex="0"/>
+          <text x="683.3" y="126" class="val dim" text-anchor="middle">2.0%</text>
+
+          <text x="60" y="192" class="ax" fill="var(--s2)" style="font-weight:600;letter-spacing:.06em">MEDIAN DAYS, FIRST EDIT → AUDIT</text>
+          <line x1="60" y1="320" x2="740" y2="320" stroke="var(--axis)" stroke-width="1.5"/>
+          <line x1="60" y1="200" x2="740" y2="200" stroke="var(--grid)" stroke-width="1"/>
+          <text x="52" y="204" class="ax" text-anchor="end">10d</text><text x="52" y="324" class="ax" text-anchor="end">0</text>
+
+          <path d="M96.7 308 H136.7 V320 H96.7 Z" fill="var(--s2)" opacity=".55"/>
+          <text x="116.7" y="302" class="ax" text-anchor="middle" fill="var(--s2)">1.0</text>
+          <path d="M210 302 H250 V320 H210 Z" fill="var(--s2)" opacity=".55"/>
+          <text x="230" y="296" class="ax" text-anchor="middle" fill="var(--s2)">1.5</text>
+          <path d="M323.3 297.2 H363.3 V320 H323.3 Z" fill="var(--s2)" opacity=".55"/>
+          <text x="343.3" y="291" class="ax" text-anchor="middle" fill="var(--s2)">1.9</text>
+          <path d="M436.7 286.4 H476.7 V320 H436.7 Z" fill="var(--s2)" opacity=".7"/>
+          <text x="456.7" y="280" class="ax" text-anchor="middle" fill="var(--s2)">2.8</text>
+          <path d="M550 270.8 H590 V320 H550 Z" fill="var(--s2)"/>
+          <text x="570" y="264" class="ax" text-anchor="middle" fill="var(--s2)">4.1</text>
+          <path d="M663.3 210.8 Q663.3 206.8 667.3 206.8 H699.3 Q703.3 206.8 703.3 210.8 V320 H663.3 Z" fill="var(--s2)"/>
+          <text x="683.3" y="200" class="val" text-anchor="middle" fill="var(--s2)">9.1</text>
+
+          <g class="ax" text-anchor="middle">
+            <text x="116.7" y="344">0 redos</text><text x="230" y="344">1</text><text x="343.3" y="344">2</text>
+            <text x="456.7" y="344">3–4</text><text x="570" y="344">5–9</text><text x="683.3" y="344">10+</text>
+            <text x="400" y="368" style="font-size:11px;letter-spacing:.06em">REDO COUNT PER TASK</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption>
+        The tail is where the money is: <strong>412 tasks (14.9%) carry 2,949 redo
+        events — 46% of all rework, about $266k.</strong> Capping every task at 2
+        redos would avoid 2,896 events, roughly <strong>$261k</strong> (23% of
+        labour). A hard redo limit with escalation is a config change, not a
+        research project.
+      </figcaption>
+    </figure>
+    <p>
+      <strong>92% of send-backs are self-fixed</strong> (7,071 of 7,716) and only 6%
+      are handed to someone else. Rework returns to the person who caused it — so
+      quality coaching lands on the right people, and there is no hidden population
+      of contributors silently absorbing others' mistakes.
+    </p>
+  </section>
+
+  <!-- 05 -->
+  <section>
+    <h2 id="people"><span class="num">05</span>Contributors: speed vs quality</h2>
+    <p class="dek">
+      <strong>First-pass yield (FPY)</strong> = share of a person's delivered tasks
+      that needed zero redos. It is close to independent of speed — which is why
+      ranking on AHT alone is actively misleading.
+    </p>
+    <div class="scroll">
+      <table>
+        <caption>Same rate, same job, opposite economics. The core finding.</caption>
+        <thead>
+          <tr><th>Contributor</th><th class="num">Rate</th><th class="num">AHT</th><th class="num">FPY</th>
+              <th class="num">Redos/task</th><th class="num">Send-backs caused</th>
+              <th class="num">$/task</th><th class="num">$/clean task</th></tr>
+        </thead>
+        <tbody>
+          <tr class="hero"><td>Luke Adams</td><td class="num">$150</td><td class="num">0.85 h</td>
+            <td class="num">63.6%</td><td class="num">1.05</td><td class="num">19</td>
+            <td class="num">$128</td><td class="num"><strong>$201</strong></td></tr>
+          <tr><td>Sutton Zhang</td><td class="num">$150</td><td class="num">0.97 h</td>
+            <td class="num">4.1%</td><td class="num">3.03</td><td class="num">378</td>
+            <td class="num">$146</td><td class="num"><strong>$3,572</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Sutton is a <strong>top-five performer on AHT</strong> (0.97h against a 1.61h
+      median) and second-worst on quality — 4 of 98 delivered tasks came through
+      clean, and 378 send-backs caused. <strong>17.7&times; more expensive per clean
+      task than Luke</strong>, who is faster <em>and</em> cleaner. Rank on AHT and you
+      will hold Sutton up as the model.
+    </p>
+    <figure>
+      <p class="figtitle">Speed vs quality, every rateable contributor</p>
+      <p class="figsub">
+        Bubble size = labour cost. Green = clean, copper = high rework, blue = middle.
+        Hover any bubble for the full record.
+      </p>
+      <ul class="legend">
+        <li><span class="swatch" style="background:var(--good)"></span>High first-pass yield</li>
+        <li><span class="swatch" style="background:var(--s2)"></span>High rework</li>
+        <li><span class="swatch" style="background:var(--s1);opacity:.55"></span>Middle</li>
+        <li><span class="swatch" style="background:transparent;border:1px solid var(--axis);width:16px;height:16px;border-radius:50%"></span>size = cost</li>
+      </ul>
+      <div class="scroll">
+        <svg viewBox="0 0 760 470" role="img" aria-label="Scatter of contributor first-pass yield against average handle time. Luke Adams sits top-left with 0.85 hours and 63.6 percent yield. Sutton Zhang sits bottom-left, similarly fast at 0.97 hours but only 4.1 percent yield. Melvan Hoo Jun Hong is at 7.7 percent, David Hua 11.6 percent. Jared Minor is far right at 6.64 hours. There is no visible relationship between speed and quality.">
+          <!-- quadrant shading -->
+          <rect x="70" y="60" width="151.8" height="227.8" fill="var(--good)" opacity=".05"/>
+          <rect x="70" y="287.8" width="151.8" height="112.2" fill="var(--crit)" opacity=".05"/>
+          <g stroke="var(--grid)" stroke-width="1">
+            <line x1="70" y1="60" x2="730" y2="60"/><line x1="70" y1="157.1" x2="730" y2="157.1"/>
+            <line x1="70" y1="254.3" x2="730" y2="254.3"/><line x1="70" y1="351.4" x2="730" y2="351.4"/>
+          </g>
+          <g class="ax" text-anchor="end">
+            <text x="62" y="64">70%</text><text x="62" y="161">50%</text>
+            <text x="62" y="258">30%</text><text x="62" y="355">10%</text><text x="62" y="404">0</text>
+          </g>
+          <line x1="70" y1="400" x2="730" y2="400" stroke="var(--axis)" stroke-width="1.5"/>
+          <line x1="70" y1="60" x2="70" y2="400" stroke="var(--axis)" stroke-width="1.5"/>
+          <!-- medians -->
+          <line x1="221.8" y1="52" x2="221.8" y2="406" stroke="var(--ink)" stroke-width="1.2" stroke-dasharray="4 3" opacity=".55"/>
+          <text x="226" y="50" class="ax" style="font-weight:600">median AHT 1.61h</text>
+          <line x1="70" y1="287.8" x2="730" y2="287.8" stroke="var(--ink)" stroke-width="1.2" stroke-dasharray="4 3" opacity=".55"/>
+          <text x="734" y="291" class="ax" text-anchor="end" style="font-weight:600" transform="translate(0,-14)">median FPY 23.1%</text>
+          <text x="80" y="76" class="ax" fill="var(--good)" style="font-weight:600">FAST &amp; CLEAN — clone these</text>
+          <text x="80" y="394" class="ax" fill="var(--crit)" style="font-weight:600">FAST &amp; BOUNCY — the trap</text>
+          <circle class="hit" cx="240.6" cy="256.2" r="10.3" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Jalaj Garg</b>$220/h · 284 tasks · $107,221<br>AHT 1.81h · FPY 29.6% · 1.39 redos/task<br>$1,276 per clean task" tabindex="0"/>
+          <circle class="hit" cx="181.7" cy="343.7" r="6.2" fill="var(--s2)" opacity="1" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>David Hua</b>$200/h · 86 tasks · $20,371<br>AHT 1.18h · FPY 11.6% · 3.51 redos/task<br>$2,037 per clean task" tabindex="0"/>
+          <circle class="hit" cx="189.8" cy="246.0" r="5.0" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Mia Chamoun</b>$150/h · 41 tasks · $7,816<br>AHT 1.27h · FPY 31.7% · 2.10 redos/task<br>$601 per clean task" tabindex="0"/>
+          <circle class="hit" cx="253.9" cy="336.9" r="6.2" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Ran Meshulam</b>$150/h · 69 tasks · $20,188<br>AHT 1.95h · FPY 13.0% · 2.62 redos/task<br>$2,243 per clean task" tabindex="0"/>
+          <circle class="hit" cx="194.4" cy="328.1" r="5.5" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Diego Inaki Pardo de Orellana</b>$175/h · 54 tasks · $12,473<br>AHT 1.32h · FPY 14.8% · 3.13 redos/task<br>$1,559 per clean task" tabindex="0"/>
+          <circle class="hit" cx="314.8" cy="144.5" r="4.9" fill="var(--good)" opacity="1" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Jack Colyar</b>$150/h · 19 tasks · $7,400<br>AHT 2.60h · FPY 52.6% · 1.00 redos/task<br>$740 per clean task" tabindex="0"/>
+          <circle class="hit" cx="269.0" cy="351.4" r="4.3" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Marc Levy</b>$150/h · 10 tasks · $3,167<br>AHT 2.11h · FPY 10.0% · 2.90 redos/task<br>$3,167 per clean task" tabindex="0"/>
+          <circle class="hit" cx="237.6" cy="254.3" r="4.1" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Jack Sorensen</b>$150/h · 10 tasks · $2,668<br>AHT 1.78h · FPY 30.0% · 2.20 redos/task<br>$889 per clean task" tabindex="0"/>
+          <circle class="hit" cx="175.5" cy="315.5" r="5.7" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Ali Mallick</b>$150/h · 86 tasks · $14,435<br>AHT 1.12h · FPY 17.4% · 3.23 redos/task<br>$962 per clean task" tabindex="0"/>
+          <circle class="hit" cx="169.3" cy="244.6" r="4.4" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Yui Cheong Richards Chang</b>$150/h · 25 tasks · $3,950<br>AHT 1.05h · FPY 32.0% · 1.68 redos/task<br>$494 per clean task" tabindex="0"/>
+          <circle class="hit" cx="181.7" cy="272.3" r="5.2" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Artus Granier</b>$150/h · 57 tasks · $10,132<br>AHT 1.19h · FPY 26.3% · 2.37 redos/task<br>$675 per clean task" tabindex="0"/>
+          <circle class="hit" cx="222.3" cy="316.5" r="5.8" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Frank Collier</b>$150/h · 64 tasks · $15,505<br>AHT 1.62h · FPY 17.2% · 2.13 redos/task<br>$1,410 per clean task" tabindex="0"/>
+          <circle class="hit" cx="214.6" cy="282.5" r="4.9" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Will Briley</b>$150/h · 33 tasks · $7,590<br>AHT 1.53h · FPY 24.2% · 2.03 redos/task<br>$949 per clean task" tabindex="0"/>
+          <circle class="hit" cx="696.4" cy="274.7" r="7.5" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Jared Minor</b>$200/h · 31 tasks · $41,187<br>AHT 6.64h · FPY 25.8% · 2.52 redos/task<br>$5,148 per clean task" tabindex="0"/>
+          <circle class="hit" cx="460.1" cy="315.5" r="5.7" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Johnny Tran</b>$150/h · 23 tasks · $14,276<br>AHT 4.14h · FPY 17.4% · 2.70 redos/task<br>$3,569 per clean task" tabindex="0"/>
+          <circle class="hit" cx="201.9" cy="301.4" r="5.7" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Alexander Koblansky</b>$150/h · 69 tasks · $14,476<br>AHT 1.40h · FPY 20.3% · 2.48 redos/task<br>$1,034 per clean task" tabindex="0"/>
+          <circle class="hit" cx="147.6" cy="316.0" r="4.8" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Spencer Dumas</b>$150/h · 52 tasks · $6,422<br>AHT 0.82h · FPY 17.3% · 2.15 redos/task<br>$714 per clean task" tabindex="0"/>
+          <circle class="hit" cx="252.0" cy="263.0" r="5.4" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Daniel Zalevsky</b>$150/h · 39 tasks · $11,294<br>AHT 1.93h · FPY 28.2% · 1.92 redos/task<br>$1,027 per clean task" tabindex="0"/>
+          <circle class="hit" cx="215.3" cy="285.9" r="4.5" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Diogo Pires</b>$175/h · 17 tasks · $4,584<br>AHT 1.54h · FPY 23.5% · 2.18 redos/task<br>$1,146 per clean task" tabindex="0"/>
+          <circle class="hit" cx="184.2" cy="244.1" r="7.2" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>John Wang</b>$175/h · 168 tasks · $35,600<br>AHT 1.21h · FPY 32.1% · 2.05 redos/task<br>$659 per clean task" tabindex="0"/>
+          <circle class="hit" cx="149.1" cy="300.9" r="5.0" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Spencer Howe</b>$200/h · 49 tasks · $8,219<br>AHT 0.84h · FPY 20.4% · 1.71 redos/task<br>$822 per clean task" tabindex="0"/>
+          <circle class="hit" cx="353.3" cy="270.3" r="4.8" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Mikel Pardo</b>$150/h · 15 tasks · $6,761<br>AHT 3.00h · FPY 26.7% · 2.33 redos/task<br>$1,690 per clean task" tabindex="0"/>
+          <circle class="hit" cx="274.6" cy="287.8" r="5.0" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Andy Deng</b>$150/h · 26 tasks · $8,464<br>AHT 2.17h · FPY 23.1% · 3.46 redos/task<br>$1,411 per clean task" tabindex="0"/>
+          <circle class="hit" cx="150.5" cy="91.1" r="4.2" fill="var(--good)" opacity="1" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Luke Adams</b>$150/h · 22 tasks · $2,818<br>AHT 0.85h · FPY 63.6% · 1.05 redos/task<br>$201 per clean task" tabindex="0"/>
+          <circle class="hit" cx="183.5" cy="270.3" r="4.6" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Ariya Savla</b>$150/h · 30 tasks · $5,418<br>AHT 1.20h · FPY 26.7% · 2.23 redos/task<br>$677 per clean task" tabindex="0"/>
+          <circle class="hit" cx="329.2" cy="262.5" r="6.3" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Alex Moon</b>$150/h · 53 tasks · $21,856<br>AHT 2.75h · FPY 28.3% · 1.64 redos/task<br>$1,457 per clean task" tabindex="0"/>
+          <circle class="hit" cx="352.4" cy="162.0" r="6.9" fill="var(--good)" opacity="1" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Sophie Xiao</b>$220/h · 49 tasks · $30,984<br>AHT 2.99h · FPY 49.0% · 0.90 redos/task<br>$1,291 per clean task" tabindex="0"/>
+          <circle class="hit" cx="230.6" cy="256.2" r="6.0" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Siddhant Kumbhat</b>$150/h · 71 tasks · $18,141<br>AHT 1.70h · FPY 29.6% · 1.63 redos/task<br>$864 per clean task" tabindex="0"/>
+          <circle class="hit" cx="334.5" cy="257.7" r="6.6" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Charlotte Laure FRANCOIS</b>$165/h · 58 tasks · $25,867<br>AHT 2.81h · FPY 29.3% · 2.10 redos/task<br>$1,522 per clean task" tabindex="0"/>
+          <circle class="hit" cx="173.4" cy="304.3" r="6.9" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Elliot Saye</b>$200/h · 142 tasks · $31,158<br>AHT 1.10h · FPY 19.7% · 2.42 redos/task<br>$1,113 per clean task" tabindex="0"/>
+          <circle class="hit" cx="198.5" cy="354.3" r="5.3" fill="var(--s2)" opacity="1" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Ethan Ohana</b>$150/h · 53 tasks · $10,835<br>AHT 1.36h · FPY 9.4% · 2.43 redos/task<br>$2,167 per clean task" tabindex="0"/>
+          <circle class="hit" cx="217.2" cy="255.7" r="5.1" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Pravit Kochar</b>$150/h · 37 tasks · $8,666<br>AHT 1.56h · FPY 29.7% · 2.14 redos/task<br>$788 per clean task" tabindex="0"/>
+          <circle class="hit" cx="187.3" cy="157.1" r="4.1" fill="var(--good)" opacity="1" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Aditya Vora</b>$150/h · 14 tasks · $2,612<br>AHT 1.24h · FPY 50.0% · 0.71 redos/task<br>$373 per clean task" tabindex="0"/>
+          <circle class="hit" cx="197.6" cy="258.2" r="6.4" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Alex Fey</b>$200/h · 89 tasks · $24,081<br>AHT 1.35h · FPY 29.2% · 2.20 redos/task<br>$926 per clean task" tabindex="0"/>
+          <circle class="hit" cx="460.8" cy="382.0" r="5.9" fill="var(--s2)" opacity="1" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Joy Tokosi</b>$150/h · 27 tasks · $16,785<br>AHT 4.14h · FPY 3.7% · 2.48 redos/task<br>$16,785 per clean task" tabindex="0"/>
+          <circle class="hit" cx="233.0" cy="362.6" r="6.6" fill="var(--s2)" opacity="1" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Melvan Hoo Jun Hong</b>$200/h · 78 tasks · $26,972<br>AHT 1.73h · FPY 7.7% · 4.37 redos/task<br>$4,495 per clean task" tabindex="0"/>
+          <circle class="hit" cx="257.2" cy="346.1" r="4.6" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Tyler Collingbourne</b>$150/h · 18 tasks · $5,361<br>AHT 1.99h · FPY 11.1% · 2.89 redos/task<br>$2,680 per clean task" tabindex="0"/>
+          <circle class="hit" cx="233.3" cy="308.2" r="6.4" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Charles Mack</b>$150/h · 90 tasks · $23,387<br>AHT 1.73h · FPY 18.9% · 3.70 redos/task<br>$1,376 per clean task" tabindex="0"/>
+          <circle class="hit" cx="161.6" cy="380.1" r="5.7" fill="var(--s2)" opacity="1" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Sutton Zhang</b>$150/h · 98 tasks · $14,288<br>AHT 0.97h · FPY 4.1% · 3.03 redos/task<br>$3,572 per clean task" tabindex="0"/>
+          <circle class="hit" cx="206.3" cy="292.2" r="4.5" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Francisco Cerqueira</b>$175/h · 18 tasks · $4,554<br>AHT 1.45h · FPY 22.2% · 2.39 redos/task<br>$1,139 per clean task" tabindex="0"/>
+          <circle class="hit" cx="221.6" cy="312.6" r="5.4" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Liam Tuohy</b>$150/h · 50 tasks · $12,060<br>AHT 1.61h · FPY 18.0% · 3.62 redos/task<br>$1,340 per clean task" tabindex="0"/>
+          <circle class="hit" cx="215.3" cy="287.8" r="4.3" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Manan Bhalerao</b>$175/h · 13 tasks · $3,508<br>AHT 1.54h · FPY 23.1% · 3.46 redos/task<br>$1,169 per clean task" tabindex="0"/>
+          <circle class="hit" cx="254.1" cy="307.7" r="6.0" fill="var(--s1)" opacity=".55" stroke="var(--surface)" stroke-width="1.5" data-tip="<b>Elliott Nederhood</b>$150/h · 63 tasks · $18,448<br>AHT 1.95h · FPY 19.0% · 2.27 redos/task<br>$1,537 per clean task" tabindex="0"/>
+          <text x="240.6" y="240.2" class="ax" text-anchor="middle" style="font-weight:600" fill="var(--ink)">Jalaj G.</text>
+          <text x="175.7" y="359.7" class="ax" text-anchor="middle" style="font-weight:600" fill="var(--ink)">David H.</text>
+          <text x="692.4" y="260.7" class="ax" text-anchor="middle" style="font-weight:600" fill="var(--ink)">Jared M.</text>
+          <text x="147.6" y="332.0" class="ax" text-anchor="middle" style="font-weight:600" fill="var(--ink)">Spencer D.</text>
+          <text x="150.5" y="77.1" class="ax" text-anchor="middle" style="font-weight:600" fill="var(--ink)">Luke A.</text>
+          <text x="352.4" y="148.0" class="ax" text-anchor="middle" style="font-weight:600" fill="var(--ink)">Sophie X.</text>
+          <text x="187.3" y="144.1" class="ax" text-anchor="middle" style="font-weight:600" fill="var(--ink)">Aditya V.</text>
+          <text x="460.8" y="402.0" class="ax" text-anchor="middle" style="font-weight:600" fill="var(--ink)">Joy T.</text>
+          <text x="233.0" y="382.6" class="ax" text-anchor="middle" style="font-weight:600" fill="var(--ink)">Melvan H.</text>
+          <text x="161.6" y="400.1" class="ax" text-anchor="middle" style="font-weight:600" fill="var(--ink)">Sutton Z.</text>
+          <g class="ax" text-anchor="middle">
+            <text x="70" y="424">0h</text><text x="164.3" y="424">1h</text><text x="258.6" y="424">2h</text>
+            <text x="352.9" y="424">3h</text><text x="447.1" y="424">4h</text><text x="541.4" y="424">5h</text>
+            <text x="635.7" y="424">6h</text><text x="730" y="424">7h+</text>
+            <text x="400" y="448" style="font-size:11px;letter-spacing:.06em">AVERAGE HANDLE TIME &middot; PAYABLE HOURS PER TASK TO AUDIT</text>
+            <text x="20" y="230" style="font-size:11px;letter-spacing:.06em" transform="rotate(-90 20 230)">FIRST-PASS YIELD</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption>
+        The cloud is essentially flat — <strong>knowing someone's AHT tells you
+        almost nothing about their quality.</strong> The bottom-left quadrant is the
+        expensive one: fast work that keeps coming back. Note Jalaj Garg (the big
+        bubble at 1.81h / 29.6%) is above median on both — the largest single cost
+        on the project, but not a performance problem.
+      </figcaption>
+    </figure>
+    <figure>
+      <p class="figtitle">AHT distribution across rateable contributors</p>
+      <p class="figsub">People per band. Copper = above the p75 of 2.79h.</p>
+      <div class="scroll">
+        <svg viewBox="0 0 760 270" role="img" aria-label="Contributor count by AHT band: 4 people under 1 hour, 17 at 1 to 1.5 hours, 17 at 1.5 to 2, 10 at 2 to 3, 6 at 3 to 5, and 6 above 5 hours.">
+          <g stroke="var(--grid)" stroke-width="1">
+            <line x1="60" y1="50" x2="740" y2="50"/><line x1="60" y1="125" x2="740" y2="125"/>
+          </g>
+          <g class="ax" text-anchor="end">
+            <text x="52" y="54">18</text><text x="52" y="129">9</text><text x="52" y="204">0</text>
+          </g>
+          <line x1="60" y1="200" x2="740" y2="200" stroke="var(--axis)" stroke-width="1.5"/>
+          <path class="hit" d="M96.7 170.7 Q96.7 166.7 100.7 166.7 H132.7 Q136.7 166.7 136.7 170.7 V200 H96.7 Z" fill="var(--s1)"
+            data-tip="<b>Under 1h</b>4 people · 221 tasks · $31,748<br>The benchmark cohort." tabindex="0"/>
+          <text x="116.7" y="160" class="val" text-anchor="middle">4</text>
+          <path class="hit" d="M210 62.3 Q210 58.3 214 58.3 H246 Q250 58.3 250 62.3 V200 H210 Z" fill="var(--s1)"
+            data-tip="<b>1–1.5h</b>17 people · 951 tasks · $201,763" tabindex="0"/>
+          <text x="230" y="52" class="val" text-anchor="middle">17</text>
+          <path class="hit" d="M323.3 62.3 Q323.3 58.3 327.3 58.3 H359.3 Q363.3 58.3 363.3 62.3 V200 H323.3 Z" fill="var(--s1)"
+            data-tip="<b>1.5–2h</b>17 people · 954 tasks · $290,457<br>Median (1.74h) sits in this band." tabindex="0"/>
+          <text x="343.3" y="52" class="val" text-anchor="middle">17</text>
+          <path class="hit" d="M436.7 116.7 Q436.7 112.7 440.7 112.7 H472.7 Q476.7 112.7 476.7 116.7 V200 H436.7 Z" fill="var(--s1)" opacity=".7"
+            data-tip="<b>2–3h</b>10 people · 318 tasks · $135,911" tabindex="0"/>
+          <text x="456.7" y="106" class="val dim" text-anchor="middle">10</text>
+          <path class="hit" d="M550 150 Q550 146 554 146 H586 Q590 146 590 150 V200 H550 Z" fill="var(--s2)"
+            data-tip="<b>3–5h</b>6 people · 168 tasks · $99,491<br>Above p75 — coachable." tabindex="0"/>
+          <text x="570" y="140" class="val dim" text-anchor="middle">6</text>
+          <path class="hit" d="M663.3 150 Q663.3 146 667.3 146 H699.3 Q703.3 146 703.3 150 V200 H663.3 Z" fill="var(--s2)"
+            data-tip="<b>Over 5h</b>6 people · only 71 tasks · $156,390<br>$2,203 per task — 5x the blended rate." tabindex="0"/>
+          <text x="683.3" y="140" class="val dim" text-anchor="middle">6</text>
+          <line x1="352" y1="44" x2="352" y2="206" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text x="358" y="42" class="ax" style="font-weight:600">median 1.74h</text>
+          <g class="ax" text-anchor="middle">
+            <text x="116.7" y="224">&lt;1h</text><text x="230" y="224">1–1.5h</text><text x="343.3" y="224">1.5–2h</text>
+            <text x="456.7" y="224">2–3h</text><text x="570" y="224">3–5h</text><text x="683.3" y="224">5h+</text>
+            <text x="400" y="248" style="font-size:11px;letter-spacing:.06em">AHT BAND · PAYABLE HOURS PER TASK TO AUDIT</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption>
+        The 12 people above p75 hold <strong>239 tasks and $255,881</strong>. Moving
+        everyone above median to the median would cut roughly
+        <strong>$244k</strong> (22% of labour) — comparable to the rework lever, and
+        it is exactly the "retro on their AHTs and communicate" already in the SSOT.
+        Output is also concentrated: the top 20 producers deliver 66% of tasks on
+        44% of cost.
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- 06 -->
+  <section>
+    <h2 id="prompt"><span class="num">06</span>The prompt-lane ledger</h2>
+    <p class="dek">
+      105 people, $796,294. Ranked by <strong>cost per clean task</strong> — the one
+      column that captures speed and quality together. Read it as a quality-weighted
+      ranking, not a literal unit cost.
+    </p>
+    <div class="scroll">
+      <table class="dense">
+        <caption>Prompt-lane contributors with &ge;10 tasks to audit and &ge;3 clean. Best to worst.</caption>
+        <thead>
+          <tr><th class="num">#</th><th>Contributor</th><th class="num">$/h</th><th class="num">Hours</th>
+              <th class="num">Cost</th><th class="num">Tasks</th><th class="num">AHT</th><th class="num">$/task</th>
+              <th class="num">FPY %</th><th class="num">Redos/tk</th><th class="num">$/clean</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr class="hero"><td class="num">1</td><td>Luke Adams</td><td class="num">150</td><td class="num">19</td><td class="num">2,818</td><td class="num">22</td><td class="num">0.85</td><td class="num">128</td><td class="num">63.6</td><td class="num">1.05</td><td class="num"><strong>201</strong></td><td><span class="tag use">benchmark</span></td></tr>
+          <tr class="hero"><td class="num">2</td><td>Aditya Vora</td><td class="num">150</td><td class="num">17</td><td class="num">2,612</td><td class="num">14</td><td class="num">1.24</td><td class="num">187</td><td class="num">50.0</td><td class="num">0.71</td><td class="num"><strong>373</strong></td><td><span class="tag use">benchmark</span></td></tr>
+          <tr class="hero"><td class="num">3</td><td>Yui Cheong Richards Chang</td><td class="num">150</td><td class="num">26</td><td class="num">3,950</td><td class="num">25</td><td class="num">1.05</td><td class="num">158</td><td class="num">32.0</td><td class="num">1.68</td><td class="num"><strong>494</strong></td><td><span class="tag use">benchmark</span></td></tr>
+          <tr><td class="num">4</td><td>Mia Chamoun</td><td class="num">150</td><td class="num">52</td><td class="num">7,816</td><td class="num">41</td><td class="num">1.27</td><td class="num">191</td><td class="num">31.7</td><td class="num">2.10</td><td class="num"><strong>601</strong></td><td></td></tr>
+          <tr><td class="num">5</td><td>John Wang</td><td class="num">175</td><td class="num">203</td><td class="num">35,600</td><td class="num">168</td><td class="num">1.21</td><td class="num">212</td><td class="num">32.1</td><td class="num">2.05</td><td class="num"><strong>659</strong></td><td></td></tr>
+          <tr><td class="num">6</td><td>Artus Granier</td><td class="num">150</td><td class="num">68</td><td class="num">10,132</td><td class="num">57</td><td class="num">1.19</td><td class="num">178</td><td class="num">26.3</td><td class="num">2.37</td><td class="num"><strong>675</strong></td><td></td></tr>
+          <tr><td class="num">7</td><td>Ariya Savla</td><td class="num">150</td><td class="num">36</td><td class="num">5,418</td><td class="num">30</td><td class="num">1.20</td><td class="num">181</td><td class="num">26.7</td><td class="num">2.23</td><td class="num"><strong>677</strong></td><td></td></tr>
+          <tr><td class="num">8</td><td>Spencer Dumas</td><td class="num">150</td><td class="num">43</td><td class="num">6,422</td><td class="num">52</td><td class="num">0.82</td><td class="num">124</td><td class="num">17.3</td><td class="num">2.15</td><td class="num"><strong>714</strong></td><td></td></tr>
+          <tr><td class="num">9</td><td>Jack Colyar</td><td class="num">150</td><td class="num">49</td><td class="num">7,400</td><td class="num">19</td><td class="num">2.60</td><td class="num">389</td><td class="num">52.6</td><td class="num">1.00</td><td class="num"><strong>740</strong></td><td></td></tr>
+          <tr><td class="num">10</td><td>Pravit Kochar</td><td class="num">150</td><td class="num">58</td><td class="num">8,666</td><td class="num">37</td><td class="num">1.56</td><td class="num">234</td><td class="num">29.7</td><td class="num">2.14</td><td class="num"><strong>788</strong></td><td></td></tr>
+          <tr><td class="num">11</td><td>Spencer Howe</td><td class="num">200</td><td class="num">41</td><td class="num">8,219</td><td class="num">49</td><td class="num">0.84</td><td class="num">168</td><td class="num">20.4</td><td class="num">1.71</td><td class="num"><strong>822</strong></td><td></td></tr>
+          <tr><td class="num">12</td><td>Siddhant Kumbhat</td><td class="num">150</td><td class="num">121</td><td class="num">18,141</td><td class="num">71</td><td class="num">1.70</td><td class="num">256</td><td class="num">29.6</td><td class="num">1.63</td><td class="num"><strong>864</strong></td><td></td></tr>
+          <tr><td class="num">13</td><td>Jack Sorensen</td><td class="num">150</td><td class="num">18</td><td class="num">2,668</td><td class="num">10</td><td class="num">1.78</td><td class="num">267</td><td class="num">30.0</td><td class="num">2.20</td><td class="num"><strong>889</strong></td><td></td></tr>
+          <tr><td class="num">14</td><td>Alex Fey</td><td class="num">200</td><td class="num">120</td><td class="num">24,081</td><td class="num">89</td><td class="num">1.35</td><td class="num">271</td><td class="num">29.2</td><td class="num">2.20</td><td class="num"><strong>926</strong></td><td></td></tr>
+          <tr><td class="num">15</td><td>Will Briley</td><td class="num">150</td><td class="num">51</td><td class="num">7,590</td><td class="num">33</td><td class="num">1.53</td><td class="num">230</td><td class="num">24.2</td><td class="num">2.03</td><td class="num"><strong>949</strong></td><td></td></tr>
+          <tr><td class="num">16</td><td>Ali Mallick</td><td class="num">150</td><td class="num">96</td><td class="num">14,435</td><td class="num">86</td><td class="num">1.12</td><td class="num">168</td><td class="num">17.4</td><td class="num">3.23</td><td class="num"><strong>962</strong></td><td></td></tr>
+          <tr><td class="num">17</td><td>Daniel Zalevsky</td><td class="num">150</td><td class="num">75</td><td class="num">11,294</td><td class="num">39</td><td class="num">1.93</td><td class="num">290</td><td class="num">28.2</td><td class="num">1.92</td><td class="num"><strong>1,027</strong></td><td></td></tr>
+          <tr><td class="num">18</td><td>Alexander Koblansky</td><td class="num">150</td><td class="num">96</td><td class="num">14,476</td><td class="num">69</td><td class="num">1.40</td><td class="num">210</td><td class="num">20.3</td><td class="num">2.48</td><td class="num"><strong>1,034</strong></td><td></td></tr>
+          <tr><td class="num">19</td><td>Elliot Saye</td><td class="num">200</td><td class="num">156</td><td class="num">31,158</td><td class="num">142</td><td class="num">1.10</td><td class="num">219</td><td class="num">19.7</td><td class="num">2.42</td><td class="num"><strong>1,113</strong></td><td></td></tr>
+          <tr><td class="num">20</td><td>Francisco Cerqueira</td><td class="num">175</td><td class="num">26</td><td class="num">4,554</td><td class="num">18</td><td class="num">1.45</td><td class="num">253</td><td class="num">22.2</td><td class="num">2.39</td><td class="num"><strong>1,139</strong></td><td></td></tr>
+          <tr><td class="num">21</td><td>Diogo Pires</td><td class="num">175</td><td class="num">26</td><td class="num">4,584</td><td class="num">17</td><td class="num">1.54</td><td class="num">270</td><td class="num">23.5</td><td class="num">2.18</td><td class="num"><strong>1,146</strong></td><td></td></tr>
+          <tr><td class="num">22</td><td>Manan Bhalerao</td><td class="num">175</td><td class="num">20</td><td class="num">3,508</td><td class="num">13</td><td class="num">1.54</td><td class="num">270</td><td class="num">23.1</td><td class="num">3.46</td><td class="num"><strong>1,169</strong></td><td></td></tr>
+          <tr><td class="num">23</td><td>Jalaj Garg</td><td class="num">220</td><td class="num">514</td><td class="num">107,221</td><td class="num">284</td><td class="num">1.81</td><td class="num">378</td><td class="num">29.6</td><td class="num">1.39</td><td class="num"><strong>1,276</strong></td><td></td></tr>
+          <tr><td class="num">24</td><td>Sophie Xiao</td><td class="num">220</td><td class="num">147</td><td class="num">30,984</td><td class="num">49</td><td class="num">2.99</td><td class="num">632</td><td class="num">49.0</td><td class="num">0.90</td><td class="num"><strong>1,291</strong></td><td></td></tr>
+          <tr><td class="num">25</td><td>Liam Tuohy</td><td class="num">150</td><td class="num">80</td><td class="num">12,060</td><td class="num">50</td><td class="num">1.61</td><td class="num">241</td><td class="num">18.0</td><td class="num">3.62</td><td class="num"><strong>1,340</strong></td><td></td></tr>
+          <tr><td class="num">26</td><td>Charles Mack</td><td class="num">150</td><td class="num">156</td><td class="num">23,387</td><td class="num">90</td><td class="num">1.73</td><td class="num">260</td><td class="num">18.9</td><td class="num">3.70</td><td class="num"><strong>1,376</strong></td><td></td></tr>
+          <tr><td class="num">27</td><td>Frank Collier</td><td class="num">150</td><td class="num">103</td><td class="num">15,505</td><td class="num">64</td><td class="num">1.62</td><td class="num">242</td><td class="num">17.2</td><td class="num">2.13</td><td class="num"><strong>1,410</strong></td><td></td></tr>
+          <tr><td class="num">28</td><td>Andy Deng</td><td class="num">150</td><td class="num">56</td><td class="num">8,464</td><td class="num">26</td><td class="num">2.17</td><td class="num">326</td><td class="num">23.1</td><td class="num">3.46</td><td class="num"><strong>1,411</strong></td><td></td></tr>
+          <tr><td class="num">29</td><td>Alex Moon</td><td class="num">150</td><td class="num">146</td><td class="num">21,856</td><td class="num">53</td><td class="num">2.75</td><td class="num">412</td><td class="num">28.3</td><td class="num">1.64</td><td class="num"><strong>1,457</strong></td><td></td></tr>
+          <tr><td class="num">30</td><td>Charlotte Laure FRANCOIS</td><td class="num">165</td><td class="num">163</td><td class="num">25,867</td><td class="num">58</td><td class="num">2.81</td><td class="num">446</td><td class="num">29.3</td><td class="num">2.10</td><td class="num"><strong>1,522</strong></td><td></td></tr>
+          <tr><td class="num">31</td><td>Elliott Nederhood</td><td class="num">150</td><td class="num">123</td><td class="num">18,448</td><td class="num">63</td><td class="num">1.95</td><td class="num">293</td><td class="num">19.0</td><td class="num">2.27</td><td class="num"><strong>1,537</strong></td><td></td></tr>
+          <tr><td class="num">32</td><td>Diego Inaki Pardo de Orellana</td><td class="num">175</td><td class="num">71</td><td class="num">12,473</td><td class="num">54</td><td class="num">1.32</td><td class="num">231</td><td class="num">14.8</td><td class="num">3.13</td><td class="num"><strong>1,559</strong></td><td></td></tr>
+          <tr><td class="num">33</td><td>Mikel Pardo</td><td class="num">150</td><td class="num">45</td><td class="num">6,761</td><td class="num">15</td><td class="num">3.00</td><td class="num">451</td><td class="num">26.7</td><td class="num">2.33</td><td class="num"><strong>1,690</strong></td><td></td></tr>
+          <tr><td class="num">34</td><td>David Hua</td><td class="num">200</td><td class="num">102</td><td class="num">20,371</td><td class="num">86</td><td class="num">1.18</td><td class="num">237</td><td class="num">11.6</td><td class="num">3.51</td><td class="num"><strong>2,037</strong></td><td><span class="tag no">costly</span></td></tr>
+          <tr><td class="num">35</td><td>Ethan Ohana</td><td class="num">150</td><td class="num">72</td><td class="num">10,835</td><td class="num">53</td><td class="num">1.36</td><td class="num">204</td><td class="num">9.4</td><td class="num">2.43</td><td class="num"><strong>2,167</strong></td><td><span class="tag no">costly</span></td></tr>
+          <tr><td class="num">36</td><td>Ran Meshulam</td><td class="num">150</td><td class="num">135</td><td class="num">20,188</td><td class="num">69</td><td class="num">1.95</td><td class="num">293</td><td class="num">13.0</td><td class="num">2.62</td><td class="num"><strong>2,243</strong></td><td><span class="tag no">costly</span></td></tr>
+          <tr><td class="num">37</td><td>Johnny Tran</td><td class="num">150</td><td class="num">95</td><td class="num">14,276</td><td class="num">23</td><td class="num">4.14</td><td class="num">621</td><td class="num">17.4</td><td class="num">2.70</td><td class="num"><strong>3,569</strong></td><td><span class="tag no">costly</span></td></tr>
+          <tr><td class="num">38</td><td>Sutton Zhang</td><td class="num">150</td><td class="num">95</td><td class="num">14,288</td><td class="num">98</td><td class="num">0.97</td><td class="num">146</td><td class="num">4.1</td><td class="num">3.03</td><td class="num"><strong>3,572</strong></td><td><span class="tag no">costly</span></td></tr>
+          <tr><td class="num">39</td><td>Melvan Hoo Jun Hong</td><td class="num">200</td><td class="num">135</td><td class="num">26,972</td><td class="num">78</td><td class="num">1.73</td><td class="num">346</td><td class="num">7.7</td><td class="num">4.37</td><td class="num"><strong>4,495</strong></td><td><span class="tag no">costly</span></td></tr>
+          <tr><td class="num">40</td><td>Jared Minor</td><td class="num">200</td><td class="num">206</td><td class="num">41,187</td><td class="num">31</td><td class="num">6.64</td><td class="num">1,329</td><td class="num">25.8</td><td class="num">2.52</td><td class="num"><strong>5,148</strong></td><td><span class="tag no">costly</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:18px">
+      <strong>The five worst on quality carry $69,868 of avoidable rework</strong>
+      between them, measured against Luke's 1.05 redos/task — 6.2% of the entire
+      labour bill in five people:
+      Melvan Hoo Jun Hong (259 excess redos &asymp; $23,306),
+      David Hua (212 &asymp; $19,040), Sutton Zhang (194 &asymp; $17,464),
+      Ethan Ohana (73 &asymp; $6,583), Joy Tokosi (39 &asymp; $3,475).
+      <strong>Two of the five are on $200/hr.</strong>
+    </p>
+  </section>
+
+  <!-- 07 -->
+  <section>
+    <h2 id="decomp"><span class="num">07</span>The decomp lane, and shell waste</h2>
+    <p class="dek">
+      9 people, $240,811, measured per <strong>shell</strong> authored. There is no
+      individual performance problem in this lane — the whole group sits inside
+      0.28&ndash;0.50 hours per shell, a 1.8&times; spread. The waste is downstream.
+    </p>
+    <div class="scroll">
+      <table class="dense">
+        <caption>All 9 decomp-lane contributors. Unit = shells advanced out of <code>needs_decomp</code>.</caption>
+        <thead>
+          <tr><th>Contributor</th><th class="num">$/h</th><th class="num">Hours</th><th class="num">Cost</th>
+              <th class="num">Shells</th><th class="num">Hours/shell</th><th class="num">$/shell</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Corey Schmidt</td><td class="num">200</td><td class="num">319</td><td class="num">63,771</td><td class="num">933</td><td class="num">0.34</td><td class="num">68</td></tr>
+          <tr><td>Pragyat Agrawal</td><td class="num">175</td><td class="num">267</td><td class="num">46,703</td><td class="num">957</td><td class="num">0.28</td><td class="num">49</td></tr>
+          <tr><td>Che Wang</td><td class="num">150</td><td class="num">214</td><td class="num">32,136</td><td class="num">681</td><td class="num">0.31</td><td class="num">47</td></tr>
+          <tr><td>Nicolas Herrerias</td><td class="num">175</td><td class="num">102</td><td class="num">17,887</td><td class="num">234</td><td class="num">0.44</td><td class="num">76</td></tr>
+          <tr><td>Andrew Holliday</td><td class="num">200</td><td class="num">89</td><td class="num">17,708</td><td class="num">185</td><td class="num">0.48</td><td class="num">96</td></tr>
+          <tr><td>Arjun Pathy</td><td class="num">150</td><td class="num">116</td><td class="num">17,427</td><td class="num">234</td><td class="num">0.50</td><td class="num">74</td></tr>
+          <tr><td>Megan Shuriah</td><td class="num">175</td><td class="num">94</td><td class="num">16,524</td><td class="num">289</td><td class="num">0.33</td><td class="num">57</td></tr>
+          <tr><td>Nimisha Mekala</td><td class="num">150</td><td class="num">104</td><td class="num">15,647</td><td class="num">353</td><td class="num">0.30</td><td class="num">44</td></tr>
+          <tr><td>Alec Tseung</td><td class="num">175</td><td class="num">74</td><td class="num">13,009</td><td class="num">173</td><td class="num">0.43</td><td class="num">75</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="flag">
+      <div class="hd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <path d="M12 3 L22 20 H2 Z"/><line x1="12" y1="9.5" x2="12" y2="14.5"/><circle cx="12" cy="17.4" r="1.05" fill="var(--warn)" stroke="none"/>
+        </svg>
+        Only 60.4% of shells ever reach audit
+      </div>
+      <p>
+        4,216 shells created in the window; <strong>2,548 reached audit</strong>. Of
+        the 1,668 that didn't: <strong>601 cancelled outright</strong>
+        (&asymp; $35,833 of decomp labour binned), 469 stuck in
+        <code>needs_sota_eval</code>, 187 in <code>regenerating_rubric</code>, 141 back
+        in <code>redo_task</code>, 76 in <code>review_eval_hallucination</code>, ~97 in
+        <code>failed_*</code> states.
+      </p>
+      <p>
+        <strong>Do not add decomp headcount into a 60% funnel</strong> — you would buy
+        more cancellations. Root-cause the 601 first.
+      </p>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section>
+    <h2 id="zero"><span class="num">08</span>Zero output, named</h2>
+    <p class="dek">
+      62 contributors at <code>tasking</code> stage delivered nothing in two months,
+      costing <strong>$107,255</strong>. The 23 with 5+ hours carry $96,660 — 90% of
+      the cost in a third of the people.
+    </p>
+    <div class="scroll">
+      <table class="dense">
+        <caption>Tasking-stage contributors, &ge;5 payable hours, zero tasks reaching audit.</caption>
+        <thead>
+          <tr><th>Contributor</th><th>Role</th><th class="num">$/h</th><th class="num">Days</th>
+              <th class="num">Hours</th><th class="num">h/day</th><th class="num">Cost</th>
+              <th class="num">Claims</th><th>What the data shows</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Oliver Baverstam</td><td>beginner</td><td class="num">150</td><td class="num">19</td><td class="num">325.4</td><td class="num">17.1</td><td class="num">48,803</td><td class="num">2</td><td><span class="tag no">hours, almost no claims</span></td></tr>
+          <tr><td>Jefferson Herrera</td><td>beginner</td><td class="num">150</td><td class="num">16</td><td class="num">57.3</td><td class="num">3.6</td><td class="num">8,597</td><td class="num">6</td><td><span class="tag no">hours, almost no claims</span></td></tr>
+          <tr><td>Brian Feury</td><td>beginner</td><td class="num">150</td><td class="num">9</td><td class="num">29.3</td><td class="num">3.3</td><td class="num">4,395</td><td class="num">6</td><td><span class="tag no">hours, almost no claims</span></td></tr>
+          <tr><td>Wiley Davis</td><td>beginner</td><td class="num">150</td><td class="num">14</td><td class="num">27.6</td><td class="num">2.0</td><td class="num">4,147</td><td class="num">5</td><td><span class="tag no">hours, almost no claims</span></td></tr>
+          <tr><td>David Kogan</td><td>beginner</td><td class="num">150</td><td class="num">20</td><td class="num">26.6</td><td class="num">1.3</td><td class="num">3,989</td><td class="num">11</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Mike Zhao</td><td>beginner</td><td class="num">150</td><td class="num">31</td><td class="num">25.3</td><td class="num">0.8</td><td class="num">3,797</td><td class="num">2</td><td><span class="tag no">hours, almost no claims</span></td></tr>
+          <tr><td>Ana Fernández gomez</td><td>calibration_failed</td><td class="num">150</td><td class="num">9</td><td class="num">24.9</td><td class="num">2.8</td><td class="num">3,727</td><td class="num">12</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Yvan Nathanael Ngongang</td><td>prompt</td><td class="num">150</td><td class="num">7</td><td class="num">11.8</td><td class="num">1.7</td><td class="num">1,769</td><td class="num">8</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Lenny Griffith</td><td>beginner</td><td class="num">150</td><td class="num">4</td><td class="num">10.8</td><td class="num">2.7</td><td class="num">1,624</td><td class="num">12</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Jalen Gilmore</td><td>beginner</td><td class="num">150</td><td class="num">16</td><td class="num">10.4</td><td class="num">0.6</td><td class="num">1,556</td><td class="num">11</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Nate LaBombard</td><td>beginner</td><td class="num">150</td><td class="num">6</td><td class="num">10.3</td><td class="num">1.7</td><td class="num">1,553</td><td class="num">7</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Tim Marino</td><td>prompt</td><td class="num">150</td><td class="num">6</td><td class="num">8.2</td><td class="num">1.4</td><td class="num">1,224</td><td class="num">16</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Bastian Kneuse</td><td>beginner</td><td class="num">150</td><td class="num">7</td><td class="num">8.0</td><td class="num">1.1</td><td class="num">1,206</td><td class="num">7</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Troye Bullock</td><td>prompt</td><td class="num">150</td><td class="num">13</td><td class="num">8.0</td><td class="num">0.6</td><td class="num">1,203</td><td class="num">11</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Navjot Gill</td><td>beginner</td><td class="num">150</td><td class="num">6</td><td class="num">7.9</td><td class="num">1.3</td><td class="num">1,185</td><td class="num">9</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Yiming Ye</td><td>beginner</td><td class="num">150</td><td class="num">11</td><td class="num">7.8</td><td class="num">0.7</td><td class="num">1,176</td><td class="num">9</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Davit Hakobyan</td><td>prompt</td><td class="num">150</td><td class="num">7</td><td class="num">7.8</td><td class="num">1.1</td><td class="num">1,165</td><td class="num">11</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Ven Djukic</td><td>beginner</td><td class="num">150</td><td class="num">6</td><td class="num">7.1</td><td class="num">1.2</td><td class="num">1,067</td><td class="num">4</td><td>mostly non-task states</td></tr>
+          <tr><td>Justin Sullivan</td><td>beginner</td><td class="num">150</td><td class="num">7</td><td class="num">7.0</td><td class="num">1.0</td><td class="num">1,043</td><td class="num">5</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Aditi Agrawal</td><td>beginner</td><td class="num">150</td><td class="num">10</td><td class="num">6.8</td><td class="num">0.7</td><td class="num">1,016</td><td class="num">5</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Moby Sekenhamo</td><td>calibration_failed</td><td class="num">150</td><td class="num">5</td><td class="num">5.7</td><td class="num">1.1</td><td class="num">857</td><td class="num">2</td><td>mostly non-task states</td></tr>
+          <tr><td>Charlotte Ducommun</td><td>calibration_failed</td><td class="num">150</td><td class="num">4</td><td class="num">5.3</td><td class="num">1.3</td><td class="num">795</td><td class="num">4</td><td>worked tasks, none finished</td></tr>
+          <tr><td>Joon Lee</td><td>beginner</td><td class="num">150</td><td class="num">5</td><td class="num">5.1</td><td class="num">1.0</td><td class="num">767</td><td class="num">6</td><td>worked tasks, none finished</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:18px">
+      <strong>Oliver Baverstam is today's item:</strong> 325.4 hours over 19 days
+      — <strong>17.1 hours per active day</strong> — $48,803, with
+      <strong>2 claims and zero tasks</strong>. Nearly half this cohort's cost is one
+      person. Six others show the same shape (Jefferson Herrera, Brian Feury, Wiley
+      Davis, Mike Zhao and two more). <strong>Check for a permissions or routing bug
+      first</strong> — being <em>unable</em> to claim is indistinguishable in the data
+      from choosing not to. The remaining ~15 did work tasks and never finished one,
+      which reads as a ramp or routing problem rather than misconduct.
+    </p>
+  </section>
+
+  <!-- 09 -->
+  <section>
+    <h2 id="rates"><span class="num">09</span>Is the rate premium buying anything?</h2>
+    <p class="dek">Read the last column — that is what a clean delivered task actually costs.</p>
+    <div class="scroll">
+      <table>
+        <caption>Prompt lane, contributors with &ge;10 tasks, grouped by pay rate.</caption>
+        <thead>
+          <tr><th>Rate band</th><th class="num">People</th><th class="num">Cost</th><th class="num">Tasks</th>
+              <th class="num">$/task</th><th class="num">Median FPY</th><th class="num">Clean</th>
+              <th class="num">$/clean task</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>$150&ndash;159</td><td class="num">29</td><td class="num">315,216</td><td class="num">1,264</td>
+              <td class="num">249</td><td class="num">23.1%</td><td class="num">267</td><td class="num">1,181</td></tr>
+          <tr class="hero"><td>$160&ndash;189</td><td class="num">6</td><td class="num">86,586</td><td class="num">328</td>
+              <td class="num">264</td><td class="num">23.3%</td><td class="num">90</td><td class="num"><strong>962</strong></td></tr>
+          <tr><td>$190&ndash;209</td><td class="num">6</td><td class="num">151,988</td><td class="num">475</td>
+              <td class="num">320</td><td class="num">20.0%</td><td class="num">88</td><td class="num"><strong>1,727</strong></td></tr>
+          <tr><td>$210+</td><td class="num">2</td><td class="num">138,205</td><td class="num">333</td>
+              <td class="num">415</td><td class="num">39.3%</td><td class="num">108</td><td class="num">1,280</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:18px">
+      <strong>The $190&ndash;209 band is the worst value on the project</strong> —
+      $1,727 per clean task, 46% above the $150 band, with the <em>lowest</em> median
+      FPY at 20.0%. Six people, $151,988. That is where to look first for rate
+      corrections. The $210+ band is defensible: expensive per task, but 39.3% FPY
+      brings it to $1,280 per clean task, better than the $150 band. Paying for
+      quality works; paying for the middle band currently does not.
+    </p>
+  </section>
+
+  <!-- 10 -->
+  <section>
+    <h2 id="gaming"><span class="num">10</span>Gaming signals</h2>
+    <p class="dek">
+      Five behavioural signals tested. Two vectors look real; two of the most
+      obvious-looking are false positives that would damage trust if acted on.
+      All of this is <strong>signal, not proof</strong>.
+    </p>
+    <div class="flag" style="border-left-color:var(--crit)">
+      <div class="hd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--crit)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/><line x1="12" y1="7.5" x2="12" y2="13"/><circle cx="12" cy="16.4" r="1.05" fill="var(--crit)" stroke="none"/>
+        </svg>
+        Real &mdash; time booked without engaging the queue
+      </div>
+      <p>
+        7 people with &ge;20 payable hours, &le;10 claims ever and zero tasks to audit
+        — <strong>$81,536</strong> (7.3% of labour). Named in
+        <a href="#zero">section 08</a>. Logging time while never meaningfully opening
+        work is the one pattern here that is hard to explain innocently — but rule out
+        a platform bug before concluding anything.
+      </p>
+    </div>
+    <div class="flag">
+      <div class="hd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <path d="M12 3 L22 20 H2 Z"/><line x1="12" y1="9.5" x2="12" y2="14.5"/><circle cx="12" cy="17.4" r="1.05" fill="var(--warn)" stroke="none"/>
+        </svg>
+        Real &mdash; seed spam in artifact acquisition
+      </div>
+      <p>
+        Pay per accepted artifact spans <strong>1,000&times;</strong>, from $1 to
+        $1,050. One contributor submitted <strong>1,008 artifacts for $6,900</strong>
+        ($6.85 each), another <strong>489 for $700</strong> ($1.43 each), against peers
+        earning $860&ndash;$1,050 per accepted artifact. The payout is small; the real
+        cost is review burden. This matches the SSOT's own note about "large tranches
+        of spam models, 500+ submissions, very low acceptance rates".
+        <strong>Gate on submissions per accepted artifact, not volume alone.</strong>
+      </p>
+    </div>
+    <div class="flag" style="border-left-color:var(--good)">
+      <div class="hd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--good)" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/><path d="M8 12.4l2.6 2.6L16 9.6"/>
+        </svg>
+        Not real &mdash; two signals I would not act on
+      </div>
+      <p>
+        <strong>Long days are not abuse.</strong> The contributor with 9 days over 14
+        hours is <strong>Jalaj Garg, the top producer</strong> — 284 tasks at 1.81h
+        AHT, above median on both speed and quality. He is the single largest cost on
+        the project ($107,221) and not a performance problem. Flagging him would be a
+        serious mistake.
+      </p>
+      <p>
+        <strong>Claim abandonment is a platform problem, not a people problem.</strong>
+        44% of <em>all</em> claims (9,151 of 20,680) close with no submission, and 6 of
+        the 14 highest-abandon people are high producers. It is claim-and-browse
+        behaviour. But it holds <strong>67,436 claim-hours</strong> of queue blocking
+        others — fix with claim TTLs and auto-release, not offboarding.
+      </p>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section>
+    <h2 id="levers"><span class="num">11</span>The levers, sized</h2>
+    <p class="dek">Against the $1,121,528 labour bill. These overlap — you cannot bank all of them.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Lever</th><th class="num">Saving</th><th class="num">% labour</th><th>How hard</th></tr></thead>
+        <tbody>
+          <tr class="hero"><td>Cap redos at 2 with escalation</td><td class="num">$260,969</td><td class="num">23%</td>
+              <td>Pipeline config. No ML, no headcount.</td></tr>
+          <tr class="hero"><td>Every contributor to Luke's 63.6% FPY</td><td class="num">$272,819</td><td class="num">24%</td>
+              <td>Ambitious ceiling — shows the size of the prize.</td></tr>
+          <tr><td>Slow contributors to lane median AHT</td><td class="num">$244,054</td><td class="num">22%</td>
+              <td>Coaching. This is your task&nbsp;1.</td></tr>
+          <tr><td>Everyone below 40% FPY up to 40%</td><td class="num">$121,729</td><td class="num">11%</td>
+              <td>Realistic quality target.</td></tr>
+          <tr><td>Recover the 23 named zero-output people</td><td class="num">$96,660</td><td class="num">9%</td>
+              <td>Diagnose first — may be a platform bug.</td></tr>
+          <tr class="hero"><td>Fix the 5 worst-quality contributors</td><td class="num">$69,868</td><td class="num">6%</td>
+              <td>Five conversations. Best effort-to-return ratio.</td></tr>
+          <tr><td>Everyone below p75 FPY up to p75</td><td class="num">$57,465</td><td class="num">5%</td>
+              <td>Too timid a target to bother with alone.</td></tr>
+          <tr><td>Stop the 601 cancelled shells</td><td class="num">$35,833</td><td class="num">3%</td>
+              <td>Needs root-cause on cancellation.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:18px">
+      The two at the top are the same underlying fix from opposite ends, and together
+      are worth roughly a quarter of the labour bill. <strong>But all of it sits
+      downstream of qualifying yield</strong>, which remains the largest single lever
+      on the contract — a 36% &rarr; 54% move beats every row in this table.
+    </p>
+  </section>
+
+  <!-- 12 -->
+  <section>
+    <h2 id="recs"><span class="num">12</span>Recommendations</h2>
+    <h3>Your task 1 &mdash; "track historical AHTs closely, message contribs"</h3>
+    <ul class="plain">
+      <li><strong>Track FPY alongside AHT, never AHT alone.</strong> This is the single most important change. Sutton Zhang tops the AHT board and costs 17.7&times; Luke Adams per clean task.</li>
+      <li><strong>Rank outreach by cost, not by rate.</strong> The 15 people above p75 AHT carry $330,158; the 23 named zero-output people carry $96,660; the 5 worst on quality carry $69,868.</li>
+      <li><strong>Give named targets:</strong> 1.61h AHT and 30%+ FPY for the prompt lane; 0.35h/shell for decomp. "Improve your AHT" moves nothing.</li>
+      <li><strong>Use per-lane denominators.</strong> Decomp taskers must be measured per shell. Measuring them on tasks-to-audit is what produced my own wrong answer — see <a href="#corrections">section 13</a>.</li>
+      <li><strong>Require volume before rating anyone</strong> — under 10 tasks, FPY is noise.</li>
+    </ul>
+
+    <h3>Your task 2 &mdash; "reduce task cycle time through auto-review"</h3>
+    <ul class="plain">
+      <li><strong>Re-aim it. Auto-review will not cut cycle time directly, because review is already fast and nearly free.</strong> Median time in <code>task_review</code> is 0.17h; all automated gates together cost $7/task and clear in under 0.2h. There is nothing left to squeeze there.</li>
+      <li><strong>Point it at first-pass yield instead.</strong> Cycle time is set by redo count — 1.0 day at 0 redos, 9.1 days at 10+ — and FPY is 23.7%. Catching defects <em>before</em> submission is what removes redo loops, which are ~half of labour <em>and</em> the cycle-time driver. Same tool, correct target.</li>
+      <li><strong>Cap redos at 2 with escalation first.</strong> ~$261k, pipeline config, ships this week. The 412 tasks with 5+ redos carry 46% of all rework.</li>
+      <li><strong>Instrument compute before scaling it.</strong> <code>tsip_ai_spend_events</code> is empty; you would be trading a measured cost for an unmeasured one.</li>
+    </ul>
+
+    <h3>The three things missing from your list</h3>
+    <ol class="steps">
+      <li><p><strong>Qualifying yield, daily, with an alert at 30%.</strong> It is a divisor on unit cost, so it dominates everything else, and 25.8% is the loss-making cliff. It also cannot currently be reproduced from the database — fix that first so the metric is auditable.</p></li>
+      <li><p><strong>Find out why ~61% don't qualify.</strong> The SSOT points at GDM linters and a ~20% defect rate with half in-scope workbook errors. If in-scope defects bind, that is the same root cause as the redo loop — one fix, two levers.</p></li>
+      <li><p><strong>Add claim TTLs and root-cause the 601 cancelled shells.</strong> 67,436 blocked claim-hours and $35,833 of binned decomp labour are both throughput you have already paid for.</p></li>
+    </ol>
+  </section>
+
+  <!-- 13 -->
+  <section>
+    <h2 id="corrections"><span class="num">13</span>Corrections I made along the way</h2>
+    <p class="dek">
+      Recorded so the wrong versions don't circulate. Each was caught by going more
+      granular, which is a reason to keep doing that.
+    </p>
+    <ul class="plain">
+      <li><strong>The "slow contributors" list was wrong.</strong> I divided everyone's hours by tasks reaching audit, but decomp taskers author shells and never take tasks to audit. Corrected, they are the <em>most consistent</em> lane in the pipeline. The "slow and expensive" pot shrank from <strong>$205,813 to $88,085</strong>; Corey Schmidt, Pragyat Agrawal, Andrew Holliday, Nicolas Herrerias and Megan Shuriah were all false positives. <strong>Do not act on the earlier list.</strong></li>
+      <li><strong>A stage-cost allocation put 43% of cost in <code>review_gate</code>.</strong> That used <code>tsip_task_claims.task_state_at_claim</code>, which is a snapshot at claim time — and <code>review_gate</code> is a state tasks flicker through (9,399 entries, ~27 total state-hours). Replaced with claim-window &times; actual-state interval intersection.</li>
+      <li><strong>An "absorbs others' rework" table was measuring the wrong field.</strong> The previous row before a fix is the send-back event, whose trigger is a reviewer or the system, not the original author. The reliable figure is that <strong>92% of send-backs are self-fixed</strong>.</li>
+      <li><strong>The first cost figure ($411/task) omitted seed acquisition.</strong> You caught that. Seeds add $53/task and are paid piece-rate in a separate project, taking the loaded figure to $464.</li>
+      <li><strong>The first analysis was scoped to chartography, not Motley.</strong> Superseded entirely by this document.</li>
+    </ul>
+  </section>
+
+  <!-- 14 -->
+  <section>
+    <h2 id="distrust"><span class="num">14</span>What to distrust</h2>
+    <ul class="plain">
+      <li><strong>Stage cost is an allocation, not a measurement.</strong> No task- or stage-level time exists in the platform. Each claim's active window is intersected with the states the task actually occupied and payable hours split pro-rata. Sensitivity on the 12h claim cap: rework is 46.3% of labour at 2h, 52.0% at 12h, 54.2% at 24h. <strong>Quote "roughly half", not 52%.</strong></li>
+      <li><strong>"Cost per clean task" is a ranking device, not a unit cost.</strong> It counts only zero-redo tasks as output, so it exaggerates — a task with two redos still ships. Use it to order people, not to bill.</li>
+      <li><strong>Qualifying yield comes from the Finance SSOT, not the database.</strong> There is no "qualifying" flag in the schema, so the most important metric here cannot be reproduced or audited from data.</li>
+      <li><strong>Lane assignment is inferred</strong> from where each person's claim time went, not their configured role — roles like <code>dec+pr</code> don't reliably indicate output unit. Someone straddling lanes is forced into one.</li>
+      <li><strong>$464 is a floor.</strong> AI/compute untracked; internal ops labour barely booked.</li>
+      <li><strong>Seed cost and task counts are period ratios, not cohort-matched.</strong> July's seeds are not July's audited tasks.</li>
+      <li><strong>Everything is blended across task varieties</strong> — patch-based cannot be separated from greenfield.</li>
+      <li><strong>No figure here is misconduct evidence.</strong> Verify before any action affecting pay or standing.</li>
+    </ul>
+  </section>
+
+  <!-- 15 -->
+  <section>
+    <h2 id="repro"><span class="num">15</span>Reproducing this</h2>
+    <p class="dek">
+      All queries are read-only against <code>tsip_prd</code> (Metabase database 2),
+      pushed to <code>claude/aht-cost-estimation-sql-u969zu</code>, and every one was
+      executed against production before publishing.
+    </p>
+    <ul class="files">
+      <li><span class="fn">patchbased_identifiability.sql</span>
+        <span class="fd">Proves why patch-based can't be isolated; will show it becoming possible if the gaps are fixed.</span></li>
+      <li><span class="fn">sheets_aht_cost_per_task.sql</span>
+        <span class="fd">The headline cost figure. Params <code>start_date</code>, <code>end_date</code>.</span></li>
+      <li><span class="fn">stage_work_time_by_user.sql</span>
+        <span class="fd">Per-user per-stage work time — the cost-to-stage allocation weight.</span></li>
+      <li><span class="fn">stage_dwell_time.sql</span>
+        <span class="fd">Calendar dwell per state, median and p90 — the cycle-time decomposition.</span></li>
+      <li><span class="fn">rework_distribution.sql</span>
+        <span class="fd">Redo bands, first-pass yield, edit&rarr;audit cycle time by band.</span></li>
+      <li><span class="fn">contributor_a_hours / b1 / b2 / b3.sql</span>
+        <span class="fd">Per-contributor hours, cost, stage advances, audit credit, roles. Split deliberately — as one statement they time out. Merge on <code>user_id</code>.</span></li>
+      <li><span class="fn">excluded_cost_buckets.sql</span>
+        <span class="fd">What the labour figure leaves out: seeds, internal ops, non-hourly.</span></li>
+      <li><span class="fn">CONTRIBUTOR_AND_STAGE_COST.md</span>
+        <span class="fd">Method notes, including the allocation model and its sensitivity.</span></li>
+      <li><span class="fn">PROPOSED_GROUND_TRUTH.md</span>
+        <span class="fd">Staged definitions for <code>projects/sheets/project.md</code> — not yet submitted.</span></li>
+    </ul>
+  </section>
+
+  <p class="foot">
+    Sources: <code>tsip_prd</code> via Metabase (database 2, read-only), queried
+    31 Aug 2026 — <code>payable_time_entries</code> / <code>_revisions</code> /
+    <code>_revision_segments</code>, <code>contributor_rates</code>,
+    <code>contributor_earnings</code>, <code>tsip_state_transitions</code>,
+    <code>tsip_task_claims</code>, <code>tsip_tasks</code>,
+    <code>tsip_attempts</code>, <code>tsip_delivery_batches</code>,
+    <code>tsip_project_members</code>, <code>tsip_ai_spend_events</code> (empty).
+    Contract price, qualifying yield and ops cost-per-task from
+    <em>[Meridian] Finance SSOT</em> (Google Drive, updated 31 Aug 2026).
+    Hour-basis definitions from <code>projects/wintermelon/project.md</code>
+    ("Payable hours", agreed); <code>audit</code>-as-done from
+    <code>projects/sheets/project.md</code>. Variety split corroborated in Slack
+    <code>#tsip-ops-working-group</code> and <code>#motley-patch-based-pipeline</code>.
+  </p>
+</div>
+
+<div id="tip" role="status" aria-live="polite"></div>
+<script>
+(function(){
+  var tip=document.getElementById('tip');
+  function show(e,html){ tip.innerHTML=html.replace(/<b>(.*?)<\/b>/,'<b>$1</b><br>'); tip.style.opacity='1'; move(e); }
+  function move(e){
+    var r=tip.getBoundingClientRect();
+    var x=(e.clientX||0)+14,y=(e.clientY||0)+14;
+    if(x+r.width>window.innerWidth-8) x=(e.clientX||0)-r.width-14;
+    if(y+r.height>window.innerHeight-8) y=(e.clientY||0)-r.height-14;
+    tip.style.left=Math.max(8,x)+'px'; tip.style.top=Math.max(8,y)+'px';
+  }
+  function hide(){ tip.style.opacity='0'; }
+  document.querySelectorAll('.hit[data-tip]').forEach(function(el){
+    var d=el.getAttribute('data-tip');
+    el.addEventListener('mouseenter',function(e){show(e,d);});
+    el.addEventListener('mousemove',move);
+    el.addEventListener('mouseleave',hide);
+    el.addEventListener('focus',function(){var b=el.getBoundingClientRect();show({clientX:b.left+b.width/2,clientY:b.top},d);});
+    el.addEventListener('blur',hide);
+  });
+  window.addEventListener('scroll',hide,{passive:true});
+})();
+</script>
