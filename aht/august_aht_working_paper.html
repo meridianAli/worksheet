@@ -286,7 +286,7 @@
     <div class="scroll">
       <table class="dense">
         <caption>60 contributors &middot; 905 tasks &middot; 1,789.1 August payable hours &middot; $291,936.
-          Pooled mean 1.98h, median 1.52h. Shaded rows have 10+ tasks and are the only ones worth ranking on.</caption>
+          Pooled mean 1.98h, median 1.52h. Shaded rows have 10+ tasks and are the only ones worth ranking on. <em>Median&nbsp;$ is that person's median hours at their own contract rate, not the $163.17 blended rate used for the cohort-wide $323 / $248 figures.</em></caption>
         <thead>
           <tr><th class="num">#</th><th>Contributor</th><th class="num">$/h</th><th class="num">Tasks</th>
               <th class="num">Median h</th><th class="num">Mean h</th><th class="num">Min h</th>
@@ -504,7 +504,7 @@ ORDER BY tst.task_id, tst.created_at;
       WHERE e.task_id = fa.task_id
         AND e.from_state IN ('edit_task','redo_task')
         AND e.from_state IS DISTINCT FROM e.to_state
-        AND e.created_at &amp;lt;= fa.audit_at
+        AND e.created_at &lt;= fa.audit_at
       ORDER BY e.created_at DESC
       LIMIT 1) AS user_id
   FROM fa)
