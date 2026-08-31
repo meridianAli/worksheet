@@ -1,23 +1,109 @@
 # A reliable AHT for cost estimation
 
-**TL;DR** — There was no single trustworthy AHT to find. Six definitions are
-already in use across our dashboards and they disagree by **3.4x** on the same
-project, same window. Worse, all of them use the wrong hours basis for a cost
-question. This directory defines one cost-grounded AHT, the SQL to compute it,
-and an audit query to catch the wrong ones.
+## Scope: patch-based / Motley
 
-Headline number, chartography, launch (2026-08-03) to 2026-08-31:
+**The headline: patch-based cannot have its own AHT from platform data.** Not
+"we haven't built it" — the data to build it does not exist. Two independent
+blockers, both provable live via `patchbased_identifiability.sql`:
+
+| Blocker | Evidence (tsip_prd, 2026-08-31) |
+|---|---|
+| **Attribution** — hours attach to the *project*, never a task or variety | `payable_time_revisions.task_type` populated on **0 of 9,977** sheets rows; `tsip_tasks.metadata` carries a variety marker on **0 of 8,058** sheets tasks; **0 of 53** sheets pipeline configs mention one |
+| **Time coverage** — the numerator and denominator never coexist | Months with both payable hours and patch-based deliveries: **0** |
+
+Patch-based is a **task variety inside the `sheets` project** (its counterpart is
+"greenfield"), not a project, pipeline, or task field. There is no
+`patch`/`motley` row in `tsip_projects`, and no sheets state contains "patch".
+
+The only machine-readable marker is a legacy backfill of delivery ZIP filenames
+onto *attempts*:
+
+```
+tsip_attempts.metadata -> 'tmp_deliveries'[] ->> 'tmp_delivery_batch'  ~  'patchbased'
+   e.g. meridian_patchbased_450ct_06.14.26.zip
+```
+
+Note the `tmp_` prefix — explicitly temporary. It covers **3,050 distinct tasks
+across 14 ZIPs, delivered to Meta 2026-02-09 → 2026-06-15**, and only for tasks
+that were *delivered*, so it can never identify in-flight work. **Greenfield was
+never backfilled at all** — the 572 greenfield tasks are known only from Slack
+and a Google distribution list (Wylie Makovsky, 2026-08-20: the Meta list was
+"3,000 patch-based + 572 greenfield").
+
+And the timing is fatal on its own — sheets payable-hours data starts *after*
+the patch-based delivery record ends:
+
+| Month | Sheets payable h | Patch-based delivered |
+|---|---|---|
+| 2026-02 | 0 | 200 |
+| 2026-04 | 0 | 1,000 |
+| 2026-05 | 5 | 2,176 |
+| 2026-06 | 58 | 817 |
+| 2026-07 | **2,939** | 0 |
+| 2026-08 | **3,755** | 0 |
+
+The Feb–Jun patch-based work was paid and tracked off-platform (the ops "Patch
+Based Claim Sheet"), so there is no labour ledger to divide.
+
+## The best available figure: sheets, blended
+
+Since patch-based can't be isolated, the honest substitute is the whole `sheets`
+project. Over **2026-07-01 → 2026-08-31** (`sheets_aht_cost_per_task.sql`):
 
 | | |
 |---|---|
-| **AHT** | **6.85 payable hours per delivered task** |
-| **Fully-loaded cost** | **$355 per delivered task** |
-| Blended contributor rate | $52.54/hr |
-| Breakeven AHT at the $180/task bill rate | 3.43 hours |
+| **AHT** | **2.42 payable hours per task reaching `audit`** |
+| **Fully-loaded cost** | **$406 per task** |
+| Blended pay rate | $167.44/hr |
+| Payable hours / contributors | 6,694.5 h · 172 people |
+| Accrued cost | $1,120,895 |
+| Rate coverage | 100% (no zero-fill exposure) |
 
-Verified live against `tsip_prd` on 2026-08-31.
+Read this as **blended across task varieties, not as patch-based.** The $167.44/hr
+independently matches the known "sheets reads ~$167/hr" figure from the
+project-spend-tracker, which is good corroboration of the cost side.
+
+### The denominator choice is load-bearing
+
+`audit` is the right denominator because sheets ground truth makes "Tasks
+Completed" = entered `audit` canonical for this project, and the platform revenue
+query uses `audit` as the sheets passing state. The later states are
+delivery-batch bottlenecked and measure cadence, not handling time — the same
+hours divided by them give wildly different answers:
+
+| Denominator | Tasks | AHT | $/task |
+|---|---|---|---|
+| **entered `audit`** (canonical) | 2,764 | **2.42 h** | **$406** |
+| reached `complete` | 307 | 21.81 h | $3,651 |
+| reached `delivery_holding` | 85 | 78.76 h | $13,187 |
+
+### ⚠️ A resale that breaks naive per-task cost
+
+The **2026-08-19 Google DeepMind batch** contains 1,900 tasks, of which **1,721
+were already delivered to Meta** between Feb and Jun (earliest 2026-02-09). That
+is existing patch-based inventory monetised a second time at ~zero marginal
+labour. Any cost-per-delivered-task that divides a period's labour by a delivery
+count including those tasks will misprice the batch badly. The 2026-08-27 Meta
+draft (500 tasks) carries no prior-delivery marker and looks like new build.
+
+## What would make a patch-based AHT possible
+
+1. **Add a task-variety field** — a `variety`/`taskType` key on `tsip_tasks.metadata`
+   at creation, or populate the already-existing `payable_time_revisions.task_type`.
+   Cheapest fix by far, and it splits the denominator immediately. It is
+   *forward-only*: it cannot recover Feb–Jun.
+2. **Backfill the current in-flight sheets tasks** from the ops claim sheets, so
+   the split starts from today's WIP rather than the next task created.
+3. **Task-level time attribution** — the real unlock, and the same gap that caps
+   every other AHT on the platform (see below).
 
 ---
+
+# Appendix: the general definition, and why the existing numbers disagree
+
+Everything below is project-agnostic and was derived first against chartography
+(the only project with both a per-task rate card and enough delivered volume).
+It is the method `sheets_aht_cost_per_task.sql` applies.
 
 ## The core problem: three different "hours", and the cost one wasn't being used
 
@@ -125,24 +211,13 @@ dashboard links still uncaptured). **Confirm the bill rate with Finance before
 anyone acts on the margin number.** The AHT and cost-per-task figures do not
 depend on it.
 
-## Scope
-
-Only `chartography` currently supports a reliable AHT:
-
-- **multimango** — 131,457 payable hours / 28d, but billed **hourly** ($23/hr),
-  so AHT does not drive its margin; `paid_per_billed_hour` is the right metric.
-- **finance-multimodal** — 676.8 payable hours / 28d but only **10 delivered
-  tasks** (13 lifetime `complete`). Computes to 67.68h and $9,289/task; the
-  denominator is far too thin to be meaningful. Revisit once completions
-  accumulate.
-- **multi-hop-reasoning** — has a $1,440/task rate card but is **dormant**: zero
-  state transitions in 60 days.
-
 ## Files
 
 | File | Use |
 |---|---|
-| `aht_cost_per_task.sql` | The canonical figure. Params `{{project_id}}`, `{{start_date}}`, `{{end_date}}` (end exclusive). |
+| `patchbased_identifiability.sql` | **Start here for Motley.** Proves live why a patch-based AHT can't be produced, and will show it becoming producible if the gaps get fixed. |
+| `sheets_aht_cost_per_task.sql` | The blended sheets figure — the best available proxy. Params `{{start_date}}`, `{{end_date}}` (both inclusive). |
+| `aht_cost_per_task.sql` | The general per-project canonical figure. Params `{{project_id}}`, `{{start_date}}`, `{{end_date}}` (end exclusive). |
 | `aht_definition_spread.sql` | Audit — what AHT comes out as under each definition in use. Run before quoting a number. |
 | `aht_weekly_trend.sql` | Stability check + cumulative. Params `{{project_id}}`, `{{weeks_back}}`. |
 
@@ -151,9 +226,14 @@ canonical internal/test domains, and bucket days in `America/New_York`.
 
 ## Suggested follow-ups
 
-1. **Confirm the $180/task bill rate with Finance** — the margin call rests on it.
+1. **Add a task-variety field to sheets tasks** — without it no patch-based
+   figure is ever possible, and the gap silently widens every day.
 2. **Promote this definition to ground truth** via `propose-ground-truth`, so the
    next cost estimate doesn't re-derive it or pick definition E by accident.
+3. **Get the sheets per-task bill rate from Finance.** There is no sheets rate
+   card in the revenue dashboard at all; the only figure anywhere is a `$665`
+   *example* parameter in a platform scenario query. Cost per task ($406) is
+   solid; margin cannot be stated without the real rate.
 3. **Fix or scope the platform AHT tile** (`throughput/avg_handling_time.sql`) —
    it should either resolve each project's real submit states or state that it
    only supports edit/redo pipelines, instead of rendering blank.
