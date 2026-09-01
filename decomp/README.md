@@ -73,6 +73,13 @@ the live sheets queue. Two things came out of it that outrank the queue depth:
   advancing them to review anyway: 0% of arrivals before 08-20, 22% today. That
   is 34 of the 178 live tasks with nothing to review.
 
+[`OUTLINE_GENERATION_FAILURE.md`](OUTLINE_GENERATION_FAILURE.md) root-causes the
+second one. The outline agent is being invoked **with no workbook in context** —
+~5,380 input tokens instead of the healthy ~185,000 — so it returns 1–7 output
+tokens and reports success. The same workbook file succeeds on a sibling task
+minutes later, so it is the invocation, not the file. Started 2026-08-26, now
+29% of runs.
+
 ## Files
 
 | File | Use |
@@ -81,5 +88,7 @@ the live sheets queue. Two things came out of it that outrank the queue depth:
 | `decomp_review_queue.csv` | Its output at the snapshot time above. Re-run the SQL for a live figure — this queue turns over in about a day. |
 | `decomp_review_flow.sql` | Inflow, dwell and exit destinations by day. Run this before calling any queue depth good or bad. |
 | `DECOMP_REVIEW_TRIAGE.md` | What's wrong with the live tasks and what to send back. |
+| `OUTLINE_GENERATION_FAILURE.md` | Why the outline generator returns nothing, and what to bisect. |
+| `outline_generator_failure.sql` | The empty-context trend and the same-file-succeeds proof. |
 | `decomp_review_triage.csv` | Per-task bucket, signals and recommended action. |
 | `live_decomp_fields.sql` / `.csv` | Decomp content fields per live task. |
