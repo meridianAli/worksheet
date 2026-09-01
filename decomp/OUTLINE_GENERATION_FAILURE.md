@@ -217,3 +217,106 @@ which is why they need the fix rather than another bounce.
 | File | Use |
 |---|---|
 | `workbook_pair_check.sql` | Resolves the real input/output pair, tests input-equals-output, and runs the size-held-fixed comparison. |
+
+---
+
+# Follow-up 2: reading the actual workbook pair
+
+Ali pulled the input/output pair for `41fbe12c` (`049-N-1.xlsx` / `049-N-0.xlsx`,
+one of the two loopers) and asked what looks wrong. Two answers: **the decomp is
+fine, the file is not.**
+
+## The decomp itself is correct
+
+Both files carry the same 20 tabs, none added or dropped. The input has the
+target tabs stripped of formulas and the output restores them — exactly what the
+transition note says ("Cleared DCF, Unused LLC DCF, Returns and Metrics, 2.
+Financial & Valuation Sum, 4. Assumptions, Appendix, Pipeline Extract, OSP
+Pipeline Extract, Valuation"):
+
+| Sheet | Formulas in | Formulas out |
+|---|---:|---:|
+| DCF | 1 | **6,461** |
+| Unused LLC DCF | 0 | **2,527** |
+| 2. Financial & Valuation Sum | 0 | **613** |
+| Pipeline Extract | 0 | 196 |
+| Returns and Metrics | 0 | 175 |
+| 4. Assumptions | 0 | 70 |
+| OSP Pipeline Extract | 0 | 25 |
+| Valuation | 83 | 89 |
+| *(untouched: Inputs & Assumptions, Practice Pro Forma, MSO Pro Forma, …)* | = | = |
+
+**2,831 formulas in, 12,904 out — 10,073 restored.** Well-formed, matches the
+stated transition, and both files open cleanly in openpyxl in 0.3 s. A reviewer
+would have approved this. Nothing about the task is wrong.
+
+## The file is 46% junk
+
+`xl/workbook.xml` is **1,156,632 bytes**, and **1,153,427 of them (99.7%) are a
+single `<definedNames>` block** holding **14,107 defined names**. Not add-in
+metadata — accumulated garbage:
+
+```
+aa, aaa, aaaa, aaaaa, ___ccc2, __123Graph_B, _bdm.0ECD8DB6…edm, AAA_DOCTOPS …
+```
+
+388 of them resolve to `#REF!`. Many are duplicated four to six times. This is
+the usual sediment of a financial model that has been copied between workbooks
+for a decade, and it is carried identically in both the input and the output.
+
+What matters is the proportion:
+
+| | Input `049-N-1` | Output `049-N-0` |
+|---|---:|---:|
+| Zip on disk | 330,323 B | 479,691 B |
+| Uncompressed | 2,511,716 B | 3,278,781 B |
+| **`definedNames` block** | **1,153,427 B (46%)** | **1,153,427 B (35%)** |
+| All 20 worksheets' XML | 880,136 B | 1,428,789 B |
+| Rough tokens in that block | ~288,000 | ~288,000 |
+
+In the input, **the defined-name garbage is larger than every worksheet in the
+workbook put together.** Across the pair it is ~577,000 tokens of noise before a
+single cell of real content — more than twice a 200k context window on its own.
+
+## What this does and does not prove
+
+It does **not** prove corruption. Both files parse fine and fast, so "the loader
+crashed on a broken file" is out.
+
+It does give a concrete mechanism that fits all three observations, as a
+**hypothesis worth checking in the worker code**: if the workbook serialiser
+includes defined names and the invocation has a size guard — *"if the serialised
+workbook exceeds N tokens, don't attach it"* — then a pair like this trips the
+guard and the agent is invoked with prompt only. That would explain:
+
+- the ~5,380-token signature (prompt, no workbook);
+- why failure rate rises with workbook size (0.5% under 0.5 MB → 13.7% over 8 MB);
+- why it starts on 08-26 (guard added, or its threshold lowered);
+- why a retry usually succeeds but these two never did (a task sitting just under
+  the threshold flips; one well over it fails every time — and `41fbe12c` failed
+  3 for 3).
+
+I could not confirm it: this session cannot attach `Longitude-Labs/prime`, so I
+have not read the serialiser or looked for a guard. **Someone with the repo should
+grep the workbook-attachment path for a size or token cap and check what it does
+with defined names.**
+
+## Two cheap fixes, independent of the bisect
+
+1. **Strip `definedNames` before serialising.** Nothing in a decomp outline needs
+   them, and on this file it removes 46% of the payload for free. If the guard
+   theory is right, this alone gets the big workbooks under the limit.
+2. **If the workbook can't be attached, fail the run.** Whatever the guard does
+   today, silently invoking the agent without its input and calling the result a
+   success is the actual defect — it is what puts empty tasks in front of
+   reviewers.
+
+## Caveat on generalising
+
+This is **one pair**, chosen because it is a known-bad case. I have not checked
+whether defined-name bloat is elevated on failing tasks generally — the other
+workbooks live in blob storage that this session cannot read, so I could only
+measure the two files Ali uploaded. Before acting on the bloat theory, count
+`definedNames` across a sample of failing and succeeding pairs. The size
+correlation and the 08-26 onset in the sections above do not depend on this and
+still stand on their own.
