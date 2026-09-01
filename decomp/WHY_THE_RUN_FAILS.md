@@ -82,3 +82,78 @@ tighter, the conversion got heavier, or concurrency went up.
 4. **Strip `definedNames` before serialising.** Free 46% payload reduction on the
    one file measured, provably safe there. Verify on a sample first.
 5. **Bisect 08-26** for what reduced the headroom.
+
+---
+
+# Follow-up: there *are* logs, and I should have looked sooner
+
+Ali asked whether a log exists. It does — two of the three layers are reachable
+from here, and reading them corrects three things I said above.
+
+## Where the logs are
+
+| Layer | Reachable? | What it holds |
+|---|---|---|
+| **`tsip_data_compass_runs`** (Metabase) | **Yes** | Step-by-step workflow log: every action, duration, `failed_count`, `error_message`. The `generating_outline` workflow is `inline-data → extract-task-data → modal-claude-agent → python-script → backfill-task-data → move-task`, template `system:tsip-sheets-task-outline@v7`. |
+| **Datadog** (`service:tsip-backend`) | **Yes** | 940 entries for the two loopers alone — orchestration, file fetches, state moves, warnings. |
+| **Modal container stdout** | **No** | Where the agent actually runs. A Datadog search for agent/modal errors in the failure window returns **zero rows** — the worker does not ship logs. This is the layer that would say why the workbook didn't load. |
+
+## Three corrections
+
+**1. Failing runs are not instant. They run long, and some hit a 30-minute
+timeout.** I wrote earlier that the agent "returned nothing quickly" and that
+re-runs "got faster, suggesting short-circuiting". Wrong. The `modal-claude-agent`
+step on the two loopers took **226 s, 116 s, 232 s, 64 s, 161 s, 55 s**. Fleet-wide:
+
+| | Runs | Median | p90 | Max |
+|---|---:|---:|---:|---:|
+| Empty-context | 173 | 88 s | 488 s | **1,805 s** |
+| Healthy | 962 | 141 s | 353 s | **1,805 s** |
+
+That 1,805 s = **30:05**, in both populations — a 30-minute ceiling. Long runs
+that produce ~4 output tokens are consistent with the agent working and being cut
+off, not with it being handed nothing and replying instantly.
+
+**2. Errors *are* recorded — they are just useless.** I said no error was
+captured. `tsip_model_run_progress.error` is indeed null, but
+`tsip_data_compass_runs.error_message` is populated on **16 of 173** empty-context
+steps (and 39 of 962 healthy ones). Every single one reads:
+
+```
+All 1 rows failed
+```
+
+No status code, no exception, no stack. And errors appear in both populations, so
+this message does not distinguish them.
+
+**3. The backfill step runs and does target the outline.** Datadog shows
+`Backfill task data: <task> fields="task_outline"` immediately before the move on
+every failing run. So the field is being written **empty** — the step is not
+skipped, and there is no missing-field guard downstream.
+
+## New from the logs
+
+- Every regeneration logs
+  `Transition into compass workflow state 'generating_outline' … has no attemptId;
+  falling back to latest submitted attempt` (warn). That is why all three runs on
+  a looper reuse the same `attempt_id` — hypothesis 15 above is confirmed as
+  behaviour, though not yet as a cause.
+- Every run ends with
+  `Workflow callback ignored: reason=wrong_state … current=decomp_review` (warn) —
+  the callback lands after the task has already moved.
+- The row-level output of each step is written to a blob
+  (`data-compass/compass-…`), not into `output_data`, which carries only headers.
+  Those headers include `task_outline_og`, `task_outline_og_workbook` and
+  `task_outline_og_run_id` — **the agent's actual response is captured in that
+  blob.** Anyone who can read that bucket can see exactly what the agent returned
+  on a failing run, which would settle this.
+
+## The single most useful next step
+
+Read one failing run's blob (`blobPath` from `tsip_data_compass_runs` for a
+`modal-claude-agent` step with `input_tokens < 10000`) and look at
+`task_outline_og`. That is the agent's raw answer. Everything above is inference
+from token counts and durations; that blob is the primary source.
+
+Failing that, ship the Modal worker's stdout to Datadog — right now the layer
+that knows what happened is the only one that does not log.
