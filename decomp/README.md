@@ -61,6 +61,18 @@ The 173 open ones are exactly the unexited remainder of 08-31 (88) plus all of
 reviewer availability, not on decomp quality — the same batching effect
 documented for AHT in `../aht/README.md`.
 
+## Content triage
+
+[`DECOMP_REVIEW_TRIAGE.md`](DECOMP_REVIEW_TRIAGE.md) analyses what is actually in
+the live sheets queue. Two things came out of it that outrank the queue depth:
+
+- The state's own `APPROVE` action has fired **once, ever**; `REQUEST_CHANGES`
+  never. `pool.enabled` is `false` in the pipeline, so no reviewer can claim
+  these — three staff clear the stage by admin override.
+- `generating_outline` is silently producing decomps with **no outline** and
+  advancing them to review anyway: 0% of arrivals before 08-20, 22% today. That
+  is 34 of the 178 live tasks with nothing to review.
+
 ## Files
 
 | File | Use |
@@ -68,3 +80,6 @@ documented for AHT in `../aht/README.md`.
 | `decomp_review_queue.sql` | The list. Matches both state names, flags archived rather than dropping it, and takes entry time from the transition log (not `tasks.updated_at`, which any unrelated write bumps). |
 | `decomp_review_queue.csv` | Its output at the snapshot time above. Re-run the SQL for a live figure — this queue turns over in about a day. |
 | `decomp_review_flow.sql` | Inflow, dwell and exit destinations by day. Run this before calling any queue depth good or bad. |
+| `DECOMP_REVIEW_TRIAGE.md` | What's wrong with the live tasks and what to send back. |
+| `decomp_review_triage.csv` | Per-task bucket, signals and recommended action. |
+| `live_decomp_fields.sql` / `.csv` | Decomp content fields per live task. |
