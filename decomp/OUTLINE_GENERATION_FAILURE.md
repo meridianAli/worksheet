@@ -320,3 +320,34 @@ measure the two files Ali uploaded. Before acting on the bloat theory, count
 `definedNames` across a sample of failing and succeeding pairs. The size
 correlation and the 08-26 onset in the sections above do not depend on this and
 still stand on their own.
+
+## Where in the workbook is the junk? Nowhere — and that makes the fix safe
+
+Asked which tab holds it. None: `<definedNames>` is a workbook-level part, not
+sheet content. Scanning every cell of both files:
+
+| | Input `049-N-1` | Output `049-N-0` |
+|---|---:|---:|
+| Defined names | 14,106 | 14,106 |
+| …referenced by any formula in any cell | **0** | **0** |
+| Cells containing `#REF!` | **0** | **0** |
+| Names scoped to a sheet (`localSheetId`) | 585 | 585 |
+| Names that reference a sheet at all | 10 (9 are `_xlnm.Print_Area`) | 10 |
+
+The 585 sheet-scoped ones cluster on `4. Assumptions` (166), `Appendix` (151),
+`2. Financial & Valuation Sum` (113), `DCF` (75) and `OSP Pipeline Extract` (74),
+but scope is only a namespace — they still hold literal values, not cell ranges,
+and no formula reads them.
+
+Two tells that they are inert: `___ccc2` appears four times with an identical
+value, scoped to three tabs and once globally, every copy `hidden="1"`; and
+`HTML_Control` points at `'FY98 BP2'!$A$1:$K$27`, a tab that does not exist in
+this workbook.
+
+**This is what makes fix (1) above safe.** Stripping `<definedNames>` before
+serialising cannot change a single computed value here, because nothing in either
+workbook refers to them — while removing 46% of the input file's bytes. Keep the
+nine `_xlnm.Print_Area` entries if print ranges matter; drop the rest.
+
+Worth re-checking on a couple more pairs before making it a rule, since this is
+still one pair.
