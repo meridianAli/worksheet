@@ -118,3 +118,102 @@ empty-context band. Nothing reaps them.
 | File | Use |
 |---|---|
 | `outline_generator_failure.sql` | The daily empty-context trend, plus the same-file-succeeds-elsewhere proof to re-run on any failing task. |
+
+---
+
+# Follow-up: are the input and output workbooks the same?
+
+Short answer: **no, never** — but the question found a real mistake in the
+section above, and changed part of the conclusion.
+
+## Correcting the "same file succeeds elsewhere" proof
+
+The files the outline agent actually reads are the pair carried in
+`tsip_attempts.messages`, annotated `input_workbook` and `output_workbook`.
+That is **not** `metadata->'uploaded_workbooks'`, which is the source model the
+decomper started from. My proof above compared `uploaded_workbooks`, so it did
+not test what the agent reads.
+
+The real pair for each looper:
+
+| Task | input_workbook | output_workbook |
+|---|---|---|
+| 41fbe12c | `049-N-1.xlsx`, 330,323 B | `049-N-0.xlsx`, 479,691 B |
+| 4c77fbdb | `327-N-3.xlsx`, 1,480,809 B | `327-N-2.xlsx`, 1,857,372 B |
+
+Different files, different content hashes, sizes in the expected direction
+(output is the fuller later-stage workbook). **Each of these four files is used
+by exactly one task**, so the same-file-succeeds-elsewhere test cannot be run on
+the agent's real inputs at all. Treat that argument as withdrawn.
+
+## Input and output are never identical
+
+Across 21 days of arrivals, on the real pair:
+
+| | Tasks | Same file id | Same content hash |
+|---|---:|---:|---:|
+| Got an outline | 1,564 | 0 | 0 |
+| No outline | 38 | 0 | 0 |
+
+Both sides are present on every failing task, no missing blobs. The pair on a
+failing task is structurally normal: median output/input size ratio 1.07 on
+failures vs 1.12 on successes, and "output smaller than input" is just as rare
+in both. So an empty or degenerate diff is not what is happening.
+
+## But size does matter — and I understated it
+
+Measured on the correct pair, failing tasks carry **4.3× more workbook**:
+median 2,990 KB vs 701 KB. Failure rate rises monotonically with it:
+
+| Combined input+output size | Tasks | Failed | % |
+|---|---:|---:|---:|
+| <0.5 MB | 851 | 4 | 0.5% |
+| 0.5–1 MB | 228 | 4 | 1.8% |
+| 1–2 MB | 235 | 4 | 1.7% |
+| 2–4 MB | 175 | 12 | 6.9% |
+| 4–8 MB | 60 | 7 | 11.7% |
+| 8 MB+ | 51 | 7 | 13.7% |
+
+Incoming workbooks have also grown: median pair size ran 150–400 KB for most of
+August and is 897–1,205 KB since 08-30. So "the files got bigger" is a real
+candidate explanation for the trend, independent of any code change.
+
+## Holding size fixed, the 08-26 onset survives
+
+This is the test that separates the two:
+
+| Size band | Before 08-26 | From 08-26 |
+|---|---|---|
+| **4 MB+** | **0.0%** (0 of 42) | **20.3%** (14 of 69) |
+| 1–4 MB | 0.9% (1 of 115) | 5.1% (15 of 295) |
+| <1 MB | 0.4% (2 of 555) | 1.1% (6 of 524) |
+
+Before 08-26, **42 consecutive tasks at 4 MB+ all succeeded**. Large workbooks
+were not failing; they started failing on 08-26. Size is a risk multiplier for
+the new defect, not the cause of it — which means bigger inputs make the bug
+bite more often but do not explain it, and shrinking workbooks would only mask
+it.
+
+Net: the conclusion holds — bisect the 08-26 change — and the bisect should look
+hardest at how large workbook attachments are handled, since that is where the
+regression bites.
+
+## One number to state carefully
+
+Two defect rates appear in these notes and they measure different things. Over
+the last 7 days:
+
+- **122 of 1,063 arrivals (11.5%)** into `decomp_review` had no outline. This is
+  what a reviewer opens and finds empty.
+- **35 of 923 tasks (3.8%)** never got an outline on any attempt. The rest
+  recovered on a later regeneration.
+
+Which means regeneration usually *does* work — most tasks recover on a retry.
+That makes the two loopers genuinely unusual: 3 out of 3 reruns failed on both,
+which is why they need the fix rather than another bounce.
+
+## Files
+
+| File | Use |
+|---|---|
+| `workbook_pair_check.sql` | Resolves the real input/output pair, tests input-equals-output, and runs the size-held-fixed comparison. |
