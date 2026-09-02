@@ -1,179 +1,179 @@
-group,triage_bucket,task_id,status,sota_bucket,last_event,last_from,last_change_utc,by
-Approved this evening (133),E_normal,2a84446d-f83e-42ac-95a0-9f1b2aa0ec2a,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:06.647Z,ali@meridian.ai
-Approved this evening (133),E_normal,2eac6da2-9e56-44ba-8a41-74e966254a0f,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:06.789Z,ali@meridian.ai
-Approved this evening (133),E_normal,4312b7a6-a8b4-45c6-9603-1ebae8181768,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:06.913Z,ali@meridian.ai
-Approved this evening (133),E_normal,5e62a2fe-799d-4409-8d1a-ddd710f97680,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:07.047Z,ali@meridian.ai
-Approved this evening (133),E_normal,78d79a0f-f8bb-4ff1-b68e-cc807c1b7a7d,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:07.166Z,ali@meridian.ai
-Approved this evening (133),E_normal,7d188dd8-5faf-4ca6-9d49-e998259f65fa,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:07.295Z,ali@meridian.ai
-Approved this evening (133),E_normal,85395a85-46e5-4b11-84c8-6ca4c9834d8d,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:07.429Z,ali@meridian.ai
-Approved this evening (133),E_normal,8c74f458-c3aa-4bf4-a473-a77f9bb0ab62,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:07.557Z,ali@meridian.ai
-Approved this evening (133),E_normal,9414bc28-d667-4ddb-9b72-9f553cc5406d,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:07.691Z,ali@meridian.ai
-Approved this evening (133),E_normal,a931e10b-a2ce-4ebd-bc61-4ed0a6c48107,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:07.809Z,ali@meridian.ai
-Approved this evening (133),E_normal,a9e4edde-37ec-4166-a504-269dfdbdf342,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:07.929Z,ali@meridian.ai
-Approved this evening (133),E_normal,c8d264cf-564c-41bc-81bc-55a8b63dfdad,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:08.086Z,ali@meridian.ai
-Approved this evening (133),E_normal,eb71af81-a941-4846-8f5e-d306e9148e4a,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:08.218Z,ali@meridian.ai
-Approved this evening (133),E_normal,f9dbac06-1276-4e8b-9b94-eabb18ee6504,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:08.355Z,ali@meridian.ai
-Approved this evening (133),E_normal,ffc15df8-62c9-4395-b58f-19fb5a4902b7,generating_prompt,,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:08.474Z,ali@meridian.ai
-Approved this evening (133),E_normal,b870b699-5e43-4301-a4d6-0702d055b31c,generating_rubric,,PROMPT_GENERATED,generating_prompt,2026-09-01T23:51:54.261Z,system@tsip.ai
-Approved this evening (133),E_normal,e436808a-f182-4838-bf56-dafedfe37895,generating_rubric,,PROMPT_GENERATED,generating_prompt,2026-09-01T23:29:46.851Z,system@tsip.ai
-Approved this evening (133),E_normal,02b708e2-3b43-4586-b10c-183b77a37107,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:42.056Z,system@tsip.ai
-Approved this evening (133),E_normal,04cb21d3-1a9f-43e9-8aa8-ebc2bd8a5af3,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:51.387Z,system@tsip.ai
-Approved this evening (133),E_normal,0535b002-6450-4613-910c-e40c32b5acdd,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:13.387Z,system@tsip.ai
-Approved this evening (133),E_normal,05940599-09b8-440e-95d9-4e554acc3aa6,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:32:54.215Z,system@tsip.ai
-Approved this evening (133),E_normal,072939b3-f093-4fbf-a193-8f3ad7461ecf,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:11.056Z,system@tsip.ai
-Approved this evening (133),E_normal,07fb55f1-ee8f-4ffe-be3a-c2dfd9722667,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:24.861Z,system@tsip.ai
-Approved this evening (133),E_normal,0ad44f5e-1c76-4401-9144-9f9914bc0f0a,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:28.65Z,system@tsip.ai
-Approved this evening (133),E_normal,0e213187-02ef-4583-82fe-c76aa908191c,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:45.234Z,system@tsip.ai
-Approved this evening (133),E_normal,117d95e7-3009-4f4d-b98b-1cbf70b752e4,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:32:26.836Z,system@tsip.ai
-Approved this evening (133),E_normal,14e47c1b-8d63-4f38-9b17-d33268e6cad9,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:28.616Z,system@tsip.ai
-Approved this evening (133),E_normal,17a8458f-4e1f-42c1-abbc-bf6e8d9f7b17,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:42:26.986Z,system@tsip.ai
-Approved this evening (133),E_normal,186f9114-b319-4a06-991a-b6730fe9e23c,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:26.981Z,system@tsip.ai
-Approved this evening (133),E_normal,1d7aca1e-1710-4589-9f9c-f366585ddcdf,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:44.797Z,system@tsip.ai
-Approved this evening (133),E_normal,1ebee744-f319-46bc-bf8b-ffe51f25b37e,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:12.807Z,system@tsip.ai
-Approved this evening (133),E_normal,1ee838f2-3e3f-4655-8830-84e38e81302c,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:18.177Z,system@tsip.ai
-Approved this evening (133),E_normal,2378305a-efeb-401d-9a38-bc0796d63e1f,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:40.971Z,system@tsip.ai
-Approved this evening (133),E_normal,25f20ed8-ac73-48a4-898f-c5d6ef6a6245,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:37.485Z,system@tsip.ai
-Approved this evening (133),E_normal,2684df5d-9391-4120-8343-5b092985b523,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:02.535Z,system@tsip.ai
-Approved this evening (133),E_normal,2aa8b1c2-7521-454e-b4c7-09e00b142087,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:53.087Z,system@tsip.ai
-Approved this evening (133),E_normal,2f25a60b-e00e-4212-98db-dc7239e39280,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:55.605Z,system@tsip.ai
-Approved this evening (133),E_normal,34cd305c-21f6-4fec-9dbd-248d663d3dd0,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:32:20.722Z,system@tsip.ai
-Approved this evening (133),E_normal,34e65e0e-a8c3-49d3-b33d-5b1cb16a1fae,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:44:00.596Z,system@tsip.ai
-Approved this evening (133),E_normal,392cbf0f-07f5-4eac-b591-5bbdfbd85748,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:30:54.78Z,system@tsip.ai
-Approved this evening (133),E_normal,393bff95-3ca9-4d21-bac3-3d606b12a888,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:08.101Z,system@tsip.ai
-Approved this evening (133),E_normal,3d566beb-4086-4248-862e-782012ec0e06,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:32:03.627Z,system@tsip.ai
-Approved this evening (133),E_normal,3efe8d0d-6cdd-4568-91a5-c4551faaa067,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:51.788Z,system@tsip.ai
-Approved this evening (133),E_normal,40242b05-fcaa-4e15-b491-55db2e3fa7b6,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:47.299Z,system@tsip.ai
-Approved this evening (133),E_normal,41623d94-eb84-4c0a-ae02-564f6035ae8a,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:42:08.943Z,system@tsip.ai
-Approved this evening (133),E_normal,429ddff7-0f57-4cf9-8b02-fea8586f77fd,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:24.498Z,system@tsip.ai
-Approved this evening (133),E_normal,43f5fc8c-cdb2-432f-a1c7-614167e8aec4,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:18.128Z,system@tsip.ai
-Approved this evening (133),E_normal,4481ca73-a949-499a-8fe7-a4c37b155beb,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:22.788Z,system@tsip.ai
-Approved this evening (133),E_normal,45b5d0e5-d84a-4f38-95c4-41478030285c,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:53.285Z,system@tsip.ai
-Approved this evening (133),E_normal,4742d467-8694-49bb-a004-21f3536366c1,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:58.814Z,system@tsip.ai
-Approved this evening (133),E_normal,478baae0-862e-4fa4-9b9e-2fabc2f6cc66,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:45.92Z,system@tsip.ai
-Approved this evening (133),E_normal,490ad180-4522-4f9b-b4b9-d3883264b29b,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:16.73Z,system@tsip.ai
-Approved this evening (133),E_normal,4f8441c6-a6c9-4298-8350-b072f2aa669e,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:38.644Z,system@tsip.ai
-Approved this evening (133),E_normal,4fc78b5f-2d41-4d53-a7e3-96c2845e00ae,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:57.954Z,system@tsip.ai
-Approved this evening (133),E_normal,56bd2c85-6c18-42ce-ba8d-7dec97cd2ba9,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:14.811Z,system@tsip.ai
-Approved this evening (133),E_normal,59393fd4-15ba-456b-9042-d853065d4c20,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:42:05.035Z,system@tsip.ai
-Approved this evening (133),E_normal,599b6306-679f-41cf-9d66-6f2b621d8217,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:08.002Z,system@tsip.ai
-Approved this evening (133),E_normal,601a6f42-8d27-4ec6-91d8-628d1df05c37,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:03.486Z,system@tsip.ai
-Approved this evening (133),E_normal,6179c729-416b-4071-80e9-0cc420016a4d,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:45.176Z,system@tsip.ai
-Approved this evening (133),E_normal,6a31480b-075d-4854-bfb0-6598b665fd45,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:47:37.568Z,system@tsip.ai
-Approved this evening (133),E_normal,6e35100e-bff4-4eb1-a5a8-5237d1d6e695,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:04.348Z,system@tsip.ai
-Approved this evening (133),E_normal,6ff6e25e-d1da-4234-842b-423959c16fba,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:49.603Z,system@tsip.ai
-Approved this evening (133),E_normal,7047ad87-069b-468d-bb26-d319104022ae,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:37.799Z,system@tsip.ai
-Approved this evening (133),E_normal,706161cd-d178-4574-89c7-4ff28401c020,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:21.632Z,system@tsip.ai
-Approved this evening (133),E_normal,72815287-8ad4-4681-9886-405a6b7b4685,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:50.946Z,system@tsip.ai
-Approved this evening (133),E_normal,736eee45-77e4-4ad4-a466-ebdf19a0f48c,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:41:55.41Z,system@tsip.ai
-Approved this evening (133),E_normal,7b9f45df-a40a-42a3-afbd-d9992d212e8a,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:44:56.222Z,system@tsip.ai
-Approved this evening (133),E_normal,7ba83d83-518a-4836-aea8-a66be5521bbe,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:43.357Z,system@tsip.ai
-Approved this evening (133),E_normal,7e397e70-bfa2-4589-9e04-3b8e018c802f,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:17.339Z,system@tsip.ai
-Approved this evening (133),E_normal,8735bfff-0033-409a-acf4-45a6181fe67a,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:17.393Z,system@tsip.ai
-Approved this evening (133),E_normal,8776c673-873b-40ca-964f-ab6002356f85,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:38:14.949Z,system@tsip.ai
-Approved this evening (133),E_normal,8bc7720c-9f6b-4947-a582-a991605a030e,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:34.219Z,system@tsip.ai
-Approved this evening (133),E_normal,9060244e-a67d-4e4c-addd-aa8192912d7f,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:42.713Z,system@tsip.ai
-Approved this evening (133),E_normal,90b86cf2-0aef-4ffe-8f02-f889c2447368,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:59:26.35Z,system@tsip.ai
-Approved this evening (133),E_normal,953ced4a-3aec-409f-85e0-4eff1c5175ae,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:43:09.435Z,system@tsip.ai
-Approved this evening (133),E_normal,9de6b42d-f8d5-42b9-b2ca-1ed8da989b18,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:38.164Z,system@tsip.ai
-Approved this evening (133),E_normal,9fd66093-40f8-4f7f-9aed-9d9021a27272,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:33.889Z,system@tsip.ai
-Approved this evening (133),E_normal,a17dd78f-8244-4bc5-ab45-c313b7d78090,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:11.645Z,system@tsip.ai
-Approved this evening (133),E_normal,a1a80071-895a-4e18-80ca-106f73e272c5,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:47.67Z,system@tsip.ai
-Approved this evening (133),E_normal,a5fee93e-50ad-45b0-a41a-7c436718652d,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:16.463Z,system@tsip.ai
-Approved this evening (133),E_normal,a61329be-db9b-4b32-ba08-3ca3b1093191,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:58:28.605Z,system@tsip.ai
-Approved this evening (133),E_normal,a61d7179-bc1c-4f48-8ca0-b3a0dda193be,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:43:22.788Z,system@tsip.ai
-Approved this evening (133),E_normal,abd59dc2-3502-4613-91e5-23a6ec13cca1,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:31.967Z,system@tsip.ai
-Approved this evening (133),E_normal,ae1f0d20-d707-486c-ab48-505dc7e96a11,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:05.998Z,system@tsip.ai
-Approved this evening (133),E_normal,ae7bc593-fdc3-4152-8209-05c554cb843b,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:42:37.896Z,system@tsip.ai
-Approved this evening (133),E_normal,b0d08194-bdcd-46b2-b1a4-fe6f678bf020,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:24.353Z,system@tsip.ai
-Approved this evening (133),E_normal,b76db193-b1ab-4837-896f-5798f5722239,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:47:02.301Z,system@tsip.ai
-Approved this evening (133),E_normal,b7f300f9-e5bc-4533-bb18-e9b6295c8676,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:38:33.254Z,system@tsip.ai
-Approved this evening (133),E_normal,bb0c800d-c724-462f-a75b-e0e50d48b671,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:43.32Z,system@tsip.ai
-Approved this evening (133),E_normal,be60edee-ddba-4ea2-8197-742d892e0bb5,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:39.447Z,system@tsip.ai
-Approved this evening (133),E_normal,c02a0444-8574-487f-a8e2-1579e9668891,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-02T00:00:08.545Z,system@tsip.ai
-Approved this evening (133),E_normal,c03d377d-ff0c-4ede-bb05-58ab70cef912,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:40.417Z,system@tsip.ai
-Approved this evening (133),E_normal,c1dd2cc7-184f-4b77-8465-04cb7bd5230e,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:41:08.217Z,system@tsip.ai
-Approved this evening (133),E_normal,c21fa65a-c217-48c8-a861-206d90d5f349,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:24.704Z,system@tsip.ai
-Approved this evening (133),E_normal,c6881e77-6ce5-48a3-8cde-8879e2cc4f54,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:32.357Z,system@tsip.ai
-Approved this evening (133),E_normal,c6c2c383-40f8-4b75-801f-980b1b4be5c1,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:52.242Z,system@tsip.ai
-Approved this evening (133),E_normal,c711c7e1-2fdf-4a32-a2f9-2d218ea18939,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:39.163Z,system@tsip.ai
-Approved this evening (133),E_normal,c8122ae2-572f-4c4c-896b-92a0c59ab6e5,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:47.125Z,system@tsip.ai
-Approved this evening (133),E_normal,caac96ee-ee52-4cfa-938b-72f6aed47093,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:07.238Z,system@tsip.ai
-Approved this evening (133),E_normal,cdd347b0-0823-46ea-9871-f165be09a06e,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:25.792Z,system@tsip.ai
-Approved this evening (133),E_normal,ce3adf8a-a904-4ad8-9142-45904478d50b,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:02.004Z,system@tsip.ai
-Approved this evening (133),E_normal,cf052c64-e482-4c9c-963f-951bf025d47d,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:31.123Z,system@tsip.ai
-Approved this evening (133),E_normal,cfd603d7-cfce-4222-b081-03e0f5c0d8b2,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:41.833Z,system@tsip.ai
-Approved this evening (133),E_normal,d1def115-04e5-4845-9c8b-1dd0e1d1b70b,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:49.019Z,system@tsip.ai
-Approved this evening (133),E_normal,d243f0c2-082c-447e-90ef-de76d6930e9b,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:08.165Z,system@tsip.ai
-Approved this evening (133),E_normal,d30ebc47-41f2-4bb5-9baf-b85d50c5b2dd,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:52:14.17Z,system@tsip.ai
-Approved this evening (133),E_normal,d468c4ab-a54d-46df-90ae-8932a3ce74e7,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:56.329Z,system@tsip.ai
-Approved this evening (133),E_normal,d689b174-e123-4eef-991c-43df47982113,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:16.631Z,system@tsip.ai
-Approved this evening (133),E_normal,d73b8b79-d867-4f0b-a60d-d2f8e4c2e15d,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:32:42.174Z,system@tsip.ai
-Approved this evening (133),E_normal,d7d73ffc-80a7-4b89-ad31-e00a4d1d4b7b,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:06.771Z,system@tsip.ai
-Approved this evening (133),E_normal,d83a88dd-0b7b-4448-8527-2944685a392a,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:21.43Z,system@tsip.ai
-Approved this evening (133),E_normal,db200501-bf69-430b-8d58-2650bdf4dae9,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:18.106Z,system@tsip.ai
-Approved this evening (133),E_normal,dca7a57c-9276-4ddb-ac76-3f6e6a8bc4ba,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:46.629Z,system@tsip.ai
-Approved this evening (133),E_normal,ddeaff1e-2f87-4a14-8e0f-02f41107900d,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:38.418Z,system@tsip.ai
-Approved this evening (133),E_normal,dff030df-30ea-42d7-9d08-e866a74bf3a8,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:04.196Z,system@tsip.ai
-Approved this evening (133),E_normal,e1e788eb-4aee-46ae-a4c8-8c271696c327,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:35.312Z,system@tsip.ai
-Approved this evening (133),E_normal,e7ad7081-e481-4e6d-a244-be09a3a967e7,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:33.05Z,system@tsip.ai
-Approved this evening (133),E_normal,e9e97145-24b5-48a3-a07e-6dd14f01245c,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:04.191Z,system@tsip.ai
-Approved this evening (133),E_normal,ea65206a-730f-457c-91e4-242be3e33b4d,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:53.042Z,system@tsip.ai
-Approved this evening (133),E_normal,ea977dc5-bce1-4021-9743-ac686da63fef,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:28.517Z,system@tsip.ai
-Approved this evening (133),E_normal,ee944e4c-94c7-4fe0-961f-ace7bf09423a,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:29.73Z,system@tsip.ai
-Approved this evening (133),E_normal,efeb10eb-4ebf-45aa-908d-20b66499047d,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:39.556Z,system@tsip.ai
-Approved this evening (133),E_normal,f30a8ecf-df4e-4f03-8714-f7ae455f7d4a,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:51.093Z,system@tsip.ai
-Approved this evening (133),E_normal,f3244a01-4e38-47df-aef9-bb807df375c1,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:38.836Z,system@tsip.ai
-Approved this evening (133),E_normal,f4082805-7223-4d01-b505-17c98552daf0,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:20.889Z,system@tsip.ai
-Approved this evening (133),E_normal,f5133322-4c38-46e9-af41-5f0db8f28335,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:17.104Z,system@tsip.ai
-Approved this evening (133),E_normal,f99123da-d14d-4324-96a0-ce1c3921dec3,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:53.486Z,system@tsip.ai
-Approved this evening (133),E_normal,fc46c1c0-4441-49a1-a1cf-aca50dd60c10,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:23.225Z,system@tsip.ai
-Approved this evening (133),E_normal,fc6ded3e-6ae8-444f-976e-1c297aa1d1db,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:29.322Z,system@tsip.ai
-Approved this evening (133),E_normal,fc7eba84-31fd-4c8b-a365-8693c04e3e87,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:15.803Z,system@tsip.ai
-Approved this evening (133),E_normal,fcb936ce-8d6e-461d-a814-c683db0a3aef,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:12.417Z,system@tsip.ai
-Approved this evening (133),E_normal,fccbf3e9-e773-48e7-a40d-1e9c20fd0016,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:55.317Z,system@tsip.ai
-Approved this evening (133),E_normal,fd010b55-3828-42ca-b7ea-d9eb29b9dfae,needs_sota_eval,,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:29:38.784Z,system@tsip.ai
-Pushed back to outline generation (45),D_thin_transition,018939a8-5f2a-46e7-9f5b-309a20147f37,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:56:55.103Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,0e3f0394-b3e2-4e6c-836e-704eff6c48e2,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:45.69Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,15a0ebf7-8354-4e97-bdfd-764a03bef9ee,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:03:58.784Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,1998a617-9037-46d2-912b-adfdb4441444,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:01:34.674Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,1ef09f14-3119-434f-b561-884e196c6caa,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:03.751Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,21d534e3-8c09-46e5-8a5d-b5c55c8522a2,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:02:05.346Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,25613ef5-50aa-4ab2-b49a-4ea4b4dc519a,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:11:27.227Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,27b833b2-b759-439b-aa91-db78616e22b8,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:02:12.566Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,29ea5ad8-04b1-4dc4-8220-ae9df37ae12d,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:14.737Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,2a63059e-b08b-495f-90df-23bb38eccd3f,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:36.49Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,337252e6-80dc-4b36-b284-7b83b4e5617f,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:12:39.603Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,3d3b229e-0507-4539-8343-193a679d5f5c,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:01:23.334Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,3d458c2a-cfe5-4a22-9f35-1c48780f5a38,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:16.173Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,4073b29f-25e1-4432-8bf5-0b7c4be497db,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:01:22.58Z,system@tsip.ai
-Pushed back to outline generation (45),B_thin_outline,40827f51-9058-4a34-aa53-cffedf1af118,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:57:24.992Z,system@tsip.ai
-Pushed back to outline generation (45),A2_no_outline_looping,41fbe12c-7c20-463d-96e8-4ae8700d1c0d,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T23:00:07.706Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,443385cc-42c6-486b-ac8e-fd8724d99160,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:00:10.553Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,4f56a4bf-a1c1-4a5a-a04b-0002394e52c8,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:09:38.535Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,552a9578-aaf8-453b-8f58-e85a1ed40315,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:04:30.828Z,system@tsip.ai
-Pushed back to outline generation (45),B_thin_outline,5a1f3794-1251-431a-b97d-4cf2107ffed8,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:57:39.767Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,5da033e5-0b26-4526-afaf-8e71e57612a4,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:58:49.237Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,62d0dff1-ef18-40ae-879c-f7dd0fc7a67e,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:29.857Z,system@tsip.ai
-Pushed back to outline generation (45),D_thin_transition,69633abd-f051-404b-81ac-eff6a9593427,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:58:38.534Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,7215fd35-f477-44af-b6f1-b38348ebe264,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:58:26.611Z,system@tsip.ai
-Pushed back to outline generation (45),C_truncated_outline,79036bd8-09a6-44ef-a84d-8985ace5476e,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:57:38.077Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,7b4c773f-02c0-42cf-a37b-04b6773b86c0,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:00:14.612Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,87a8cf29-f488-4921-98df-9fbb785aa0b0,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:00:23.705Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,8a8066ff-7624-4fc5-981f-52a666b28967,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:07:54.988Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,8c19520c-b2d2-449b-a1f8-b426e81df053,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:04:21.323Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,906892cf-1049-4c2d-99ef-404e461c776f,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:01:17.099Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,92b20cff-2188-474c-b966-e33ada1437ee,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:00:41.475Z,system@tsip.ai
-Pushed back to outline generation (45),C_truncated_outline,95606585-8665-475b-ac9c-eb5fae04a8f6,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:59:46.149Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,a5f013b8-ef14-4437-bea0-630504093c40,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:09:41.859Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,c4ba7c97-5f2e-4e3e-8f63-3d68539868bc,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:34.592Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,cfb56338-4a27-42d5-9e0d-9e59b2fa8640,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:02:51.371Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,d010dfa4-e4d0-42a5-a7f6-a3ef1e58e0e9,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:09:39.474Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,e8ad8af9-0dc2-4a47-915d-69799551aad9,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:26.933Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,f776f992-cd34-452b-adfe-e65148c3c247,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:58:31.425Z,system@tsip.ai
-Pushed back to outline generation (45),A1_no_outline,f7e83778-a8c1-4c8a-a43a-f2c40548cdf6,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:00:14.058Z,system@tsip.ai
-Pushed back to outline generation (45),B_thin_outline,fa5950c9-4c71-4406-83bf-8fd81fc6ff67,decomp_review,,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:59:31.287Z,system@tsip.ai
-Pushed back to outline generation (45),A2_no_outline_looping,4c77fbdb-8d12-4a84-b0db-a219bf7fe2a5,failed_generating_outline,,TASK_OUTLINE_FAILED,generating_outline,2026-09-01T22:59:19.648Z,system@tsip.ai
-Pushed back to outline generation (45),B_thin_outline,5961c436-e583-4000-ad25-cc8e11a634ae,failed_generating_outline,,TASK_OUTLINE_FAILED,generating_outline,2026-09-01T22:59:19.883Z,system@tsip.ai
-Pushed back to outline generation (45),C_truncated_outline,9f656c96-9ce4-44ad-b96a-18b953565b82,failed_generating_outline,,TASK_OUTLINE_FAILED,generating_outline,2026-09-01T22:59:21.362Z,system@tsip.ai
-Pushed back to outline generation (45),B_thin_outline,c4ed90cb-4e82-408b-82fa-f52a782f72d3,failed_generating_outline,,TASK_OUTLINE_FAILED,generating_outline,2026-09-01T22:59:20.634Z,system@tsip.ai
-Pushed back to outline generation (45),D_thin_transition,f925d988-87c3-4cb0-a396-b583b2949382,failed_generating_outline,,TASK_OUTLINE_FAILED,generating_outline,2026-09-01T22:59:21.53Z,system@tsip.ai
+group,triage_bucket,task_id,status_now,status_at_0001utc,moved,sota_bucket,outline_chars,last_event,last_from,last_change_utc,by
+Approved 133,E_normal,5e62a2fe-799d-4409-8d1a-ddd710f97680,generating_prompt,generating_prompt,False,,6939,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:07.047Z,ali@meridian.ai
+Approved 133,E_normal,78d79a0f-f8bb-4ff1-b68e-cc807c1b7a7d,generating_prompt,generating_prompt,False,,10199,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:07.166Z,ali@meridian.ai
+Approved 133,E_normal,f9dbac06-1276-4e8b-9b94-eabb18ee6504,generating_prompt,generating_prompt,False,,9098,ADMIN_OVERRIDE,failed_generating_prompt,2026-09-01T23:57:08.355Z,ali@meridian.ai
+Approved 133,E_normal,2a84446d-f83e-42ac-95a0-9f1b2aa0ec2a,generating_rubric,generating_prompt,True,,4713,PROMPT_GENERATED,generating_prompt,2026-09-02T00:02:11.126Z,system@tsip.ai
+Approved 133,E_normal,2eac6da2-9e56-44ba-8a41-74e966254a0f,generating_rubric,generating_prompt,True,,4844,PROMPT_GENERATED,generating_prompt,2026-09-02T00:02:41.993Z,system@tsip.ai
+Approved 133,E_normal,4312b7a6-a8b4-45c6-9603-1ebae8181768,generating_rubric,generating_prompt,True,,13619,PROMPT_GENERATED,generating_prompt,2026-09-02T00:03:27.185Z,system@tsip.ai
+Approved 133,E_normal,7d188dd8-5faf-4ca6-9d49-e998259f65fa,generating_rubric,generating_prompt,True,,6531,PROMPT_GENERATED,generating_prompt,2026-09-02T00:02:51.915Z,system@tsip.ai
+Approved 133,E_normal,85395a85-46e5-4b11-84c8-6ca4c9834d8d,generating_rubric,generating_prompt,True,,5460,PROMPT_GENERATED,generating_prompt,2026-09-02T00:03:28.038Z,system@tsip.ai
+Approved 133,E_normal,9414bc28-d667-4ddb-9b72-9f553cc5406d,generating_rubric,generating_prompt,True,,9395,PROMPT_GENERATED,generating_prompt,2026-09-02T00:01:41.639Z,system@tsip.ai
+Approved 133,E_normal,c8d264cf-564c-41bc-81bc-55a8b63dfdad,generating_rubric,generating_prompt,True,,5200,PROMPT_GENERATED,generating_prompt,2026-09-02T00:02:36.493Z,system@tsip.ai
+Approved 133,E_normal,e436808a-f182-4838-bf56-dafedfe37895,generating_rubric,generating_rubric,False,,8168,PROMPT_GENERATED,generating_prompt,2026-09-01T23:29:46.851Z,system@tsip.ai
+Approved 133,E_normal,eb71af81-a941-4846-8f5e-d306e9148e4a,generating_rubric,generating_prompt,True,,14539,PROMPT_GENERATED,generating_prompt,2026-09-02T00:03:48.846Z,system@tsip.ai
+Approved 133,E_normal,ffc15df8-62c9-4395-b58f-19fb5a4902b7,generating_rubric,generating_prompt,True,,7096,PROMPT_GENERATED,generating_prompt,2026-09-02T00:03:07.322Z,system@tsip.ai
+Approved 133,E_normal,02b708e2-3b43-4586-b10c-183b77a37107,needs_sota_eval,needs_sota_eval,False,,6343,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:42.056Z,system@tsip.ai
+Approved 133,E_normal,04cb21d3-1a9f-43e9-8aa8-ebc2bd8a5af3,needs_sota_eval,needs_sota_eval,False,,6618,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:51.387Z,system@tsip.ai
+Approved 133,E_normal,0535b002-6450-4613-910c-e40c32b5acdd,needs_sota_eval,needs_sota_eval,False,,5509,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:13.387Z,system@tsip.ai
+Approved 133,E_normal,05940599-09b8-440e-95d9-4e554acc3aa6,needs_sota_eval,needs_sota_eval,False,,6170,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:32:54.215Z,system@tsip.ai
+Approved 133,E_normal,072939b3-f093-4fbf-a193-8f3ad7461ecf,needs_sota_eval,needs_sota_eval,False,,7213,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:11.056Z,system@tsip.ai
+Approved 133,E_normal,07fb55f1-ee8f-4ffe-be3a-c2dfd9722667,needs_sota_eval,needs_sota_eval,False,,5910,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:24.861Z,system@tsip.ai
+Approved 133,E_normal,0ad44f5e-1c76-4401-9144-9f9914bc0f0a,needs_sota_eval,needs_sota_eval,False,,10913,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:28.65Z,system@tsip.ai
+Approved 133,E_normal,0e213187-02ef-4583-82fe-c76aa908191c,needs_sota_eval,needs_sota_eval,False,,5439,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:45.234Z,system@tsip.ai
+Approved 133,E_normal,117d95e7-3009-4f4d-b98b-1cbf70b752e4,needs_sota_eval,needs_sota_eval,False,,5513,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:32:26.836Z,system@tsip.ai
+Approved 133,E_normal,14e47c1b-8d63-4f38-9b17-d33268e6cad9,needs_sota_eval,needs_sota_eval,False,,8888,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:28.616Z,system@tsip.ai
+Approved 133,E_normal,17a8458f-4e1f-42c1-abbc-bf6e8d9f7b17,needs_sota_eval,needs_sota_eval,False,,6700,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:42:26.986Z,system@tsip.ai
+Approved 133,E_normal,186f9114-b319-4a06-991a-b6730fe9e23c,needs_sota_eval,needs_sota_eval,False,,4997,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:26.981Z,system@tsip.ai
+Approved 133,E_normal,1d7aca1e-1710-4589-9f9c-f366585ddcdf,needs_sota_eval,needs_sota_eval,False,,5983,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:44.797Z,system@tsip.ai
+Approved 133,E_normal,1ebee744-f319-46bc-bf8b-ffe51f25b37e,needs_sota_eval,needs_sota_eval,False,,8190,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:12.807Z,system@tsip.ai
+Approved 133,E_normal,1ee838f2-3e3f-4655-8830-84e38e81302c,needs_sota_eval,needs_sota_eval,False,,7941,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:18.177Z,system@tsip.ai
+Approved 133,E_normal,2378305a-efeb-401d-9a38-bc0796d63e1f,needs_sota_eval,needs_sota_eval,False,,7799,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:40.971Z,system@tsip.ai
+Approved 133,E_normal,25f20ed8-ac73-48a4-898f-c5d6ef6a6245,needs_sota_eval,needs_sota_eval,False,,5037,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:37.485Z,system@tsip.ai
+Approved 133,E_normal,2684df5d-9391-4120-8343-5b092985b523,needs_sota_eval,needs_sota_eval,False,,8024,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:02.535Z,system@tsip.ai
+Approved 133,E_normal,2aa8b1c2-7521-454e-b4c7-09e00b142087,needs_sota_eval,needs_sota_eval,False,,7553,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:53.087Z,system@tsip.ai
+Approved 133,E_normal,2f25a60b-e00e-4212-98db-dc7239e39280,needs_sota_eval,needs_sota_eval,False,,7416,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:55.605Z,system@tsip.ai
+Approved 133,E_normal,34cd305c-21f6-4fec-9dbd-248d663d3dd0,needs_sota_eval,needs_sota_eval,False,,4655,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:32:20.722Z,system@tsip.ai
+Approved 133,E_normal,34e65e0e-a8c3-49d3-b33d-5b1cb16a1fae,needs_sota_eval,needs_sota_eval,False,,6570,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:44:00.596Z,system@tsip.ai
+Approved 133,E_normal,392cbf0f-07f5-4eac-b591-5bbdfbd85748,needs_sota_eval,needs_sota_eval,False,,5978,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:30:54.78Z,system@tsip.ai
+Approved 133,E_normal,393bff95-3ca9-4d21-bac3-3d606b12a888,needs_sota_eval,needs_sota_eval,False,,9160,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:08.101Z,system@tsip.ai
+Approved 133,E_normal,3d566beb-4086-4248-862e-782012ec0e06,needs_sota_eval,needs_sota_eval,False,,6474,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:32:03.627Z,system@tsip.ai
+Approved 133,E_normal,3efe8d0d-6cdd-4568-91a5-c4551faaa067,needs_sota_eval,needs_sota_eval,False,,5723,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:51.788Z,system@tsip.ai
+Approved 133,E_normal,40242b05-fcaa-4e15-b491-55db2e3fa7b6,needs_sota_eval,needs_sota_eval,False,,5264,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:47.299Z,system@tsip.ai
+Approved 133,E_normal,41623d94-eb84-4c0a-ae02-564f6035ae8a,needs_sota_eval,needs_sota_eval,False,,13431,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:42:08.943Z,system@tsip.ai
+Approved 133,E_normal,429ddff7-0f57-4cf9-8b02-fea8586f77fd,needs_sota_eval,needs_sota_eval,False,,8690,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:24.498Z,system@tsip.ai
+Approved 133,E_normal,43f5fc8c-cdb2-432f-a1c7-614167e8aec4,needs_sota_eval,needs_sota_eval,False,,10105,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:18.128Z,system@tsip.ai
+Approved 133,E_normal,4481ca73-a949-499a-8fe7-a4c37b155beb,needs_sota_eval,needs_sota_eval,False,,3922,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:22.788Z,system@tsip.ai
+Approved 133,E_normal,45b5d0e5-d84a-4f38-95c4-41478030285c,needs_sota_eval,needs_sota_eval,False,,11190,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:53.285Z,system@tsip.ai
+Approved 133,E_normal,4742d467-8694-49bb-a004-21f3536366c1,needs_sota_eval,needs_sota_eval,False,,9090,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:58.814Z,system@tsip.ai
+Approved 133,E_normal,478baae0-862e-4fa4-9b9e-2fabc2f6cc66,needs_sota_eval,needs_sota_eval,False,,9098,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:45.92Z,system@tsip.ai
+Approved 133,E_normal,490ad180-4522-4f9b-b4b9-d3883264b29b,needs_sota_eval,needs_sota_eval,False,,7866,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:16.73Z,system@tsip.ai
+Approved 133,E_normal,4f8441c6-a6c9-4298-8350-b072f2aa669e,needs_sota_eval,needs_sota_eval,False,,9309,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:38.644Z,system@tsip.ai
+Approved 133,E_normal,4fc78b5f-2d41-4d53-a7e3-96c2845e00ae,needs_sota_eval,needs_sota_eval,False,,5364,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:57.954Z,system@tsip.ai
+Approved 133,E_normal,56bd2c85-6c18-42ce-ba8d-7dec97cd2ba9,needs_sota_eval,needs_sota_eval,False,,7017,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:14.811Z,system@tsip.ai
+Approved 133,E_normal,59393fd4-15ba-456b-9042-d853065d4c20,needs_sota_eval,needs_sota_eval,False,,7653,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:42:05.035Z,system@tsip.ai
+Approved 133,E_normal,599b6306-679f-41cf-9d66-6f2b621d8217,needs_sota_eval,needs_sota_eval,False,,9359,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:08.002Z,system@tsip.ai
+Approved 133,E_normal,601a6f42-8d27-4ec6-91d8-628d1df05c37,needs_sota_eval,needs_sota_eval,False,,7491,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:03.486Z,system@tsip.ai
+Approved 133,E_normal,6179c729-416b-4071-80e9-0cc420016a4d,needs_sota_eval,needs_sota_eval,False,,5302,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:45.176Z,system@tsip.ai
+Approved 133,E_normal,6a31480b-075d-4854-bfb0-6598b665fd45,needs_sota_eval,needs_sota_eval,False,,9418,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:47:37.568Z,system@tsip.ai
+Approved 133,E_normal,6e35100e-bff4-4eb1-a5a8-5237d1d6e695,needs_sota_eval,needs_sota_eval,False,,6127,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:04.348Z,system@tsip.ai
+Approved 133,E_normal,6ff6e25e-d1da-4234-842b-423959c16fba,needs_sota_eval,needs_sota_eval,False,,10367,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:49.603Z,system@tsip.ai
+Approved 133,E_normal,7047ad87-069b-468d-bb26-d319104022ae,needs_sota_eval,needs_sota_eval,False,,6820,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:37.799Z,system@tsip.ai
+Approved 133,E_normal,706161cd-d178-4574-89c7-4ff28401c020,needs_sota_eval,needs_sota_eval,False,,7510,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:21.632Z,system@tsip.ai
+Approved 133,E_normal,72815287-8ad4-4681-9886-405a6b7b4685,needs_sota_eval,needs_sota_eval,False,,7601,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:50.946Z,system@tsip.ai
+Approved 133,E_normal,736eee45-77e4-4ad4-a466-ebdf19a0f48c,needs_sota_eval,needs_sota_eval,False,,8122,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:41:55.41Z,system@tsip.ai
+Approved 133,E_normal,7b9f45df-a40a-42a3-afbd-d9992d212e8a,needs_sota_eval,needs_sota_eval,False,,6045,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:44:56.222Z,system@tsip.ai
+Approved 133,E_normal,7ba83d83-518a-4836-aea8-a66be5521bbe,needs_sota_eval,needs_sota_eval,False,,7955,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:43.357Z,system@tsip.ai
+Approved 133,E_normal,7e397e70-bfa2-4589-9e04-3b8e018c802f,needs_sota_eval,needs_sota_eval,False,,5210,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:17.339Z,system@tsip.ai
+Approved 133,E_normal,8735bfff-0033-409a-acf4-45a6181fe67a,needs_sota_eval,needs_sota_eval,False,,5390,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:17.393Z,system@tsip.ai
+Approved 133,E_normal,8776c673-873b-40ca-964f-ab6002356f85,needs_sota_eval,needs_sota_eval,False,,4082,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:38:14.949Z,system@tsip.ai
+Approved 133,E_normal,8bc7720c-9f6b-4947-a582-a991605a030e,needs_sota_eval,needs_sota_eval,False,,8717,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:34.219Z,system@tsip.ai
+Approved 133,E_normal,8c74f458-c3aa-4bf4-a473-a77f9bb0ab62,needs_sota_eval,generating_prompt,True,,6557,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-02T00:03:10.904Z,system@tsip.ai
+Approved 133,E_normal,9060244e-a67d-4e4c-addd-aa8192912d7f,needs_sota_eval,needs_sota_eval,False,,5614,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:42.713Z,system@tsip.ai
+Approved 133,E_normal,90b86cf2-0aef-4ffe-8f02-f889c2447368,needs_sota_eval,needs_sota_eval,False,,6682,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:59:26.35Z,system@tsip.ai
+Approved 133,E_normal,953ced4a-3aec-409f-85e0-4eff1c5175ae,needs_sota_eval,needs_sota_eval,False,,6668,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:43:09.435Z,system@tsip.ai
+Approved 133,E_normal,9de6b42d-f8d5-42b9-b2ca-1ed8da989b18,needs_sota_eval,needs_sota_eval,False,,11668,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:38.164Z,system@tsip.ai
+Approved 133,E_normal,9fd66093-40f8-4f7f-9aed-9d9021a27272,needs_sota_eval,needs_sota_eval,False,,7525,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:33.889Z,system@tsip.ai
+Approved 133,E_normal,a17dd78f-8244-4bc5-ab45-c313b7d78090,needs_sota_eval,needs_sota_eval,False,,11961,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:11.645Z,system@tsip.ai
+Approved 133,E_normal,a1a80071-895a-4e18-80ca-106f73e272c5,needs_sota_eval,needs_sota_eval,False,,10853,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:47.67Z,system@tsip.ai
+Approved 133,E_normal,a5fee93e-50ad-45b0-a41a-7c436718652d,needs_sota_eval,needs_sota_eval,False,,10639,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:16.463Z,system@tsip.ai
+Approved 133,E_normal,a61329be-db9b-4b32-ba08-3ca3b1093191,needs_sota_eval,needs_sota_eval,False,,7810,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:58:28.605Z,system@tsip.ai
+Approved 133,E_normal,a61d7179-bc1c-4f48-8ca0-b3a0dda193be,needs_sota_eval,needs_sota_eval,False,,8457,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:43:22.788Z,system@tsip.ai
+Approved 133,E_normal,a931e10b-a2ce-4ebd-bc61-4ed0a6c48107,needs_sota_eval,generating_prompt,True,,6680,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-02T00:04:07.096Z,system@tsip.ai
+Approved 133,E_normal,a9e4edde-37ec-4166-a504-269dfdbdf342,needs_sota_eval,generating_prompt,True,,5312,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-02T00:03:11.666Z,system@tsip.ai
+Approved 133,E_normal,abd59dc2-3502-4613-91e5-23a6ec13cca1,needs_sota_eval,needs_sota_eval,False,,7459,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:31.967Z,system@tsip.ai
+Approved 133,E_normal,ae1f0d20-d707-486c-ab48-505dc7e96a11,needs_sota_eval,needs_sota_eval,False,,15319,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:05.998Z,system@tsip.ai
+Approved 133,E_normal,ae7bc593-fdc3-4152-8209-05c554cb843b,needs_sota_eval,needs_sota_eval,False,,17358,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:42:37.896Z,system@tsip.ai
+Approved 133,E_normal,b0d08194-bdcd-46b2-b1a4-fe6f678bf020,needs_sota_eval,needs_sota_eval,False,,10647,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:24.353Z,system@tsip.ai
+Approved 133,E_normal,b76db193-b1ab-4837-896f-5798f5722239,needs_sota_eval,needs_sota_eval,False,,7557,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:47:02.301Z,system@tsip.ai
+Approved 133,E_normal,b7f300f9-e5bc-4533-bb18-e9b6295c8676,needs_sota_eval,needs_sota_eval,False,,12799,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:38:33.254Z,system@tsip.ai
+Approved 133,E_normal,b870b699-5e43-4301-a4d6-0702d055b31c,needs_sota_eval,generating_rubric,True,,11138,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-02T00:01:51.589Z,system@tsip.ai
+Approved 133,E_normal,bb0c800d-c724-462f-a75b-e0e50d48b671,needs_sota_eval,needs_sota_eval,False,,10680,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:43.32Z,system@tsip.ai
+Approved 133,E_normal,be60edee-ddba-4ea2-8197-742d892e0bb5,needs_sota_eval,needs_sota_eval,False,,7290,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:39.447Z,system@tsip.ai
+Approved 133,E_normal,c02a0444-8574-487f-a8e2-1579e9668891,needs_sota_eval,needs_sota_eval,False,,4514,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-02T00:00:08.545Z,system@tsip.ai
+Approved 133,E_normal,c03d377d-ff0c-4ede-bb05-58ab70cef912,needs_sota_eval,needs_sota_eval,False,,5883,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:40.417Z,system@tsip.ai
+Approved 133,E_normal,c1dd2cc7-184f-4b77-8465-04cb7bd5230e,needs_sota_eval,needs_sota_eval,False,,9431,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:41:08.217Z,system@tsip.ai
+Approved 133,E_normal,c21fa65a-c217-48c8-a861-206d90d5f349,needs_sota_eval,needs_sota_eval,False,,9208,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:24.704Z,system@tsip.ai
+Approved 133,E_normal,c6881e77-6ce5-48a3-8cde-8879e2cc4f54,needs_sota_eval,needs_sota_eval,False,,3525,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:32.357Z,system@tsip.ai
+Approved 133,E_normal,c6c2c383-40f8-4b75-801f-980b1b4be5c1,needs_sota_eval,needs_sota_eval,False,,3011,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:52.242Z,system@tsip.ai
+Approved 133,E_normal,c711c7e1-2fdf-4a32-a2f9-2d218ea18939,needs_sota_eval,needs_sota_eval,False,,6077,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:39.163Z,system@tsip.ai
+Approved 133,E_normal,c8122ae2-572f-4c4c-896b-92a0c59ab6e5,needs_sota_eval,needs_sota_eval,False,,5904,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:47.125Z,system@tsip.ai
+Approved 133,E_normal,caac96ee-ee52-4cfa-938b-72f6aed47093,needs_sota_eval,needs_sota_eval,False,,11148,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:07.238Z,system@tsip.ai
+Approved 133,E_normal,cdd347b0-0823-46ea-9871-f165be09a06e,needs_sota_eval,needs_sota_eval,False,,6307,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:25.792Z,system@tsip.ai
+Approved 133,E_normal,ce3adf8a-a904-4ad8-9142-45904478d50b,needs_sota_eval,needs_sota_eval,False,,15643,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:02.004Z,system@tsip.ai
+Approved 133,E_normal,cf052c64-e482-4c9c-963f-951bf025d47d,needs_sota_eval,needs_sota_eval,False,,7326,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:31.123Z,system@tsip.ai
+Approved 133,E_normal,cfd603d7-cfce-4222-b081-03e0f5c0d8b2,needs_sota_eval,needs_sota_eval,False,,6796,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:41.833Z,system@tsip.ai
+Approved 133,E_normal,d1def115-04e5-4845-9c8b-1dd0e1d1b70b,needs_sota_eval,needs_sota_eval,False,,6260,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:49.019Z,system@tsip.ai
+Approved 133,E_normal,d243f0c2-082c-447e-90ef-de76d6930e9b,needs_sota_eval,needs_sota_eval,False,,10019,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:08.165Z,system@tsip.ai
+Approved 133,E_normal,d30ebc47-41f2-4bb5-9baf-b85d50c5b2dd,needs_sota_eval,needs_sota_eval,False,,5730,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:52:14.17Z,system@tsip.ai
+Approved 133,E_normal,d468c4ab-a54d-46df-90ae-8932a3ce74e7,needs_sota_eval,needs_sota_eval,False,,9433,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:56.329Z,system@tsip.ai
+Approved 133,E_normal,d689b174-e123-4eef-991c-43df47982113,needs_sota_eval,needs_sota_eval,False,,7049,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:16.631Z,system@tsip.ai
+Approved 133,E_normal,d73b8b79-d867-4f0b-a60d-d2f8e4c2e15d,needs_sota_eval,needs_sota_eval,False,,6652,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:32:42.174Z,system@tsip.ai
+Approved 133,E_normal,d7d73ffc-80a7-4b89-ad31-e00a4d1d4b7b,needs_sota_eval,needs_sota_eval,False,,8574,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:06.771Z,system@tsip.ai
+Approved 133,E_normal,d83a88dd-0b7b-4448-8527-2944685a392a,needs_sota_eval,needs_sota_eval,False,,9439,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:21.43Z,system@tsip.ai
+Approved 133,E_normal,db200501-bf69-430b-8d58-2650bdf4dae9,needs_sota_eval,needs_sota_eval,False,,5005,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:18.106Z,system@tsip.ai
+Approved 133,E_normal,dca7a57c-9276-4ddb-ac76-3f6e6a8bc4ba,needs_sota_eval,needs_sota_eval,False,,14637,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:46.629Z,system@tsip.ai
+Approved 133,E_normal,ddeaff1e-2f87-4a14-8e0f-02f41107900d,needs_sota_eval,needs_sota_eval,False,,9375,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:38.418Z,system@tsip.ai
+Approved 133,E_normal,dff030df-30ea-42d7-9d08-e866a74bf3a8,needs_sota_eval,needs_sota_eval,False,,13690,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:04.196Z,system@tsip.ai
+Approved 133,E_normal,e1e788eb-4aee-46ae-a4c8-8c271696c327,needs_sota_eval,needs_sota_eval,False,,4131,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:35.312Z,system@tsip.ai
+Approved 133,E_normal,e7ad7081-e481-4e6d-a244-be09a3a967e7,needs_sota_eval,needs_sota_eval,False,,8351,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:33.05Z,system@tsip.ai
+Approved 133,E_normal,e9e97145-24b5-48a3-a07e-6dd14f01245c,needs_sota_eval,needs_sota_eval,False,,6356,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:04.191Z,system@tsip.ai
+Approved 133,E_normal,ea65206a-730f-457c-91e4-242be3e33b4d,needs_sota_eval,needs_sota_eval,False,,6043,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:53.042Z,system@tsip.ai
+Approved 133,E_normal,ea977dc5-bce1-4021-9743-ac686da63fef,needs_sota_eval,needs_sota_eval,False,,8779,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:28.517Z,system@tsip.ai
+Approved 133,E_normal,ee944e4c-94c7-4fe0-961f-ace7bf09423a,needs_sota_eval,needs_sota_eval,False,,7999,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:35:29.73Z,system@tsip.ai
+Approved 133,E_normal,efeb10eb-4ebf-45aa-908d-20b66499047d,needs_sota_eval,needs_sota_eval,False,,5760,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:39.556Z,system@tsip.ai
+Approved 133,E_normal,f30a8ecf-df4e-4f03-8714-f7ae455f7d4a,needs_sota_eval,needs_sota_eval,False,,4964,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:51.093Z,system@tsip.ai
+Approved 133,E_normal,f3244a01-4e38-47df-aef9-bb807df375c1,needs_sota_eval,needs_sota_eval,False,,5661,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:38.836Z,system@tsip.ai
+Approved 133,E_normal,f4082805-7223-4d01-b505-17c98552daf0,needs_sota_eval,needs_sota_eval,False,,15524,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:39:20.889Z,system@tsip.ai
+Approved 133,E_normal,f5133322-4c38-46e9-af41-5f0db8f28335,needs_sota_eval,needs_sota_eval,False,,4610,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:33:17.104Z,system@tsip.ai
+Approved 133,E_normal,f99123da-d14d-4324-96a0-ce1c3921dec3,needs_sota_eval,needs_sota_eval,False,,9884,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:37:53.486Z,system@tsip.ai
+Approved 133,E_normal,fc46c1c0-4441-49a1-a1cf-aca50dd60c10,needs_sota_eval,needs_sota_eval,False,,5581,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:23.225Z,system@tsip.ai
+Approved 133,E_normal,fc6ded3e-6ae8-444f-976e-1c297aa1d1db,needs_sota_eval,needs_sota_eval,False,,7324,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:34:29.322Z,system@tsip.ai
+Approved 133,E_normal,fc7eba84-31fd-4c8b-a365-8693c04e3e87,needs_sota_eval,needs_sota_eval,False,,4430,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:36:15.803Z,system@tsip.ai
+Approved 133,E_normal,fcb936ce-8d6e-461d-a814-c683db0a3aef,needs_sota_eval,needs_sota_eval,False,,3459,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:12.417Z,system@tsip.ai
+Approved 133,E_normal,fccbf3e9-e773-48e7-a40d-1e9c20fd0016,needs_sota_eval,needs_sota_eval,False,,6379,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:31:55.317Z,system@tsip.ai
+Approved 133,E_normal,fd010b55-3828-42ca-b7ea-d9eb29b9dfae,needs_sota_eval,needs_sota_eval,False,,4694,INITIAL_RUBRIC_GENERATED,generating_rubric,2026-09-01T23:29:38.784Z,system@tsip.ai
+Pushed back 45,D_thin_transition,018939a8-5f2a-46e7-9f5b-309a20147f37,decomp_review,decomp_review,False,,5807,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:56:55.103Z,system@tsip.ai
+Pushed back 45,A1_no_outline,0e3f0394-b3e2-4e6c-836e-704eff6c48e2,decomp_review,decomp_review,False,,9135,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:45.69Z,system@tsip.ai
+Pushed back 45,A1_no_outline,15a0ebf7-8354-4e97-bdfd-764a03bef9ee,decomp_review,decomp_review,False,,6847,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:03:58.784Z,system@tsip.ai
+Pushed back 45,A1_no_outline,1998a617-9037-46d2-912b-adfdb4441444,decomp_review,decomp_review,False,,8355,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:01:34.674Z,system@tsip.ai
+Pushed back 45,A1_no_outline,1ef09f14-3119-434f-b561-884e196c6caa,decomp_review,decomp_review,False,,7866,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:03.751Z,system@tsip.ai
+Pushed back 45,A1_no_outline,21d534e3-8c09-46e5-8a5d-b5c55c8522a2,decomp_review,decomp_review,False,,11075,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:02:05.346Z,system@tsip.ai
+Pushed back 45,A1_no_outline,25613ef5-50aa-4ab2-b49a-4ea4b4dc519a,decomp_review,decomp_review,False,,0,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:11:27.227Z,system@tsip.ai
+Pushed back 45,A1_no_outline,27b833b2-b759-439b-aa91-db78616e22b8,decomp_review,decomp_review,False,,6379,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:02:12.566Z,system@tsip.ai
+Pushed back 45,A1_no_outline,29ea5ad8-04b1-4dc4-8220-ae9df37ae12d,decomp_review,decomp_review,False,,10095,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:14.737Z,system@tsip.ai
+Pushed back 45,A1_no_outline,2a63059e-b08b-495f-90df-23bb38eccd3f,decomp_review,decomp_review,False,,5820,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:36.49Z,system@tsip.ai
+Pushed back 45,A1_no_outline,337252e6-80dc-4b36-b284-7b83b4e5617f,decomp_review,decomp_review,False,,0,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:12:39.603Z,system@tsip.ai
+Pushed back 45,A1_no_outline,3d3b229e-0507-4539-8343-193a679d5f5c,decomp_review,decomp_review,False,,0,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:01:23.334Z,system@tsip.ai
+Pushed back 45,A1_no_outline,3d458c2a-cfe5-4a22-9f35-1c48780f5a38,decomp_review,decomp_review,False,,6602,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:16.173Z,system@tsip.ai
+Pushed back 45,A1_no_outline,4073b29f-25e1-4432-8bf5-0b7c4be497db,decomp_review,decomp_review,False,,10237,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:01:22.58Z,system@tsip.ai
+Pushed back 45,B_thin_outline,40827f51-9058-4a34-aa53-cffedf1af118,decomp_review,decomp_review,False,,9279,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:57:24.992Z,system@tsip.ai
+Pushed back 45,A2_no_outline_looping,41fbe12c-7c20-463d-96e8-4ae8700d1c0d,decomp_review,decomp_review,False,,14756,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T23:00:07.706Z,system@tsip.ai
+Pushed back 45,A1_no_outline,443385cc-42c6-486b-ac8e-fd8724d99160,decomp_review,decomp_review,False,,7623,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:00:10.553Z,system@tsip.ai
+Pushed back 45,A1_no_outline,4f56a4bf-a1c1-4a5a-a04b-0002394e52c8,decomp_review,decomp_review,False,,13635,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:09:38.535Z,system@tsip.ai
+Pushed back 45,A1_no_outline,552a9578-aaf8-453b-8f58-e85a1ed40315,decomp_review,decomp_review,False,,11303,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:04:30.828Z,system@tsip.ai
+Pushed back 45,B_thin_outline,5a1f3794-1251-431a-b97d-4cf2107ffed8,decomp_review,decomp_review,False,,7117,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:57:39.767Z,system@tsip.ai
+Pushed back 45,A1_no_outline,5da033e5-0b26-4526-afaf-8e71e57612a4,decomp_review,decomp_review,False,,4421,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:58:49.237Z,system@tsip.ai
+Pushed back 45,A1_no_outline,62d0dff1-ef18-40ae-879c-f7dd0fc7a67e,decomp_review,decomp_review,False,,5587,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:29.857Z,system@tsip.ai
+Pushed back 45,D_thin_transition,69633abd-f051-404b-81ac-eff6a9593427,decomp_review,decomp_review,False,,5529,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:58:38.534Z,system@tsip.ai
+Pushed back 45,A1_no_outline,7215fd35-f477-44af-b6f1-b38348ebe264,decomp_review,decomp_review,False,,0,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:58:26.611Z,system@tsip.ai
+Pushed back 45,C_truncated_outline,79036bd8-09a6-44ef-a84d-8985ace5476e,decomp_review,decomp_review,False,,8908,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:57:38.077Z,system@tsip.ai
+Pushed back 45,A1_no_outline,7b4c773f-02c0-42cf-a37b-04b6773b86c0,decomp_review,decomp_review,False,,6881,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:00:14.612Z,system@tsip.ai
+Pushed back 45,A1_no_outline,87a8cf29-f488-4921-98df-9fbb785aa0b0,decomp_review,decomp_review,False,,5682,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:00:23.705Z,system@tsip.ai
+Pushed back 45,A1_no_outline,8a8066ff-7624-4fc5-981f-52a666b28967,decomp_review,decomp_review,False,,0,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:07:54.988Z,system@tsip.ai
+Pushed back 45,A1_no_outline,8c19520c-b2d2-449b-a1f8-b426e81df053,decomp_review,decomp_review,False,,5089,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:04:21.323Z,system@tsip.ai
+Pushed back 45,A1_no_outline,906892cf-1049-4c2d-99ef-404e461c776f,decomp_review,decomp_review,False,,0,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:01:17.099Z,system@tsip.ai
+Pushed back 45,A1_no_outline,92b20cff-2188-474c-b966-e33ada1437ee,decomp_review,decomp_review,False,,9093,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:00:41.475Z,system@tsip.ai
+Pushed back 45,C_truncated_outline,95606585-8665-475b-ac9c-eb5fae04a8f6,decomp_review,decomp_review,False,,7449,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:59:46.149Z,system@tsip.ai
+Pushed back 45,A1_no_outline,a5f013b8-ef14-4437-bea0-630504093c40,decomp_review,decomp_review,False,,12065,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:09:41.859Z,system@tsip.ai
+Pushed back 45,A1_no_outline,c4ba7c97-5f2e-4e3e-8f63-3d68539868bc,decomp_review,decomp_review,False,,6347,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:34.592Z,system@tsip.ai
+Pushed back 45,A1_no_outline,cfb56338-4a27-42d5-9e0d-9e59b2fa8640,decomp_review,decomp_review,False,,5506,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:02:51.371Z,system@tsip.ai
+Pushed back 45,A1_no_outline,d010dfa4-e4d0-42a5-a7f6-a3ef1e58e0e9,decomp_review,decomp_review,False,,9371,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:09:39.474Z,system@tsip.ai
+Pushed back 45,A1_no_outline,e8ad8af9-0dc2-4a47-915d-69799551aad9,decomp_review,decomp_review,False,,10819,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:59:26.933Z,system@tsip.ai
+Pushed back 45,A1_no_outline,f776f992-cd34-452b-adfe-e65148c3c247,decomp_review,decomp_review,False,,5294,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T21:58:31.425Z,system@tsip.ai
+Pushed back 45,A1_no_outline,f7e83778-a8c1-4c8a-a43a-f2c40548cdf6,decomp_review,decomp_review,False,,6773,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:00:14.058Z,system@tsip.ai
+Pushed back 45,B_thin_outline,fa5950c9-4c71-4406-83bf-8fd81fc6ff67,decomp_review,decomp_review,False,,7081,SUBMIT_TASK_OUTLINE,generating_outline,2026-09-01T22:59:31.287Z,system@tsip.ai
+Pushed back 45,A2_no_outline_looping,4c77fbdb-8d12-4a84-b0db-a219bf7fe2a5,generating_outline,failed_generating_outline,True,,0,ADMIN_OVERRIDE,failed_generating_outline,2026-09-02T00:02:18.297Z,ali@meridian.ai
+Pushed back 45,B_thin_outline,5961c436-e583-4000-ad25-cc8e11a634ae,generating_outline,failed_generating_outline,True,,892,ADMIN_OVERRIDE,failed_generating_outline,2026-09-02T00:02:18.454Z,ali@meridian.ai
+Pushed back 45,C_truncated_outline,9f656c96-9ce4-44ad-b96a-18b953565b82,generating_outline,failed_generating_outline,True,,17233,ADMIN_OVERRIDE,failed_generating_outline,2026-09-02T00:02:18.567Z,ali@meridian.ai
+Pushed back 45,B_thin_outline,c4ed90cb-4e82-408b-82fa-f52a782f72d3,generating_outline,failed_generating_outline,True,,46,ADMIN_OVERRIDE,failed_generating_outline,2026-09-02T00:02:18.67Z,ali@meridian.ai
+Pushed back 45,D_thin_transition,f925d988-87c3-4cb0-a396-b583b2949382,generating_outline,failed_generating_outline,True,,5989,ADMIN_OVERRIDE,failed_generating_outline,2026-09-02T00:02:18.769Z,ali@meridian.ai
