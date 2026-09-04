@@ -1,0 +1,126 @@
+# Standard finance vocabulary an analyst produces without being told.
+#
+# A label matching one of these is DERIVABLE: if a senior says "build the P&L
+# through net income," no analyst needs to be told the sheet wants a Gross
+# Profit row or a margin line. Anything NOT in here and not already in the
+# input workbook is new vocabulary the senior had to say out loud.
+#
+# One entry per line, matched against the normalized label. A line is a match
+# if the label equals it, or is that entry plus a units/qualifier fragment
+# (e.g. "revenue mm", "ebitda margin percent"). Keep this list conservative -
+# it is the list of things the test agrees to stop checking.
+
+# --- income statement
+revenue
+total revenue
+net revenue
+cost of goods sold
+cogs
+gross profit
+gross margin
+operating expenses
+total operating expenses
+opex
+sg and a
+depreciation and amortization
+d and a
+ebit
+operating income
+operating income ebit
+ebitda
+adjusted ebitda
+adj ebitda
+interest expense
+interest income
+net interest income
+other income
+other income expense
+other income expense non operating
+pre tax income
+profit before tax
+pbt
+tax
+tax expense
+income tax
+net income
+eps
+diluted eps
+basic eps
+margin
+gross margin percent
+ebitda margin
+ebitda margin percent
+adj ebitda margin
+adj ebitda margin percent
+ebit margin
+operating margin
+net margin
+ni margin
+yoy growth
+yoy growth percent
+growth percent
+cagr
+
+# --- balance sheet / working capital
+cash
+cash and cash equivalents
+short term investments
+accounts receivable
+receivables
+inventory
+prepaid expenses
+other current assets
+total current assets
+total current assets excl cash
+goodwill
+total assets
+accounts payable
+accrued liabilities
+accrued expenses
+deferred revenue
+other current liabilities
+total current liabilities
+total current liabilities excl debt
+debt
+total debt
+capital leases
+debt and capital leases
+equity
+total equity
+total liabilities and equity
+net working capital
+working capital
+change in nwc
+change in net working capital
+cash conversion cycle
+days sales outstanding
+days sales outstanding ar
+days inventory on hand
+days payable outstanding
+days payable outstanding ap
+dso
+dih
+dpo
+
+# --- debt schedule
+beginning balance
+opening balance
+ending balance
+average balance
+avg balance
+drawdown
+repayment
+net drawdown repayment
+mandatory repayment
+interest rate
+total interest expense
+total debt ending
+
+# --- cashflow
+starting balance
+net cash inflows outflows
+net cashflows
+periodical net cashflows
+total
+grand total
+subtotal

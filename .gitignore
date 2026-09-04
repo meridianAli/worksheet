@@ -1,0 +1,8 @@
+# Workbooks are fetched from the task export's signed URLs, not committed.
+wb/
+__pycache__/
+*.pyc
+
+# PDF build intermediates
+tools/pdf/fonts-inline.css
+tools/pdf/*-print.html
