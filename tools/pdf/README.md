@@ -1,12 +1,12 @@
-# Building the outlines PDF
+# Building the scripts PDF
 
-Turns [`OUTLINES.md`](../../OUTLINES.md) into a self-contained,
+Turns [`SCRIPTS.md`](../../SCRIPTS.md) into a self-contained,
 print-ready PDF — no network dependency, fonts inlined.
 
 ```sh
 python3 fonts.py     # -> fonts-inline.css  (IBM Plex latin subsets as base64 woff2)
-python3 mkprint.py   # -> outlines-print.html  (standalone + print stylesheet)
-node    mkpdf.mjs    # -> ../../Five-Briefing-Outlines.pdf
+python3 mkprint.py   # -> scripts-print.html  (standalone + print stylesheet)
+node    mkpdf.mjs    # -> ../../Five-Briefing-Scripts.pdf
 ```
 
 Requires Chromium at `/opt/pw-browsers/chromium-1194/chrome-linux/chrome`, the
@@ -16,6 +16,6 @@ of the one in the AHT working paper build (see git history).
 `mkprint.py` beyond the markdown conversion:
 
 - drops the `---` rules; each scene heading carries its own `break-before: page`,
-  so one outline is one page and the PDF stays navigable
+  so one script is one page and the PDF stays navigable
 - styles a wholly-italic paragraph as an aside rather than prose
 - repeats `<thead>` across pages and keeps table rows and list items whole

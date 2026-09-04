@@ -11,24 +11,23 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 CASES = [
     ('2266fdca', 'drop a given hardcode',
-     lambda s: s.replace('4.8, 4.8, 4.7, 4.4, 3.9, 4.2, 4.3, 4.5, 4.7',
-                         '4.8, 4.8, 4.7, 4.4, 3.9, 4.2, 4.3')),
+     lambda s: re.sub(r'4\.8, 4\.8, 4\.7, 4\.4, 3\.9, 4\.2, 4\.3,\s+4\.5 and 4\.7',
+                      '4.8, 4.8, 4.7, 4.4, 3.9, 4.2 and 4.3', s)),
     ('2266fdca', 'drop a named deliverable',
      lambda s: re.sub(r'Postal Charges,\s+', '', s)),
-    ('2266fdca', 'drop a day-count row',
-     lambda s: re.sub(r'\|\s*DPO\s*\|[^\n]*\n', '', s)),
+    ('2266fdca', 'drop a day count',
+     lambda s: re.sub(r'Days payable outstanding is.*?FY2025B\.', '', s, flags=re.S)),
     ('b68326d5', 'narrow a stated range',
-     lambda s: s.replace('$34.00 to $42.00', '$36.00 to $40.00')),
+     lambda s: re.sub(r'\$34\.00 to\s+\$42\.00', '$36.00 to $40.00', s)),
     ('bb849b91', 'drop the parked memo figure',
-     lambda s: s.replace('a **60,000,000** memo figure', 'a memo figure')),
+     lambda s: re.sub(r'a\s+60,000,000 memo figure', 'a memo figure', s)),
     ('ef94a62b', 'drop one schedule column',
-     lambda s: re.sub(r'balloon payment,\s*', '', s)),
+     lambda s: re.sub(r'the balloon payment,\s+', '', s)),
     ('fbe4760b', 'drop a new tab',
      lambda s: s.replace('Revenue_Forecast', 'that other tab')
-                .replace('revenue forecast', 'that work')
-                .replace('Revenue forecast', 'That work')),
+                .replace('revenue forecast', 'that work')),
     ('b68326d5', 'shorten a grid axis',
-     lambda s: s.replace('160 to 200', '160 to 190')),
+     lambda s: re.sub(r'160 to\s+200', '160 to 190', s)),
 ]
 
 

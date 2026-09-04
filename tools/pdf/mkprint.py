@@ -1,14 +1,14 @@
-"""Turn OUTLINES.md into a standalone, print-ready HTML page.
+"""Turn SCRIPTS.md into a standalone, print-ready HTML page.
 
   python3 fonts.py     # -> fonts-inline.css (IBM Plex latin subsets, base64 woff2)
-  python3 mkprint.py   # -> outlines-print.html
-  node    mkpdf.mjs    # -> ../../Five-Briefing-Outlines.pdf
+  python3 mkprint.py   # -> scripts-print.html
+  node    mkpdf.mjs    # -> ../../Five-Briefing-Scripts.pdf
 """
 import re, pathlib, markdown
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
-SRC = ROOT / "OUTLINES.md"
-OUT = pathlib.Path(__file__).resolve().parent / "outlines-print.html"
+SRC = ROOT / "SCRIPTS.md"
+OUT = pathlib.Path(__file__).resolve().parent / "scripts-print.html"
 FONTS = pathlib.Path(__file__).resolve().parent / "fonts-inline.css"
 
 body = markdown.markdown(SRC.read_text(), extensions=["tables", "sane_lists"])
@@ -73,7 +73,7 @@ tr{ break-inside:avoid; }
 
 OUT.write_text(
     "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">"
-    "<title>Five briefing outlines</title><style>" + css + "</style></head><body>"
+    "<title>Five briefing scripts</title><style>" + css + "</style></head><body>"
     + body + "</body></html>"
 )
 print(OUT.name, OUT.stat().st_size, "bytes")

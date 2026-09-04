@@ -160,9 +160,14 @@ def workbook_vocab(path):
     return labels, numbers
 
 
+# "160 to 200 in increments of 10", "$34.00 to $42.00 in $2.00 increments",
+# "211.2 to 281.2 by 10" - all the same grid, said three different ways.
+_LO_HI = r'(-?[\d,]*\.?\d+)\s*(?:to|through|\u2013)\s*(-?[\d,]*\.?\d+)'
 RANGE = re.compile(
-    r'(-?[\d,]*\.?\d+)\s*(?:to|through|-|\u2013)\s*(-?[\d,]*\.?\d+)[^.]{0,60}?'
-    r'(?:(?:in|by)\s+)?(?:increments?\s+of|steps?\s+of|by)\s+(-?[\d,]*\.?\d+)', re.I)
+    _LO_HI + r'[^;]{0,60}?(?:'
+    r'(?:increments?|steps?)\s+of\s+(-?[\d,]*\.?\d+)'      # ...increments of 10
+    r'|(?:in|by|of)\s+(-?[\d,]*\.?\d+)\s*(?:increments?|steps?)?'  # ...in 2.00 increments
+    r')', re.I)
 
 
 # A senior says "zero", "nil", "a hundred and five" - not always digits.
@@ -191,10 +196,11 @@ def script_index(path):
     # A senior states a grid as "160 to 200 in increments of 10" and never reads
     # out 170 and 190. Expand any stated range so its interior counts as said.
     grids = []
-    for lo, hi, step in RANGE.findall(text.replace('$', '')):
+    for lo, hi, step_a, step_b in RANGE.findall(text.replace('$', '')):
         try:
-            lo, hi, step = float(lo.replace(',', '')), float(hi.replace(',', '')), float(step.replace(',', ''))
-        except ValueError:
+            lo, hi = float(lo.replace(',', '')), float(hi.replace(',', ''))
+            step = float((step_a or step_b).replace(',', ''))
+        except (ValueError, AttributeError):
             continue
         if step <= 0 or (hi - lo) / step > 500:
             continue
