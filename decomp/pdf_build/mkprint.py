@@ -67,7 +67,7 @@ tr{ break-inside:avoid; }
 
 OUT.write_text(
     "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">"
-    "<title>Five banker scenarios</title><style>" + css + "</style></head><body>"
+    "<title>Five monologues</title><style>" + css + "</style></head><body>"
     + body + "</body></html>"
 )
 print(OUT.name, OUT.stat().st_size, "bytes")

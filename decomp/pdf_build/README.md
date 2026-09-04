@@ -17,5 +17,5 @@ of the one in `../../aht/pdf_build/`.
 
 - drops the `---` rules; each scene heading carries its own `break-before: page`,
   so one scene is one page and the six-page PDF stays navigable
-- styles a wholly-italic paragraph as a stage direction rather than prose
+- styles a wholly-italic paragraph as an aside rather than prose
 - repeats `<thead>` across pages and keeps table rows and list items whole
