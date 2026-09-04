@@ -1,14 +1,14 @@
-"""Turn MONOLOGUES.md into a standalone, print-ready HTML page.
+"""Turn OUTLINES.md into a standalone, print-ready HTML page.
 
   python3 fonts.py     # -> fonts-inline.css (IBM Plex latin subsets, base64 woff2)
-  python3 mkprint.py   # -> monologues-print.html
-  node    mkpdf.mjs    # -> ../../Five-Monologues.pdf
+  python3 mkprint.py   # -> outlines-print.html
+  node    mkpdf.mjs    # -> ../../Five-Briefing-Outlines.pdf
 """
 import re, pathlib, markdown
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent.parent
-SRC = ROOT / "MONOLOGUES.md"
-OUT = pathlib.Path(__file__).resolve().parent / "monologues-print.html"
+SRC = ROOT / "OUTLINES.md"
+OUT = pathlib.Path(__file__).resolve().parent / "outlines-print.html"
 FONTS = pathlib.Path(__file__).resolve().parent / "fonts-inline.css"
 
 body = markdown.markdown(SRC.read_text(), extensions=["tables", "sane_lists"])
@@ -35,6 +35,11 @@ h1{
   font-size:20pt; line-height:1.15; letter-spacing:-.01em; margin:0 0 .35em;
 }
 h1 + p{ color:var(--muted); }
+h3{
+  font-family:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif; font-weight:600;
+  font-size:10.5pt; margin:1.1em 0 .35em; color:var(--ink);
+  break-after:avoid; break-inside:avoid;
+}
 h2.scene{
   font-family:"IBM Plex Sans Condensed","IBM Plex Sans",sans-serif; font-weight:600;
   font-size:13pt; line-height:1.25; margin:0 0 .2em; padding:0 0 .35em;
@@ -68,7 +73,7 @@ tr{ break-inside:avoid; }
 
 OUT.write_text(
     "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">"
-    "<title>Five monologues</title><style>" + css + "</style></head><body>"
+    "<title>Five briefing outlines</title><style>" + css + "</style></head><body>"
     + body + "</body></html>"
 )
 print(OUT.name, OUT.stat().st_size, "bytes")

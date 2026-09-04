@@ -39,6 +39,7 @@ ALIASES = {
     '&': ' and ', '%': ' percent ', '#': ' number ', '/': ' ', '(': ' ', ')': ' ',
     "'": '', '"': '', ',': '', ':': ' ', ';': ' ', '-': ' ', '_': ' ', '.': ' ',
     '$': ' ', '+': ' ', '?': ' ', '!': ' ', '\u2014': ' ', '\u2013': ' ',
+    '*': ' ', '`': ' ', '|': ' ', '\u2212': '-',
 }
 # Words that carry no instruction - dropped before comparing a label to speech.
 FILLER = set('''the a an and or of to in for on at as is are be that this it its
@@ -175,6 +176,9 @@ WORD_NUM = {
 
 def script_index(path):
     text = open(path).read()
+    # markdown scaffolding is not speech: drop heading markers and list bullets
+    text = re.sub(r'^\s{0,3}#{1,6}\s+', '', text, flags=re.M)
+    text = re.sub(r'^\s*[-*]\s+', '', text, flags=re.M)
     spoken = norm(text)
     nums = set()
     for w, v in WORD_NUM.items():

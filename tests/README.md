@@ -1,7 +1,7 @@
-# Testing a spoken script against the workbooks
+# Testing a briefing outline against the workbooks
 
-Five scripts, five task exports. The question this answers is not "does the
-script mention cell F43" — it's **"reading only this script, with the input
+Five outlines, five task exports. The question this answers is not "does the
+outline mention cell F43" — it's **"reading only this outline, with the input
 workbook open, would you have made this change?"**
 
 ```sh
@@ -38,7 +38,7 @@ file weakens the test; that is the intended dial, and it should be turned
 deliberately.
 
 **What counts as saying it.** A senior paraphrases. So a label is covered when
-the script contains every instruction-carrying word in it, not the exact string:
+the outline contains every instruction-carrying word in it, not the exact string:
 "Offset — that's when extra principal happens" covers the header
 `Offset (when extra principal happens)`. Numbers match sign-insensitively and in
 either percent form (`1.1%` covers a cell holding `0.011`), spelled-out small
@@ -48,24 +48,21 @@ numbers count (`zero` covers `0`), and a stated range covers its interior, so
 ## Proving it can fail
 
 A coverage test that passes everything is worthless, so `test_teeth.py` breaks
-each script the way a careless rewrite would — drops a spoken hardcode, drops a
+each outline the way a careless edit would — drops a spoken hardcode, drops a
 named deliverable, drops a schedule column, drops a tab, narrows a stated price
-range, shortens a grid axis — and asserts the audit catches it. All seven are
-caught. Three of them were *not* caught when first written, which is how the
-tab-name and grid-extent rules got tightened.
+range, shortens a grid axis — and asserts the audit catches it. All eight are caught. Three were *not* caught when first written, which is how
+the tab-name and grid-extent rules got tightened.
 
 ## What this does not catch
 
 - **Identifier versus prose.** Speech cannot distinguish the tab
-  `Revenue_Forecast` from the phrase "revenue forecast". If a script happens to
+  `Revenue_Forecast` from the phrase "revenue forecast". If an outline happens to
   use the words nearby, a dropped tab name can pass.
-- **Ordering and dependency.** The test checks that things were said, not that
+- **Ordering and dependency.** The test checks that points are present, not that
   the sequence makes sense to build from.
-- **Whether it sounds like a banker.** Entirely a human read. The test only
-  guarantees the script is *complete*, never that it is *natural* — and the two
-  pull against each other, which is why coverage is worth automating and voice
-  is not.
-- **Formatting rules** (fonts, fills, colors) are carried in the scripts but sit
+- **Whether the briefing is any good.** Entirely a human read. The test
+  guarantees the outline is *complete*, never that it is clear or well ordered.
+- **Formatting rules** (fonts, fills, colors) are carried in the outlines but sit
   in the derivable bucket: the differ records format changes, and they are not
   currently enforced.
 
@@ -79,4 +76,4 @@ tab-name and grid-extent rules got tightened.
 | `run_tests.py` | all five, one exit code |
 | `test_teeth.py` | negative controls |
 | `standard_lexicon.txt` | vocabulary the test treats as derivable |
-|  `../scripts/<task>.md` | the spoken script under test |
+|  `../scripts/<task>.md` | the outline under test |
