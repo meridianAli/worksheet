@@ -34,8 +34,13 @@ def run(ctx, report):
             report.add(Finding("K001", WARNING, "Scanner JSON unreadable.", file=f))
             continue
         cnt = lambda k: d.get(k + "Count", len(d.get(k) or []) if isinstance(d.get(k), list) else 0)
-        if cnt("externalLinks"):
-            report.add(Finding("K001", ERROR, f"{role}: {cnt('externalLinks')} external link(s).", file=f, evidence=str(d.get("externalLinks"))[:200]))
+        ext = d.get("externalLinks") or []
+        # the platform scanner flags any '[' in a formula; brackets inside a quoted string ("[" & ...) are text, not a workbook link
+        real_ext = [x for x in ext if not (isinstance(x, dict) and re.search(r'"[^"]*\[[^"]*"', str(x.get("reference", ""))) and not re.search(r"\[[^\]\"]+\.xls[xmb]?\]", str(x.get("reference", ""))))]
+        if real_ext:
+            report.add(Finding("K001", ERROR, f"{role}: {len(real_ext)} external link(s).", file=f, evidence=str(real_ext)[:200]))
+        elif ext:
+            report.add(Finding("K001", INFO, f"{role}: scanner flagged {len(ext)} 'external links' that are square brackets inside text formulas, not workbook links.", file=f, evidence=str(ext[0])[:160]))
         if cnt("cellsWithBrokenReferences"):
             report.add(Finding("K001", ERROR, f"{role}: {cnt('cellsWithBrokenReferences')} cell(s) with broken references.", file=f, evidence=str(d.get("cellsWithBrokenReferences"))[:200]))
         if cnt("nameErrors"):
