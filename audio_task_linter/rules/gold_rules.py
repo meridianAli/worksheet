@@ -10,29 +10,29 @@ from ..workbook import label_score, load_workbook
 from .. import recalc as recalc_mod
 
 RULES = [
-    RuleInfo("G001", "Gold has no error values", ERROR, "deterministic", ("gold",),
+    RuleInfo("G001", "Gold has no #REF!/#DIV/0!/#VALUE! cells", ERROR, "deterministic", ("gold",),
              "#REF!, #DIV/0!, #VALUE!, #N/A, #NAME?, #NUM! in any cell (defined-name errors excluded)."),
-    RuleInfo("G002", "Gold has no external links", ERROR, "deterministic", ("gold",),
+    RuleInfo("G002", "Gold has no links to other workbooks", ERROR, "deterministic", ("gold",),
              "Links to other files break when the workbook ships alone."),
-    RuleInfo("G003", "Gold hygiene: hidden sheets, comments", WARNING, "deterministic", ("gold",),
+    RuleInfo("G003", "Gold has no hidden sheets or comments", WARNING, "deterministic", ("gold",),
              "Hidden sheets and cell comments leak authoring notes or hide answer machinery."),
-    RuleInfo("G004", "Gold is formula-driven", WARNING, "deterministic", ("gold", "input"),
+    RuleInfo("G004", "Gold's new cells are formulas, not typed", WARNING, "deterministic", ("gold", "input"),
              "Cells that are new or changed vs the input should mostly be formulas; a high hardcode share means the build is typed in."),
-    RuleInfo("G005", "Output-validation targets reproduce in the gold", ERROR, "deterministic", ("rubric", "gold"),
+    RuleInfo("G005", "Every OV target found in gold on a formula cell", ERROR, "deterministic", ("rubric", "gold"),
              "Each numeric target must be found (within its tolerance, any display-unit scaling) in a gold cell that is a formula."),
-    RuleInfo("G006", "Output-validation target is not a hardcode", WARNING, "deterministic", ("rubric", "gold"),
+    RuleInfo("G006", "OV target isn't a typed value or in 3+ cells", WARNING, "deterministic", ("rubric", "gold"),
              "Target found only in literal cells, or in 3+ cells, means the rubric grades an input or a pasted value."),
-    RuleInfo("G007", "Perturbation baseline exists in the gold", ERROR, "deterministic", ("rubric", "gold"),
+    RuleInfo("G007", "Perturbation 'from' value exists as an input in gold", ERROR, "deterministic", ("rubric", "gold"),
              "The 'from' value must sit in a literal (input) cell on the named tab whose row label matches the criterion."),
-    RuleInfo("P001", "Perturbation reproduces on the gold", ERROR, "deterministic", ("rubric", "gold"),
+    RuleInfo("P001", "Perturbation recalculated on gold hits target", ERROR, "deterministic", ("rubric", "gold"),
              "Apply the change to a copy of the gold, recalculate with LibreOffice, and confirm the named output lands on the target within tolerance."),
     RuleInfo("P002", "Perturbation actually moves the output", WARNING, "deterministic", ("rubric", "gold"),
              "If the output is unchanged by the perturbation the criterion is non-discriminating (the gold itself would pass it hardcoded)."),
-    RuleInfo("I001", "Input holds no rubric targets (illogical build)", ERROR, "deterministic", ("rubric", "input"),
+    RuleInfo("I001", "No rubric target typed into the input", ERROR, "deterministic", ("rubric", "input"),
              "An output-validation or perturbation target sitting as a literal in the input is an answer hint."),
-    RuleInfo("I002", "Input holds no pre-computed gold values", ERROR, "deterministic", ("input", "gold"),
+    RuleInfo("I002", "No input hardcode equal to a gold formula result", ERROR, "deterministic", ("input", "gold"),
              "Cells that are literals in the input but formulas in the gold, with equal values, are hardcoded dependencies of the unbuilt work."),
-    RuleInfo("I003", "Input has no downstream tabs", WARNING, "deterministic", ("input", "gold", "script"),
+    RuleInfo("I003", "Input lacks tabs the script asks to build", WARNING, "deterministic", ("input", "gold", "script"),
              "Tabs the script asks the analyst to build (Transaction, Output, Returns, Debt schedule, ...) must not already exist in the input."),
 ]
 
@@ -300,7 +300,7 @@ def _nearest_by_label(pw, gold, phrase, sheet):
 # ---------------------------------------------------------------------------------------------
 from ..spoken import spoken_values  # noqa: E402
 
-RULES.append(RuleInfo("G008", "No hidden hardcodes inside gold formulas", ERROR, "deterministic", ("gold", "input", "script"),
+RULES.append(RuleInfo("G008", "Constants inside formulas are spoken or in input", ERROR, "deterministic", ("gold", "input", "script"),
                       "A numeric constant typed into a formula (=F5*8.5, =B4+0.05) must be spoken in the script or already present as a "
                       "value in the input workbook; otherwise it is an untraceable assumption. Constants that do exist as an assumption "
                       "cell should be linked, not retyped."))
@@ -404,7 +404,7 @@ def run(ctx, report):  # noqa: F811
 # ---------------------------------------------------------------------------------------------
 # G009: sheets-pipeline scanner checks ported over (broken refs, named ranges, data-vendor formulas, images)
 # ---------------------------------------------------------------------------------------------
-RULES.append(RuleInfo("G009", "No data-vendor formulas, broken refs, broken named ranges or embedded images", ERROR, "deterministic", ("gold",),
+RULES.append(RuleInfo("G009", "No vendor formulas, #REF! names, or images", ERROR, "deterministic", ("gold",),
                       "Ported from the sheets delivery scanner: Bloomberg/CapIQ/FactSet/RTD calls cannot evaluate off-terminal; #REF! inside "
                       "formulas and defined names are dead links; embedded images are usually screenshots of source data."))
 

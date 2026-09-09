@@ -8,13 +8,13 @@ import re
 from ..findings import Finding, RuleInfo, ERROR, WARNING, INFO
 
 RULES = [
-    RuleInfo("K001", "Scanner: no external links / broken references / name errors", ERROR, "deterministic", (),
+    RuleInfo("K001", "Scanner: no external links, broken refs, #NAME?", ERROR, "deterministic", (),
              "From the platform scanner output for input and gold workbooks."),
-    RuleInfo("K002", "Scanner: no hidden sheets, comments, images, broken named ranges", WARNING, "deterministic", (),
+    RuleInfo("K002", "Scanner: no hidden sheets, comments, images, dead names", WARNING, "deterministic", (),
              "From the platform scanner output; broken named ranges are dead definitions left over from a decomposition."),
-    RuleInfo("K003", "Scanner: hardcode share", WARNING, "deterministic", (),
+    RuleInfo("K003", "Scanner: gold hardcode ratio under 60%", WARNING, "deterministic", (),
              "A high hardcode ratio in the GOLD means a typed-in build (input ratio reported as info)."),
-    RuleInfo("K004", "Scanner: author provenance", WARNING, "deterministic", (),
+    RuleInfo("K004", "Scanner: no generation tool or online template", WARNING, "deterministic", (),
              "llmAuthorCheck.matchedTool / onlineAuthorCheck.matchedSource (a generation tool or an online template source)."),
 ]
 

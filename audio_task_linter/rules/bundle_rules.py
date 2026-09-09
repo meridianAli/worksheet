@@ -6,19 +6,19 @@ import re
 from ..findings import Finding, RuleInfo, ERROR, WARNING, INFO
 
 RULES = [
-    RuleInfo("X001", "Bundle complete", ERROR, "deterministic", (),
+    RuleInfo("X001", "All 5 bundle pieces present", ERROR, "deterministic", (),
              "Input workbook, gold workbook, rubric, script and audio recording are all present."),
-    RuleInfo("X002", "Input and gold are different files", ERROR, "deterministic", ("input", "gold"),
+    RuleInfo("X002", "Input workbook differs from gold", ERROR, "deterministic", ("input", "gold"),
              "Gold must differ from the input (hash + cell diff); a byte-identical pair means the wrong file shipped."),
-    RuleInfo("X003", "Files scrubbed of company / author names", WARNING, "deterministic", (),
+    RuleInfo("X003", "File names scrubbed (Meridian-id)", WARNING, "deterministic", (),
              "File names should follow the scrubbed convention (e.g. Meridian-<id>-input) with no private company or person names."),
-    RuleInfo("X004", "Supporting files referenced by the script exist", WARNING, "deterministic", ("script",),
+    RuleInfo("X004", "Files the script mentions are included", WARNING, "deterministic", ("script",),
              "If the script mentions a SOFR curve, source data, deck or PDF, a matching supporting file must be in the bundle."),
-    RuleInfo("A001", "Audio file is a real recording", ERROR, "deterministic", ("audio",),
+    RuleInfo("A001", "Audio is a real, decodable recording", ERROR, "deterministic", ("audio",),
              "Supported extension, non-trivial size, and (when mutagen is installed) a decodable duration."),
-    RuleInfo("A002", "Audio duration consistent with script length", WARNING, "deterministic", ("audio", "script"),
+    RuleInfo("A002", "Audio length matches script word count", WARNING, "deterministic", ("audio", "script"),
              "Speech runs ~110-200 words/min; a recording far outside that for the script's word count is truncated, padded or the wrong file."),
-    RuleInfo("A003", "Recording is a human voice, not TTS", WARNING, "manual", ("audio",),
+    RuleInfo("A003", "Manual: not an AI voice", WARNING, "manual", ("audio",),
              "Listen to the first 20 seconds. No deterministic check; flagged for the reviewer."),
 ]
 

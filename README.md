@@ -40,62 +40,62 @@ Severity: `error` blocks (exit code 1), `warning` needs a reviewer decision, `in
 
 | ID | Severity | Mode | Check | What it catches |
 |---|---|---|---|---|
-| X001 | error | deterministic | Bundle complete | Input workbook, gold workbook, rubric, script and audio recording are all present. |
-| X002 | error | deterministic | Input and gold are different files | Gold must differ from the input (hash + cell diff); a byte-identical pair means the wrong file shipped. |
-| X003 | warning | deterministic | Files scrubbed of company / author names | File names should follow the scrubbed convention (e.g. Meridian-<id>-input) with no private company or person names. |
-| X004 | warning | deterministic | Supporting files referenced by the script exist | If the script mentions a SOFR curve, source data, deck or PDF, a matching supporting file must be in the bundle. |
-| A001 | error | deterministic | Audio file is a real recording | Supported extension, non-trivial size, and (when mutagen is installed) a decodable duration. |
-| A002 | warning | deterministic | Audio duration consistent with script length | Speech runs ~110-200 words/min; a recording far outside that for the script's word count is truncated, padded or the wrong file. |
-| A003 | warning | manual | Recording is a human voice, not TTS | Listen to the first 20 seconds. No deterministic check; flagged for the reviewer. |
-| R001 | error | deterministic | No cell / row / column references in the rubric | Criteria must key on tab + row label + column header, never on A1 coordinates (D42, cell Y26, row 12, column F). The solver's layout is not the gold's. |
-| R002 | error | deterministic | Every criterion is a Yes/No question ending in '?' | The judge answers each criterion Yes/No; a trailing qualifying statement is not gradable. |
-| R003 | error | deterministic | Every criterion carries a point value | Rubric gen or a contributor edit sometimes drops the points. |
-| R004 | error | deterministic | Point sign matches the section | Pitfalls are negative; Output Validation / Perturbation / Presentation / Model Integration are positive. |
-| R005 | warning | deterministic | Point magnitude within bounds | |points| between 1 and 5 for scored criteria (configurable); pitfalls up to 10. |
-| R006 | error | deterministic | Expected sections present and non-empty | Output Validation, Perturbation, Presentation and Pitfalls each have at least one criterion; no declared section is empty. |
-| R007 | warning | deterministic | Enough criteria | At least 10 criteria in total; Output Validation and Perturbation carry the bulk. |
-| R008 | error | deterministic | No verbatim duplicate criteria | Same text twice (after whitespace/case normalisation) double-counts points. |
-| R009 | error | deterministic | Perturbation criteria are well-formed | 'If <input> on <tab> is changed from A to B, does <output> update to Z (±tol)?' with a numeric from, to and target. |
-| R010 | warning | deterministic | Numeric targets carry exactly one tolerance | Every value check states a tolerance (±2% numbers, ±0.05 multiples, ±0.5pp percentages); stating it twice widens the band. |
-| R011 | warning | deterministic | No stacking outside Presentation | One check per criterion; several independent targets or clauses in one question zero multiple points on one miss. |
-| R012 | warning | deterministic | No vague, non-self-contained wording | 'correct', 'consistent', 'appropriate', 'properly' without a tab / line-item anchor is not gradable. |
-| R013 | warning | deterministic | Relative tolerance on a zero target | 'within ±2% of 0' is a zero-width band; use an absolute tolerance. |
+| X001 | error | deterministic | All 5 bundle pieces present | Input workbook, gold workbook, rubric, script and audio recording are all present. |
+| X002 | error | deterministic | Input workbook differs from gold | Gold must differ from the input (hash + cell diff); a byte-identical pair means the wrong file shipped. |
+| X003 | warning | deterministic | File names scrubbed (Meridian-id) | File names should follow the scrubbed convention (e.g. Meridian-<id>-input) with no private company or person names. |
+| X004 | warning | deterministic | Files the script mentions are included | If the script mentions a SOFR curve, source data, deck or PDF, a matching supporting file must be in the bundle. |
+| A001 | error | deterministic | Audio is a real, decodable recording | Supported extension, non-trivial size, and (when mutagen is installed) a decodable duration. |
+| A002 | warning | deterministic | Audio length matches script word count | Speech runs ~110-200 words/min; a recording far outside that for the script's word count is truncated, padded or the wrong file. |
+| A003 | warning | manual | Manual: not an AI voice | Listen to the first 20 seconds. No deterministic check; flagged for the reviewer. |
+| R001 | error | deterministic | No cell/row/column refs in criteria | Criteria must key on tab + row label + column header, never on A1 coordinates (D42, cell Y26, row 12, column F). The solver's layout is not the gold's. |
+| R002 | error | deterministic | Every criterion ends in a question mark | The judge answers each criterion Yes/No; a trailing qualifying statement is not gradable. |
+| R003 | error | deterministic | Every criterion has points | Rubric gen or a contributor edit sometimes drops the points. |
+| R004 | error | deterministic | Pitfalls negative, others positive, none zero | Pitfalls are negative; Output Validation / Perturbation / Presentation / Model Integration are positive. |
+| R005 | warning | deterministic | Points within 1-5 (pitfalls to 10) | |points| between 1 and 5 for scored criteria (configurable); pitfalls up to 10. |
+| R006 | error | deterministic | All 4 sections present and non-empty | Output Validation, Perturbation, Presentation and Pitfalls each have at least one criterion; no declared section is empty. |
+| R007 | warning | deterministic | Enough criteria (10 total, 5 OV, 3 perturbation) | At least 10 criteria in total; Output Validation and Perturbation carry the bulk. |
+| R008 | error | deterministic | No duplicate criteria | Same text twice (after whitespace/case normalisation) double-counts points. |
+| R009 | error | deterministic | Perturbations are 'from A to B, does Y hit Z' | 'If <input> on <tab> is changed from A to B, does <output> update to Z (±tol)?' with a numeric from, to and target. |
+| R010 | warning | deterministic | Exactly one tolerance per numeric target | Every value check states a tolerance (±2% numbers, ±0.05 multiples, ±0.5pp percentages); stating it twice widens the band. |
+| R011 | warning | deterministic | One expected value per criterion (no stacking) | One check per criterion; several independent targets or clauses in one question zero multiple points on one miss. |
+| R012 | warning | deterministic | No vague words without a tab/line anchor | 'correct', 'consistent', 'appropriate', 'properly' without a tab / line-item anchor is not gradable. |
+| R013 | warning | deterministic | No relative tolerance on a zero target | 'within ±2% of 0' is a zero-width band; use an absolute tolerance. |
 | R014 | warning | deterministic | No Excel function names in criteria | Criteria grade results, not the construction (SUMIFS vs SUMPRODUCT). |
-| R015 | info | deterministic | Weighting is sane | Flags extreme spread inside a section (max/min points ≥ 3x) for a human look. |
-| R016 | warning | deterministic | Error-value pitfall present | Pitfalls should include the standard #REF!/#DIV/0!/#VALUE! scan. |
-| S001 | error | deterministic | Script present and substantive | The script is the primary carrier of instructions; it must exist and be more than a one-liner. |
-| S002 | warning | deterministic | Script does not dictate cell coordinates | More than a few exact row/column references turn the debrief into a read-out of cell edits. |
-| S003 | warning | deterministic | Script does not name Excel functions | An MD says 'look it up off the curve', not 'use an XLOOKUP'. |
-| S004 | warning | deterministic | Rubric tab names are known to the analyst | A tab the rubric grades on must exist in the gold, and must be in the input workbook or named in the script; otherwise the criterion anchors on a layout nobody was told. |
-| S005 | warning | deterministic | Headline instructions are tested | If the script insists on formulas-not-hardcodes, a circ switch, a check row, cases flexing off Base, etc., at least one criterion should test it. |
-| S006 | warning | deterministic | Script does not leak rubric targets | Output-validation target values should not be spoken in the script (the analyst would then be transcribing, not modelling). |
-| S007 | warning | ai-lint | Rubric ↔ script anchoring (inferability) | LLM pass: classify every criterion Explicit / Inferrable / Anchored against the script + input; Anchored criteria are unfair. |
-| S008 | warning | ai-lint | Script ↔ gold fidelity | LLM pass: every instruction maps to a change in the gold and every gold change traces back to the script. |
-| S009 | warning | ai-lint | Rubric coverage of script instructions | LLM pass: list the deliverables the script asks for and report which have no criterion. |
-| S010 | error | ai-lint | No PII / private company names | LLM pass over script, rubric and workbook text for real private companies or people. |
-| G001 | error | deterministic | Gold has no error values | #REF!, #DIV/0!, #VALUE!, #N/A, #NAME?, #NUM! in any cell (defined-name errors excluded). |
-| G002 | error | deterministic | Gold has no external links | Links to other files break when the workbook ships alone. |
-| G003 | warning | deterministic | Gold hygiene: hidden sheets, comments | Hidden sheets and cell comments leak authoring notes or hide answer machinery. |
-| G004 | warning | deterministic | Gold is formula-driven | Cells that are new or changed vs the input should mostly be formulas; a high hardcode share means the build is typed in. |
-| G005 | error | deterministic | Output-validation targets reproduce in the gold | Each numeric target must be found (within its tolerance, any display-unit scaling) in a gold cell that is a formula. |
-| G006 | warning | deterministic | Output-validation target is not a hardcode | Target found only in literal cells, or in 3+ cells, means the rubric grades an input or a pasted value. |
-| G007 | error | deterministic | Perturbation baseline exists in the gold | The 'from' value must sit in a literal (input) cell on the named tab whose row label matches the criterion. |
-| P001 | error | deterministic | Perturbation reproduces on the gold | Apply the change to a copy of the gold, recalculate with LibreOffice, and confirm the named output lands on the target within tolerance. |
+| R015 | info | deterministic | Points spread within a section under 3x | Flags extreme spread inside a section (max/min points ≥ 3x) for a human look. |
+| R016 | warning | deterministic | Pitfalls include the error-value scan | Pitfalls should include the standard #REF!/#DIV/0!/#VALUE! scan. |
+| S001 | error | deterministic | Script exists and is substantive | The script is the primary carrier of instructions; it must exist and be more than a one-liner. |
+| S002 | warning | deterministic | Script gives no cell coordinates | More than a few exact row/column references turn the debrief into a read-out of cell edits. |
+| S003 | warning | deterministic | Script names no Excel functions | An MD says 'look it up off the curve', not 'use an XLOOKUP'. |
+| S004 | warning | deterministic | Graded tabs exist and were known to the analyst | A tab the rubric grades on must exist in the gold, and must be in the input workbook or named in the script; otherwise the criterion anchors on a layout nobody was told. |
+| S005 | warning | deterministic | Script's headline instructions have a criterion | If the script insists on formulas-not-hardcodes, a circ switch, a check row, cases flexing off Base, etc., at least one criterion should test it. |
+| S006 | warning | deterministic | Script doesn't say the target values aloud | Output-validation target values should not be spoken in the script (the analyst would then be transcribing, not modelling). |
+| S007 | warning | ai-lint | AI: every criterion inferable from the script | LLM pass: classify every criterion Explicit / Inferrable / Anchored against the script + input; Anchored criteria are unfair. |
+| S008 | warning | ai-lint | AI: script and gold agree both ways | LLM pass: every instruction maps to a change in the gold and every gold change traces back to the script. |
+| S009 | warning | ai-lint | AI: every deliverable in the script is tested | LLM pass: list the deliverables the script asks for and report which have no criterion. |
+| S010 | error | ai-lint | AI: no PII or private company names | LLM pass over script, rubric and workbook text for real private companies or people. |
+| G001 | error | deterministic | Gold has no #REF!/#DIV/0!/#VALUE! cells | #REF!, #DIV/0!, #VALUE!, #N/A, #NAME?, #NUM! in any cell (defined-name errors excluded). |
+| G002 | error | deterministic | Gold has no links to other workbooks | Links to other files break when the workbook ships alone. |
+| G003 | warning | deterministic | Gold has no hidden sheets or comments | Hidden sheets and cell comments leak authoring notes or hide answer machinery. |
+| G004 | warning | deterministic | Gold's new cells are formulas, not typed | Cells that are new or changed vs the input should mostly be formulas; a high hardcode share means the build is typed in. |
+| G005 | error | deterministic | Every OV target found in gold on a formula cell | Each numeric target must be found (within its tolerance, any display-unit scaling) in a gold cell that is a formula. |
+| G006 | warning | deterministic | OV target isn't a typed value or in 3+ cells | Target found only in literal cells, or in 3+ cells, means the rubric grades an input or a pasted value. |
+| G007 | error | deterministic | Perturbation 'from' value exists as an input in gold | The 'from' value must sit in a literal (input) cell on the named tab whose row label matches the criterion. |
+| P001 | error | deterministic | Perturbation recalculated on gold hits target | Apply the change to a copy of the gold, recalculate with LibreOffice, and confirm the named output lands on the target within tolerance. |
 | P002 | warning | deterministic | Perturbation actually moves the output | If the output is unchanged by the perturbation the criterion is non-discriminating (the gold itself would pass it hardcoded). |
-| I001 | error | deterministic | Input holds no rubric targets (illogical build) | An output-validation or perturbation target sitting as a literal in the input is an answer hint. |
-| I002 | error | deterministic | Input holds no pre-computed gold values | Cells that are literals in the input but formulas in the gold, with equal values, are hardcoded dependencies of the unbuilt work. |
-| I003 | warning | deterministic | Input has no downstream tabs | Tabs the script asks the analyst to build (Transaction, Output, Returns, Debt schedule, ...) must not already exist in the input. |
-| G008 | error | deterministic | No hidden hardcodes inside gold formulas | A numeric constant typed into a formula (=F5*8.5, =B4+0.05) must be spoken in the script or already present as a value in the input workbook; otherwise it is an untraceable assumption. Constants that do exist as an assumption cell should be linked, not retyped. |
-| G009 | error | deterministic | No data-vendor formulas, broken refs, broken named ranges or embedded images | Ported from the sheets delivery scanner: Bloomberg/CapIQ/FactSet/RTD calls cannot evaluate off-terminal; #REF! inside formulas and defined names are dead links; embedded images are usually screenshots of source data. |
-| V001 | warning | deterministic | Author provenance: not LLM-generated | Workbook written by openpyxl/pandas/xlsxwriter/Google Sheets, default 'Sheet1' tabs, no formatting, or cells/comments naming an AI tool suggest the build was not done by an analyst in Excel. |
-| V002 | warning | deterministic | Author provenance: not found online | Template vendors (Macabacus, Wall Street Prep, CFI, BIWS, ASimpleModel), URLs, copyright notices or 'template' markers mean the model was downloaded, not built. |
-| V003 | warning | deterministic | No identifying info inside workbooks or text | Emails, phone numbers, and company-like names (Acme Holdings LLC) in cells, tab names, script or rubric. Scrubbed placeholders (Meridian, Project <codename>) are allowed. Author names in document properties are not checked. |
-| V004 | warning | deterministic | Task metadata complete | If a task/metadata JSON or CSV ships in the bundle it must carry industry, category and subcategory (the Data Compass card was run). |
-| V005 | error | deterministic | No duplicate prompt across tasks | The script/prompt must not repeat another task's (exact or near-duplicate) within the same lint run or a supplied known-prompts file. |
-| K001 | error | deterministic | Scanner: no external links / broken references / name errors | From the platform scanner output for input and gold workbooks. |
-| K002 | warning | deterministic | Scanner: no hidden sheets, comments, images, broken named ranges | From the platform scanner output; broken named ranges are dead definitions left over from a decomposition. |
-| K003 | warning | deterministic | Scanner: hardcode share | A high hardcode ratio in the GOLD means a typed-in build (input ratio reported as info). |
-| K004 | warning | deterministic | Scanner: author provenance | llmAuthorCheck.matchedTool / onlineAuthorCheck.matchedSource (a generation tool or an online template source). |
+| I001 | error | deterministic | No rubric target typed into the input | An output-validation or perturbation target sitting as a literal in the input is an answer hint. |
+| I002 | error | deterministic | No input hardcode equal to a gold formula result | Cells that are literals in the input but formulas in the gold, with equal values, are hardcoded dependencies of the unbuilt work. |
+| I003 | warning | deterministic | Input lacks tabs the script asks to build | Tabs the script asks the analyst to build (Transaction, Output, Returns, Debt schedule, ...) must not already exist in the input. |
+| G008 | error | deterministic | Constants inside formulas are spoken or in input | A numeric constant typed into a formula (=F5*8.5, =B4+0.05) must be spoken in the script or already present as a value in the input workbook; otherwise it is an untraceable assumption. Constants that do exist as an assumption cell should be linked, not retyped. |
+| G009 | error | deterministic | No vendor formulas, #REF! names, or images | Ported from the sheets delivery scanner: Bloomberg/CapIQ/FactSet/RTD calls cannot evaluate off-terminal; #REF! inside formulas and defined names are dead links; embedded images are usually screenshots of source data. |
+| V001 | warning | deterministic | Workbook not machine-written or AI-marked | Workbook written by openpyxl/pandas/xlsxwriter/Google Sheets, default 'Sheet1' tabs, no formatting, or cells/comments naming an AI tool suggest the build was not done by an analyst in Excel. |
+| V002 | warning | deterministic | No template-vendor, URL or copyright markers | Template vendors (Macabacus, Wall Street Prep, CFI, BIWS, ASimpleModel), URLs, copyright notices or 'template' markers mean the model was downloaded, not built. |
+| V003 | warning | deterministic | No emails, phones or company names in text | Emails, phone numbers, and company-like names (Acme Holdings LLC) in cells, tab names, script or rubric. Scrubbed placeholders (Meridian, Project <codename>) are allowed. Author names in document properties are not checked. |
+| V004 | warning | deterministic | Metadata has industry/category/subcategory | If a task/metadata JSON or CSV ships in the bundle it must carry industry, category and subcategory (the Data Compass card was run). |
+| V005 | error | deterministic | Script isn't a duplicate of another task's | The script/prompt must not repeat another task's (exact or near-duplicate) within the same lint run or a supplied known-prompts file. |
+| K001 | error | deterministic | Scanner: no external links, broken refs, #NAME? | From the platform scanner output for input and gold workbooks. |
+| K002 | warning | deterministic | Scanner: no hidden sheets, comments, images, dead names | From the platform scanner output; broken named ranges are dead definitions left over from a decomposition. |
+| K003 | warning | deterministic | Scanner: gold hardcode ratio under 60% | A high hardcode ratio in the GOLD means a typed-in build (input ratio reported as info). |
+| K004 | warning | deterministic | Scanner: no generation tool or online template | llmAuthorCheck.matchedTool / onlineAuthorCheck.matchedSource (a generation tool or an online template source). |
 
 ## Design notes on the checks that matter most
 

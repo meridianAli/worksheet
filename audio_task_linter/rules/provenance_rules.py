@@ -11,15 +11,15 @@ from xml.etree import ElementTree as ET
 from ..findings import Finding, RuleInfo, ERROR, WARNING, INFO
 
 RULES = [
-    RuleInfo("V001", "Author provenance: not LLM-generated", WARNING, "deterministic", ("gold", "input"),
+    RuleInfo("V001", "Workbook not machine-written or AI-marked", WARNING, "deterministic", ("gold", "input"),
              "Workbook written by openpyxl/pandas/xlsxwriter/Google Sheets, default 'Sheet1' tabs, no formatting, or cells/comments naming an AI tool suggest the build was not done by an analyst in Excel."),
-    RuleInfo("V002", "Author provenance: not found online", WARNING, "deterministic", ("gold", "input"),
+    RuleInfo("V002", "No template-vendor, URL or copyright markers", WARNING, "deterministic", ("gold", "input"),
              "Template vendors (Macabacus, Wall Street Prep, CFI, BIWS, ASimpleModel), URLs, copyright notices or 'template' markers mean the model was downloaded, not built."),
-    RuleInfo("V003", "No identifying info inside workbooks or text", WARNING, "deterministic", ("gold", "input", "script", "rubric"),
+    RuleInfo("V003", "No emails, phones or company names in text", WARNING, "deterministic", ("gold", "input", "script", "rubric"),
              "Emails, phone numbers, and company-like names (Acme Holdings LLC) in cells, tab names, script or rubric. Scrubbed placeholders (Meridian, Project <codename>) are allowed. Author names in document properties are not checked."),
-    RuleInfo("V004", "Task metadata complete", WARNING, "deterministic", (),
+    RuleInfo("V004", "Metadata has industry/category/subcategory", WARNING, "deterministic", (),
              "If a task/metadata JSON or CSV ships in the bundle it must carry industry, category and subcategory (the Data Compass card was run)."),
-    RuleInfo("V005", "No duplicate prompt across tasks", ERROR, "deterministic", ("script",),
+    RuleInfo("V005", "Script isn't a duplicate of another task's", ERROR, "deterministic", ("script",),
              "The script/prompt must not repeat another task's (exact or near-duplicate) within the same lint run or a supplied known-prompts file."),
 ]
 
