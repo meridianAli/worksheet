@@ -10,8 +10,8 @@ from ..findings import Finding, RuleInfo, ERROR, WARNING, INFO
 RULES = [
     RuleInfo("K001", "Scanner: no external links, broken refs, #NAME?", ERROR, "deterministic", (),
              "From the platform scanner output for input and gold workbooks."),
-    RuleInfo("K002", "Scanner: no hidden sheets, comments, images, dead names", WARNING, "deterministic", (),
-             "From the platform scanner output; broken named ranges are dead definitions left over from a decomposition."),
+    RuleInfo("K002", "Scanner: no hidden sheets, comments or images", WARNING, "deterministic", (),
+             "From the platform scanner output for input and gold workbooks."),
     RuleInfo("K003", "Scanner: gold hardcode ratio under 60%", WARNING, "deterministic", (),
              "A high hardcode ratio in the GOLD means a typed-in build (input ratio reported as info)."),
 ]
@@ -51,9 +51,6 @@ def run(ctx, report):
             report.add(Finding("K002", WARNING, f"{role}: {cnt('cellsWithComments')} cell comment(s).", file=f, evidence=str(d.get("cellsWithComments"))[:200]))
         if d.get("sheetsWithImages"):
             report.add(Finding("K002", WARNING, f"{role}: embedded images on {d['sheetsWithImages']}", file=f))
-        if cnt("brokenNamedRanges"):
-            names = sorted({x.get("name") for x in d.get("brokenNamedRanges") or [] if isinstance(x, dict)})
-            report.add(Finding("K002", WARNING, f"{role}: {cnt('brokenNamedRanges')} broken named range(s): {', '.join(names[:8])}", file=f))
         hs = d.get("hardcodedNumberStats") or {}
         if hs.get("totalNumberCells"):
             ratio = hs.get("ratio", hs.get("hardcodedCount", 0) / max(1, hs["totalNumberCells"]))

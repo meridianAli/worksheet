@@ -81,11 +81,11 @@ Severity: `error` blocks (exit code 1), `warning` needs a reviewer decision, `in
 | error | deterministic | No input hardcode equal to a gold formula result | Cells that are literals in the input but formulas in the gold, with equal values, are hardcoded dependencies of the unbuilt work. |
 | warning | deterministic | Input lacks tabs the script asks to build | Tabs the script asks the analyst to build (Transaction, Output, Returns, Debt schedule, ...) must not already exist in the input. |
 | error | deterministic | Constants inside formulas are spoken or in input | A numeric constant typed into a formula (=F5*8.5, =B4+0.05) must be spoken in the script or already present as a value in the input workbook; otherwise it is an untraceable assumption. Constants that do exist as an assumption cell should be linked, not retyped. |
-| error | deterministic | No vendor formulas, #REF! names, or images | Ported from the sheets delivery scanner: Bloomberg/CapIQ/FactSet/RTD calls cannot evaluate off-terminal; #REF! inside formulas and defined names are dead links; embedded images are usually screenshots of source data. |
+| error | deterministic | No vendor formulas, #REF! in formulas, or images | Ported from the sheets delivery scanner: Bloomberg/CapIQ/FactSet/RTD calls cannot evaluate off-terminal; #REF! inside formulas is a dead link; embedded images are usually screenshots of source data. |
 | warning | deterministic | No emails, phones or company names in text | Emails, phone numbers, and company-like names (Acme Holdings LLC) in cells, tab names, script or rubric. Scrubbed placeholders (Meridian, Project <codename>) are allowed. Author names in document properties are not checked. |
 | error | deterministic | Script isn't a duplicate of another task's | The script/prompt must not repeat another task's (exact or near-duplicate) within the same lint run or a supplied known-prompts file. |
 | error | deterministic | Scanner: no external links, broken refs, #NAME? | From the platform scanner output for input and gold workbooks. |
-| warning | deterministic | Scanner: no hidden sheets, comments, images, dead names | From the platform scanner output; broken named ranges are dead definitions left over from a decomposition. |
+| warning | deterministic | Scanner: no hidden sheets, comments or images | From the platform scanner output for input and gold workbooks. |
 | warning | deterministic | Scanner: gold hardcode ratio under 60% | A high hardcode ratio in the GOLD means a typed-in build (input ratio reported as info). |
 
 ## Design notes on the checks that matter most

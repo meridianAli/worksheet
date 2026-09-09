@@ -404,9 +404,9 @@ def run(ctx, report):  # noqa: F811
 # ---------------------------------------------------------------------------------------------
 # G009: sheets-pipeline scanner checks ported over (broken refs, named ranges, data-vendor formulas, images)
 # ---------------------------------------------------------------------------------------------
-RULES.append(RuleInfo("G009", "No vendor formulas, #REF! names, or images", ERROR, "deterministic", ("gold",),
+RULES.append(RuleInfo("G009", "No vendor formulas, #REF! in formulas, or images", ERROR, "deterministic", ("gold",),
                       "Ported from the sheets delivery scanner: Bloomberg/CapIQ/FactSet/RTD calls cannot evaluate off-terminal; #REF! inside "
-                      "formulas and defined names are dead links; embedded images are usually screenshots of source data."))
+                      "formulas is a dead link; embedded images are usually screenshots of source data."))
 
 _VENDOR_FN = re.compile(r"\b(BDP|BDH|BDS|BQL|BLP|CIQ|CIQRANGE|FDS|FDSB|RTD|CAPIQ|GETQUOTE|STOCKHISTORY|WDS)\s*\(", re.I)
 
@@ -425,9 +425,6 @@ def run_scanner_checks(ctx, report):
     if broken:
         report.add(Finding("G009", ERROR, f"{len(broken)} formula(s) contain #REF! (broken references).", file=gf,
                            evidence=", ".join(f"{c.ref} {c.formula[:40]}" for c in broken[:5])))
-    bad_names = [n for n, t in gold.defined_names.items() if t and "#REF!" in str(t)]
-    if bad_names:
-        report.add(Finding("G009", WARNING, f"{len(bad_names)} broken named range(s): {', '.join(bad_names[:6])}", file=gf))
     if gold.images:
         report.add(Finding("G009", WARNING, f"Embedded images on: {', '.join(gold.images)}", file=gf))
 
