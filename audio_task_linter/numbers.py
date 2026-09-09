@@ -27,10 +27,10 @@ TOLERANCE_WITHIN_RE = re.compile(
 CELL_REF_RE = re.compile(
     r"(?<![A-Za-z0-9_#$/])(?:\$?[A-Z]{1,3}\$?\d{1,6})(?::\$?[A-Z]{1,3}\$?\d{1,6})?(?![A-Za-z0-9_])"
 )
-_CELL_REF_FALSE_POSITIVES = re.compile(r"^(?:Q[1-4]|H[12]|FY\d{2,4}|CY\d{2,4})$")
+_CELL_REF_FALSE_POSITIVES = re.compile(r"^(?:Q[1-4]|H[12]|FY\d{2,4}|CY\d{2,4}|T12|TTM|LTM|NTM|L12|L3|L6|Y[1-9]|YR\d)$")
 # "cell D42", "cells D42:D50", "row 12", "column D", "col F"
 CELL_WORD_RE = re.compile(r"\b(?:cells?)\s+\$?[A-Z]{1,3}\$?\d{1,6}\b", re.IGNORECASE)
-ROW_COL_RE = re.compile(r"\b(?:[Rr]ows?\s+\d{1,6}\b|[Cc]olumns?\s+\$?[A-Z]{1,3}\b(?![a-z])|[Cc]ol\.?\s+\$?[A-Z]{1,3}\b(?![a-z]))")
+ROW_COL_RE = re.compile(r"\b(?:[Rr]ows?\s+\d{1,5}\b(?![,.]\d)|[Cc]olumns?\s+\$?[A-Z]{1,3}\b(?![a-z])|[Cc]ol\.?\s+\$?[A-Z]{1,3}\b(?![a-z]))")
 
 EXCEL_FUNCTIONS = (
     "SUMIFS", "SUMIF", "VLOOKUP", "HLOOKUP", "XLOOKUP", "INDEX", "MATCH", "OFFSET", "IFERROR",
@@ -85,12 +85,27 @@ def is_tolerance_number(n: "Num", text: str) -> bool:
     return bool(_TOL_PREFIX_RE.search(text[max(0, n.start - 16):n.start]))
 
 
+_DATE_RE = re.compile(
+    r"\b(?:\d{1,2}[/\-.]\d{1,2}[/\-.]\d{2,4}|\d{4}-\d{2}-\d{2}|\d{1,2}-(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*-\d{2,4}"
+    r"|(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?\s+\d{1,2}(?:st|nd|rd|th)?,?\s+\d{4}|\d{1,2}\s+(?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?,?\s+\d{4})",
+    re.IGNORECASE)
+
+
+def date_spans(text: str) -> list[tuple[int, int]]:
+    return [m.span() for m in _DATE_RE.finditer(text)]
+
+
 def find_numbers(text: str, skip_tolerances: bool = True) -> list[Num]:
-    """All numeric tokens in text, skipping years (1990-2100), quarter labels and tolerance magnitudes."""
+    """All numeric tokens in text, skipping years (1990-2100), dates, quarter labels and tolerance magnitudes."""
     out = []
+    dates = date_spans(text)
     for m in NUMBER_RE.finditer(text):
         n = _num_from_match(m)
         raw = n.raw.strip()
+        if any(a <= m.start("num") < b for a, b in dates):
+            continue
+        if re.fullmatch(r"\(?-?\$?\s?0{2,}\)?", raw) or re.search(r"\$\s?0{3}\b", text[max(0, m.start() - 1):m.end()]):
+            continue  # "$000 scale" / "000s"
         if skip_tolerances and is_tolerance_number(n, text):
             continue
         # skip years and things like "Q3 2023", "2028", "September 30, 2023"

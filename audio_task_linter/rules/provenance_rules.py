@@ -206,7 +206,7 @@ def shingles(text: str, k: int = 8) -> set:
 def check_duplicate_prompts(reports, scripts: dict, known: dict | None = None, threshold: float = 0.8):
     """scripts: {task_dir: script_text}; known: {label: script_text} from --known-prompts."""
     items = list(scripts.items()) + list((known or {}).items())
-    sh = {k: shingles(v) for k, v in items if v and v.strip()}
+    sh = {k: shingles(v) for k, v in items if v and len(v.split()) >= 60}  # short platform prompts are boilerplate by design
     for rep in reports:
         mine = sh.get(rep.task_dir)
         if not mine:

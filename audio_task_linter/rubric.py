@@ -38,7 +38,8 @@ HEADER_RE = re.compile(r"^\s*(?:#{1,6}\s*)?(?:\d+[.)]\s*)?(?:\*\*)?\s*(?P<name>[
 PERTURB_RE = re.compile(
     r"^\s*(?:if|when)\s+(?P<input>.+?)\s+(?:is\s+|are\s+|were\s+|gets\s+)?(?:changed|switched|set|moved|updated|toggled|flipped|increased|decreased|raised|lowered|reduced)\s+"
     r"(?:from\s+(?P<from>.+?)\s+)?to\s+(?P<to>.+?)\s*,\s*(?:does|do|is|are|will|would)\s+(?P<output>.+?)\s+"
-    r"(?:update|change|become|equal|move|flow|recalculate|result|go|shift|switch|now\s+equal)\w*\s+(?:to\s+|from\s+.+?\s+to\s+)?(?P<target>.+?)\??\s*$",
+    r"(?:update|change|become|equal|move|flow|recalculate|result|go|shift|switch|now\s+equal|remain|stay|hold|still\s+equal|still\s+show|show|read|return)\w*"
+    r"(?:\s+\w+ly)?(?:\s+(?:at|to|as|from\s+.+?\s+to))?(?:\s+(?:approximately|about|roughly|around|~))?\s+(?P<target>.+?)\??\s*$",
     re.IGNORECASE | re.DOTALL,
 )
 SHEET_REF_RE = re.compile(
@@ -88,8 +89,15 @@ class Criterion:
         if not m:
             return None
         d = {k: (v.strip() if v else None) for k, v in m.groupdict().items()}
+        from .numbers import date_spans
+        d["from_is_date"] = bool(d["from"] and date_spans(d["from"]))
+        d["to_is_date"] = bool(d["to"] and date_spans(d["to"]))
         d["from_num"] = _first_num(d["from"]) if d["from"] else None
         d["to_num"] = _first_num(d["to"])
+        if d["to_is_date"]:
+            d["to_num"] = Num(0.0, d["to"], "date")
+        if d["from_is_date"]:
+            d["from_num"] = Num(0.0, d["from"], "date")
         d["target_num"] = _first_num(d["target"])
         d["tolerances"] = find_tolerances(self.text)
         return d

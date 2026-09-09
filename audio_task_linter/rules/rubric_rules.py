@@ -123,9 +123,11 @@ def run(ctx, report):
             report.add(Finding("R009", WARNING, "Perturbation does not state the baseline ('from') value; the judge cannot confirm the starting state.", file=f, location=c.id, evidence=c.text))
         if p["to_num"] is None:
             report.add(Finding("R009", ERROR, "Perturbation has no numeric 'to' value.", file=f, location=c.id, evidence=c.text))
+        if p["from_is_date"] and p["to_is_date"] and p["from"].strip().lower() == p["to"].strip().lower():
+            report.add(Finding("R009", ERROR, "Perturbation 'from' and 'to' dates are identical.", file=f, location=c.id, evidence=c.text))
         if p["target_num"] is None and not re.search(r"\b(yes|no|true|false|blank|zero|empty|switch|change|from .* to)\b", p["target"] or "", re.I):
             report.add(Finding("R009", ERROR, "Perturbation has no numeric expected result.", file=f, location=c.id, evidence=c.text))
-        if p["from_num"] and p["to_num"] and p["from_num"].value == p["to_num"].value:
+        if p["from_num"] and p["to_num"] and p["from_num"].unit != "date" and p["to_num"].unit != "date" and p["from_num"].value == p["to_num"].value:
             report.add(Finding("R009", ERROR, "Perturbation 'from' and 'to' values are identical.", file=f, location=c.id, evidence=c.text))
     # R010 / R013 tolerances
     for c in crits:
@@ -140,7 +142,7 @@ def run(ctx, report):
             targets = nums
         has_numeric_target = bool(targets)
         if has_numeric_target and not tols:
-            if not re.search(r"\bexactly\b|\bequal to 0\b|\bis 0\b|\bzero\b|\bblank\b|\bempty\b", c.text, re.I):
+            if not re.search(r"\bexactly\b|\bequal to 0\b|\bis 0\b|\bzero\b|\bblank\b|\bempty\b|\bTRUE\b|\bFALSE\b|\bequal 1\b|\bor 1\b", c.text):
                 report.add(Finding("R010", WARNING, "Numeric target with no tolerance stated.", file=f, location=c.id, evidence=c.text))
         if len(tols) > 1 and c.section != "Perturbation":
             report.add(Finding("R010", WARNING, f"Tolerance stated {len(tols)} times ({', '.join(t['raw'] for t in tols)}); the band compounds.", file=f, location=c.id, evidence=c.text))
@@ -160,7 +162,7 @@ def run(ctx, report):
         if c.section == "Perturbation":
             targets = targets[2:]  # from, to are not targets
         joins = len(STACK_JOIN.findall(c.text))
-        if qmarks > 1 or len(targets) >= 3 or (joins >= 2 and len(targets) >= 2):
+        if qmarks > 1 or len(targets) >= 4 or (joins >= 1 and len(targets) >= 3) or (joins >= 2 and len(targets) >= 2):
             report.add(Finding("R011", WARNING, f"Possible stacking: {qmarks} question marks, {len(targets)} numeric targets, {joins} conjunctions.", file=f, location=c.id, evidence=c.text))
     # R012 vague
     for c in crits:

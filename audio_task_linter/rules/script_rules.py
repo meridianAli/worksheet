@@ -52,7 +52,10 @@ def run(ctx, report):
             report.skip(rule.id, "no script")
         return
     wc = len(re.findall(r"[A-Za-z0-9$%']+", s))
-    if wc < 120:
+    has_audio = bool(ctx.bundle.audio) or "audio_recording" in ctx.bundle.remote_fields()
+    if wc < 120 and has_audio:
+        report.add(Finding("S001", INFO, f"Only the {wc}-word platform prompt is available as text; the instructions live in the recording, so script-based checks (S002-S006, G008) run on the prompt only. Supply a transcript as script.txt for full coverage.", file=sf))
+    elif wc < 120:
         report.add(Finding("S001", WARNING, f"Script is only {wc} words; a debrief that dictates a build is usually several hundred.", file=sf))
     # S002
     refs = find_cell_refs(s)
@@ -70,6 +73,8 @@ def run(ctx, report):
         return
     # S004 tab names
     gold = ctx.gold
+    if not ctx.inputs:
+        report.skip("S004", "input workbook not available locally; cannot tell which tabs the analyst already had")
     input_tabs = {t.lower() for w in ctx.inputs for t in w.sheets}
     gold_tabs = {t.lower(): t for t in gold.sheets} if gold else {}
     seen = set()
@@ -85,7 +90,7 @@ def run(ctx, report):
                 continue
             in_input = key in input_tabs or any(key in t or t in key for t in input_tabs)
             in_script = re.search(r"\b" + re.escape(name) + r"\b", s, re.I) is not None
-            if not in_input and not in_script:
+            if ctx.inputs and not in_input and not in_script:
                 report.add(Finding("S004", WARNING, f"Rubric grades on a '{name}' tab that is new in the gold and never named in the script; the analyst cannot know to create it under that name. Key the criterion on the line item instead.",
                                    file=ctx.rel(ctx.bundle.rubric), location=c.id))
     # S005 headline instructions
