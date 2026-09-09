@@ -47,7 +47,7 @@ Severity: `error` blocks (exit code 1), `warning` needs a reviewer decision, `in
 | error | deterministic | Every criterion ends in a question mark | The judge answers each criterion Yes/No; a trailing qualifying statement is not gradable. |
 | error | deterministic | Every criterion has points | Rubric gen or a contributor edit sometimes drops the points. |
 | error | deterministic | Pitfalls negative, others positive, none zero | Pitfalls are negative; Output Validation / Perturbation / Presentation / Model Integration are positive. |
-| warning | deterministic | Points within 1-5 (pitfalls to 10) | |points| between 1 and 5 for scored criteria (configurable); pitfalls up to 10. |
+| warning | deterministic | Points within 1-10 (pitfalls -1 to -10) | |points| between 1 and 10 for every section; pitfalls carry the negative sign. |
 | error | deterministic | All 4 sections present and non-empty | Output Validation, Perturbation, Presentation and Pitfalls each have at least one criterion; no declared section is empty. |
 | warning | deterministic | Enough criteria (10 total, 5 OV, 3 perturbation) | At least 10 criteria in total; Output Validation and Perturbation carry the bulk. |
 | error | deterministic | No duplicate criteria | Same text twice (after whitespace/case normalisation) double-counts points. |

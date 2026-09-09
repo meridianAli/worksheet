@@ -14,7 +14,7 @@ class Context:
     bundle: Bundle
     work_dir: Path
     recalc: bool = True
-    max_points: float = 5.0
+    max_points: float = 10.0
     max_pitfall_points: float = 10.0
     min_criteria: int = 10
     _rubric: Optional[Rubric] = None
