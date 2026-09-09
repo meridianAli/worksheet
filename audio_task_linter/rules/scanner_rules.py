@@ -12,10 +12,10 @@ RULES = [
              "From the platform scanner output for input and gold workbooks."),
     RuleInfo("K002", "Scanner: no hidden sheets, comments, images, broken named ranges", WARNING, "deterministic", (),
              "From the platform scanner output; broken named ranges are dead definitions left over from a decomposition."),
-    RuleInfo("K003", "Scanner: pre-linked blanks and hardcode share", WARNING, "deterministic", (),
-             "Pre-linked blank cells in the INPUT telegraph the layout (illogical build); a high hardcode ratio in the GOLD means a typed-in build."),
-    RuleInfo("K004", "Scanner: author provenance and identifying names", WARNING, "deterministic", (),
-             "llmAuthorCheck.matchedTool / onlineAuthorCheck.matchedSource, plus creator / lastModifiedBy names that must be scrubbed before delivery."),
+    RuleInfo("K003", "Scanner: hardcode share", WARNING, "deterministic", (),
+             "A high hardcode ratio in the GOLD means a typed-in build (input ratio reported as info)."),
+    RuleInfo("K004", "Scanner: author provenance", WARNING, "deterministic", (),
+             "llmAuthorCheck.matchedTool / onlineAuthorCheck.matchedSource (a generation tool or an online template source)."),
 ]
 
 _PLACEHOLDER_AUTHORS = re.compile(r"^(?:|user|author|admin|owner|microsoft office user|excel|analyst|meridian.*|openpyxl|unknown)$", re.I)
@@ -51,11 +51,6 @@ def run(ctx, report):
         if cnt("brokenNamedRanges"):
             names = sorted({x.get("name") for x in d.get("brokenNamedRanges") or [] if isinstance(x, dict)})
             report.add(Finding("K002", WARNING, f"{role}: {cnt('brokenNamedRanges')} broken named range(s): {', '.join(names[:8])}", file=f))
-        pl = cnt("cellsWithPreLinkedBlanks")
-        if pl:
-            sev = WARNING if role == "input" else INFO
-            report.add(Finding("K003", sev, f"{role}: {pl} pre-linked blank cell(s)" + (" — formulas already pointing at not-yet-built cells (illogical build signal)." if role == "input" else "."),
-                               file=f, evidence=", ".join(x.get("cell", "") for x in (d.get("cellsWithPreLinkedBlanks") or [])[:8] if isinstance(x, dict))))
         hs = d.get("hardcodedNumberStats") or {}
         if hs.get("totalNumberCells"):
             ratio = hs.get("ratio", hs.get("hardcodedCount", 0) / max(1, hs["totalNumberCells"]))
@@ -69,6 +64,4 @@ def run(ctx, report):
             report.add(Finding("K004", WARNING, f"{role}: authoring tool detected: {llm['matchedTool']}", file=f))
         if online.get("matchedSource"):
             report.add(Finding("K004", WARNING, f"{role}: online template source detected: {online['matchedSource']}", file=f))
-        people = {v for k in ("creator", "lastModifiedBy", "manager", "company") for v in (llm.get(k), online.get(k)) if v and not _PLACEHOLDER_AUTHORS.match(str(v))}
-        if people:
-            report.add(Finding("K004", WARNING, f"{role}: document properties carry a name that must be scrubbed before delivery: {', '.join(sorted(people))}", file=f))
+

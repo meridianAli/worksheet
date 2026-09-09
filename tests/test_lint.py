@@ -96,4 +96,4 @@ def test_provenance_and_pii(tmp_path):
     msgs = " ".join(f.rule + ":" + f.message for f in rep.findings)
     assert "V002" in msgs and "Wall Street Prep" in msgs
     assert "V003" in msgs and "jane.doe@acmeholdings.com" in msgs and "Zephyr Robotics Inc" in msgs
-    assert "creator='Jane Doe'" in msgs
+    assert "Jane Doe" not in msgs  # author names in document properties are deliberately ignored

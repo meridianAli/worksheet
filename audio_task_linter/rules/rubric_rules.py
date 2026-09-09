@@ -46,6 +46,9 @@ RULES = [
 VAGUE = re.compile(r"\b(correct(ly)?|consistent(ly)?|appropriate(ly)?|proper(ly)?|reasonabl[ey]|clean(ed)? up|accurate(ly)?|sensible|as expected|matches? expectations?)\b", re.I)
 ANCHOR = re.compile(r"\b(sheet|tab|row|line|section|column|schedule|table|header|label)\b|\b[A-Z][a-z]+ [A-Z][a-z]+\b", 0)
 STACK_JOIN = re.compile(r"\b(and|as well as|plus|also|both)\b", re.I)
+EXPECTED_CLAUSE = re.compile(r"\b(?:equal(?:s|ing)?(?:\s+to)?|update[sd]?\s+to|change[sd]?\s+to|become[s]?|remain[s]?(?:\s+at)?|stay[s]?(?:\s+at)?|read[s]?|return[s]?|show(?:s|ing)?)\s+"
+                             r"(?:a\s+|an\s+|the\s+)?(?:approximately\s+|about\s+|roughly\s+|exactly\s+)?[\$\(\-]?\d", re.I)
+ENUM_CLAUSE = re.compile(r",\s*(?:and\s+)?(?:a|an)\s+[A-Z][\w %/&-]{2,40}?\s+of\s+[\$\(\-]?\d", re.I)
 
 
 def run(ctx, report):
@@ -153,17 +156,19 @@ def run(ctx, report):
         for t in tols:
             if t["kind"] == "relative" and targets and any(tn.value == 0 for tn in targets if tn):
                 report.add(Finding("R013", WARNING, "Relative tolerance on a zero target is a zero-width band; use an absolute tolerance.", file=f, location=c.id, evidence=c.text))
-    # R011 stacking
+    # R011 stacking: several independent expected values in one question.
+    # Counted as "expected-value clauses": '<verb> [approximately] <number>' and enumerations like 'a Loan Amount of $0'.
     for c in crits:
-        if c.section == "Presentation":
+        if c.section in ("Presentation", "Pitfalls"):
             continue
         qmarks = re.sub(r"#NAME\?", "", c.text).count("?")
-        targets = [n for n in c.numbers() if not _is_tolerance_number(n, c.text)]
+        text = c.text
         if c.section == "Perturbation":
-            targets = targets[2:]  # from, to are not targets
-        joins = len(STACK_JOIN.findall(c.text))
-        if qmarks > 1 or len(targets) >= 4 or (joins >= 1 and len(targets) >= 3) or (joins >= 2 and len(targets) >= 2):
-            report.add(Finding("R011", WARNING, f"Possible stacking: {qmarks} question marks, {len(targets)} numeric targets, {joins} conjunctions.", file=f, location=c.id, evidence=c.text))
+            text = re.sub(r"\bchanged\s+from\s+\S+\s+to\s+\S+", "changed", text, flags=re.I)   # the input move is not a target
+            text = re.sub(r"\b(update|change|move)s?\s+from\s+\S+\s+to\s+", r"\1 to ", text, flags=re.I)  # 'from X to Y' before/after is one target
+        clauses = len(EXPECTED_CLAUSE.findall(text)) + len(ENUM_CLAUSE.findall(text))
+        if qmarks > 1 or clauses >= 2:
+            report.add(Finding("R011", WARNING, f"Possible stacking: {qmarks} question mark(s), {clauses} expected-value clauses in one criterion.", file=f, location=c.id, evidence=c.text))
     # R012 vague
     for c in crits:
         if VAGUE.search(c.text) and not ANCHOR.search(c.text):

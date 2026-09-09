@@ -16,7 +16,7 @@ RULES = [
     RuleInfo("V002", "Author provenance: not found online", WARNING, "deterministic", ("gold", "input"),
              "Template vendors (Macabacus, Wall Street Prep, CFI, BIWS, ASimpleModel), URLs, copyright notices or 'template' markers mean the model was downloaded, not built."),
     RuleInfo("V003", "No identifying info inside workbooks or text", WARNING, "deterministic", ("gold", "input", "script", "rubric"),
-             "Document creator / last-modified-by, emails, phone numbers, and company-like names (Acme Holdings LLC) in cells, tab names, script or rubric. Scrubbed placeholders (Meridian, Project <codename>) are allowed."),
+             "Emails, phone numbers, and company-like names (Acme Holdings LLC) in cells, tab names, script or rubric. Scrubbed placeholders (Meridian, Project <codename>) are allowed. Author names in document properties are not checked."),
     RuleInfo("V004", "Task metadata complete", WARNING, "deterministic", (),
              "If a task/metadata JSON or CSV ships in the bundle it must carry industry, category and subcategory (the Data Compass card was run)."),
     RuleInfo("V005", "No duplicate prompt across tasks", ERROR, "deterministic", ("script",),
@@ -100,11 +100,7 @@ def run(ctx, report):
         if vendor_hits:
             report.add(Finding("V002", WARNING, f"Template / online provenance markers: {'; '.join(vendor_hits[:5])}", file=f))
         # V003 identifying info in workbook
-        ident = []
-        for k in ("creator", "lastModifiedBy", "Company", "Manager"):
-            v = props.get(k)
-            if v and not _ALLOW.search(v) and not re.fullmatch(r"(user|author|admin|owner|microsoft office user|openpyxl|.{0,2})", v, re.I):
-                ident.append(f"docProps.{k}='{v}'")
+        ident = []  # document-property author names are intentionally not reported
         names = set()
         for c in list(_text_cells(wb)) + [type("T", (), {"value": s, "ref": f"tab '{s}'"})() for s in wb.sheets]:
             v = c.value

@@ -34,8 +34,6 @@ RULES = [
              "Cells that are literals in the input but formulas in the gold, with equal values, are hardcoded dependencies of the unbuilt work."),
     RuleInfo("I003", "Input has no downstream tabs", WARNING, "deterministic", ("input", "gold", "script"),
              "Tabs the script asks the analyst to build (Transaction, Output, Returns, Debt schedule, ...) must not already exist in the input."),
-    RuleInfo("I004", "Input has no pre-linked blanks", WARNING, "deterministic", ("input",),
-             "Formulas in the input that evaluate to 0/blank because they point at not-yet-built cells telegraph the layout."),
 ]
 
 DOWNSTREAM_TAB_WORDS = ("output", "transaction", "returns", "debt", "sweep", "waterfall", "covenant", "liquidity",
@@ -94,12 +92,6 @@ def run(ctx, report):
                     n_in = sum(1 for k in inp.cells if k[0] == tab)
                     if n_in > 10:
                         report.add(Finding("I003", WARNING, f"Input already contains a populated '{tab}' tab ({n_in} cells) that the script asks the analyst to build.", file=ctx.rel(inp.path)))
-    # I004 pre-linked blanks
-    for inp in inputs:
-        blanks = [c for c in inp.formula_cells() if c.value in (0, None, "") and c.formula and re.search(r"[A-Za-z_]+!|'[^']+'!", c.formula or "")]
-        if len(blanks) >= 5:
-            report.add(Finding("I004", WARNING, f"{len(blanks)} cross-sheet formulas in the input evaluate to 0/blank (pre-linked blanks).", file=ctx.rel(inp.path),
-                               evidence=", ".join(c.ref for c in blanks[:10])))
     # I002 literal-in-input == formula-in-gold
     for inp in inputs:
         hints = []

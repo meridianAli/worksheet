@@ -85,14 +85,17 @@ Severity: `error` blocks (exit code 1), `warning` needs a reviewer decision, `in
 | I001 | error | deterministic | Input holds no rubric targets (illogical build) | An output-validation or perturbation target sitting as a literal in the input is an answer hint. |
 | I002 | error | deterministic | Input holds no pre-computed gold values | Cells that are literals in the input but formulas in the gold, with equal values, are hardcoded dependencies of the unbuilt work. |
 | I003 | warning | deterministic | Input has no downstream tabs | Tabs the script asks the analyst to build (Transaction, Output, Returns, Debt schedule, ...) must not already exist in the input. |
-| I004 | warning | deterministic | Input has no pre-linked blanks | Formulas in the input that evaluate to 0/blank because they point at not-yet-built cells telegraph the layout. |
 | G008 | error | deterministic | No hidden hardcodes inside gold formulas | A numeric constant typed into a formula (=F5*8.5, =B4+0.05) must be spoken in the script or already present as a value in the input workbook; otherwise it is an untraceable assumption. Constants that do exist as an assumption cell should be linked, not retyped. |
 | G009 | error | deterministic | No data-vendor formulas, broken refs, broken named ranges or embedded images | Ported from the sheets delivery scanner: Bloomberg/CapIQ/FactSet/RTD calls cannot evaluate off-terminal; #REF! inside formulas and defined names are dead links; embedded images are usually screenshots of source data. |
 | V001 | warning | deterministic | Author provenance: not LLM-generated | Workbook written by openpyxl/pandas/xlsxwriter/Google Sheets, default 'Sheet1' tabs, no formatting, or cells/comments naming an AI tool suggest the build was not done by an analyst in Excel. |
 | V002 | warning | deterministic | Author provenance: not found online | Template vendors (Macabacus, Wall Street Prep, CFI, BIWS, ASimpleModel), URLs, copyright notices or 'template' markers mean the model was downloaded, not built. |
-| V003 | warning | deterministic | No identifying info inside workbooks or text | Document creator / last-modified-by, emails, phone numbers, and company-like names (Acme Holdings LLC) in cells, tab names, script or rubric. Scrubbed placeholders (Meridian, Project <codename>) are allowed. |
+| V003 | warning | deterministic | No identifying info inside workbooks or text | Emails, phone numbers, and company-like names (Acme Holdings LLC) in cells, tab names, script or rubric. Scrubbed placeholders (Meridian, Project <codename>) are allowed. Author names in document properties are not checked. |
 | V004 | warning | deterministic | Task metadata complete | If a task/metadata JSON or CSV ships in the bundle it must carry industry, category and subcategory (the Data Compass card was run). |
 | V005 | error | deterministic | No duplicate prompt across tasks | The script/prompt must not repeat another task's (exact or near-duplicate) within the same lint run or a supplied known-prompts file. |
+| K001 | error | deterministic | Scanner: no external links / broken references / name errors | From the platform scanner output for input and gold workbooks. |
+| K002 | warning | deterministic | Scanner: no hidden sheets, comments, images, broken named ranges | From the platform scanner output; broken named ranges are dead definitions left over from a decomposition. |
+| K003 | warning | deterministic | Scanner: hardcode share | A high hardcode ratio in the GOLD means a typed-in build (input ratio reported as info). |
+| K004 | warning | deterministic | Scanner: author provenance | llmAuthorCheck.matchedTool / onlineAuthorCheck.matchedSource (a generation tool or an online template source). |
 
 ## Design notes on the checks that matter most
 
@@ -118,9 +121,8 @@ Severity: `error` blocks (exit code 1), `warning` needs a reviewer decision, `in
   copyright), identifying info (document creator, emails, phones, company-like names in cells, tabs, script
   and rubric, with finance phrases like Working Capital allow-listed), task metadata completeness when a
   metadata file ships, and duplicate prompts across every task in the run or a `--known-prompts` set.
-- **Illogical build (I001–I004).** Rubric targets found as literals in the input, cells that are literal in
-  the input but formulas in the gold with the same value, downstream tabs already present, and pre-linked
-  blank cross-sheet formulas, straight from the illogical-build QC reference.
+- **Illogical build (I001–I003).** Rubric targets found as literals in the input, cells that are literal in
+  the input but formulas in the gold with the same value, downstream tabs already present, straight from the illogical-build QC reference.
 - **Tolerances (R010/R013).** Every numeric target carries exactly one band; a relative band around 0 is
   zero-width; two bands on one criterion compound.
 - **Headline instruction untested (S005).** "Formulas, not typed numbers", the circ switch, check rows and
