@@ -13,7 +13,8 @@ def test_good_bundle_passes(tmp_path):
     root = build_bundle(tmp_path / "good", good=True)
     rep = lint_dir(root, recalc=True, work_dir=tmp_path / "work")
     assert rep.ok, [f.__dict__ for f in rep.findings if f.severity == "error"]
-    assert rule_ids(rep, "warning") == set()
+    # fixtures are written by openpyxl, so the provenance rule legitimately fires on them
+    assert rule_ids(rep, "warning") <= {"V001"}
 
 
 def test_bad_bundle_flags_every_planted_defect(tmp_path):
@@ -68,3 +69,31 @@ def test_hidden_hardcode_messages(tmp_path):
 def test_spoken_numbers():
     from audio_task_linter.spoken import words_to_numbers
     assert words_to_numbers("Four hundred at close, five percent amort, thirteen and a half percent of revenue, two point two five times") == [400, 5, 13.5, 2.25]
+
+
+def test_duplicate_prompt_across_tasks(tmp_path):
+    from audio_task_linter.rules.provenance_rules import check_duplicate_prompts
+    a = build_bundle(tmp_path / "a", good=True)
+    b = build_bundle(tmp_path / "b", good=True)
+    scripts = {}
+    reps = [lint_dir(a, recalc=False, work_dir=tmp_path / "w1", scripts_out=scripts),
+            lint_dir(b, recalc=False, work_dir=tmp_path / "w2", scripts_out=scripts)]
+    check_duplicate_prompts(reps, scripts)
+    assert all(any(f.rule == "V005" and f.severity == "error" for f in r.findings) for r in reps)
+
+
+def test_provenance_and_pii(tmp_path):
+    import openpyxl
+    root = build_bundle(tmp_path / "p", good=True)
+    wb = openpyxl.load_workbook(root / "Meridian-abc123-gold-output.xlsx")
+    ws = wb.create_sheet("Sheet1")
+    ws["A1"] = "Downloaded from Wall Street Prep - www.wallstreetprep.com"
+    ws["A2"] = "Contact: jane.doe@acmeholdings.com"
+    ws["A3"] = "Prepared for Zephyr Robotics Inc."
+    wb.properties.creator = "Jane Doe"
+    wb.save(root / "Meridian-abc123-gold-output.xlsx")
+    rep = lint_dir(root, recalc=False, work_dir=tmp_path / "w")
+    msgs = " ".join(f.rule + ":" + f.message for f in rep.findings)
+    assert "V002" in msgs and "Wall Street Prep" in msgs
+    assert "V003" in msgs and "jane.doe@acmeholdings.com" in msgs and "Zephyr Robotics Inc" in msgs
+    assert "creator='Jane Doe'" in msgs

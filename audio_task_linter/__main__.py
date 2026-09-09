@@ -13,7 +13,8 @@ from .report import render_json, render_summary, render_text
 from .rules import MODULES, catalog
 
 
-def lint_dir(task_dir: Path, recalc: bool = True, work_dir: Path | None = None, overrides: dict | None = None) -> Report:
+def lint_dir(task_dir: Path, recalc: bool = True, work_dir: Path | None = None, overrides: dict | None = None,
+             scripts_out: dict | None = None) -> Report:
     bundle = discover(task_dir, overrides)
     work_dir = Path(work_dir or tempfile.mkdtemp(prefix="atl-"))
     ctx = Context(bundle=bundle, work_dir=work_dir, recalc=recalc)
@@ -27,6 +28,8 @@ def lint_dir(task_dir: Path, recalc: bool = True, work_dir: Path | None = None, 
         report.add(Finding("LOAD", WARNING, err))
     for note in ctx.notes:
         report.add(Finding("LOAD", INFO, note))
+    if scripts_out is not None:
+        scripts_out[str(task_dir)] = ctx.script
     return report
 
 
@@ -46,6 +49,7 @@ def main(argv=None) -> int:
     l.add_argument("--input", type=Path, action="append", help="override input workbook(s)")
     l.add_argument("--script", type=Path, help="override script file")
     l.add_argument("-v", "--verbose", action="store_true")
+    l.add_argument("--known-prompts", type=Path, help="JSON {label: prompt_text} or directory of .txt prompts already delivered, for duplicate detection")
 
     sub.add_parser("rules", help="print the rule catalog")
     a = sub.add_parser("ai-prompts", help="print the LLM review prompt for the ai-lint rules")
@@ -64,12 +68,21 @@ def main(argv=None) -> int:
 
     overrides = {"rubric": args.rubric, "gold_workbook": args.gold, "script": args.script,
                  "input_workbooks": args.input}
-    reports = []
+    reports, scripts = [], {}
     for d in args.task_dirs:
         if not d.is_dir():
             print(f"not a directory: {d}", file=sys.stderr)
             return 2
-        reports.append(lint_dir(d, recalc=not args.no_recalc, work_dir=args.work_dir, overrides=overrides))
+        reports.append(lint_dir(d, recalc=not args.no_recalc, work_dir=args.work_dir, overrides=overrides, scripts_out=scripts))
+    from .rules.provenance_rules import check_duplicate_prompts
+    known = {}
+    if args.known_prompts:
+        if args.known_prompts.is_dir():
+            known = {p.name: p.read_text(errors="replace") for p in args.known_prompts.glob("*.txt")}
+        else:
+            import json
+            known = json.loads(args.known_prompts.read_text())
+    check_duplicate_prompts(reports, scripts, known)
     if args.json:
         print(render_json(reports))
     elif args.summary:
