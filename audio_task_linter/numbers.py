@@ -156,7 +156,8 @@ def find_cell_refs(text: str) -> list[str]:
     for m in CELL_REF_RE.finditer(text):
         tok = m.group(0)
         head = tok.split(":")[0].replace("$", "")
-        if _CELL_REF_FALSE_POSITIVES.match(head):
+        pre = text[max(0, m.start() - 12):m.start()].lower()
+        if _CELL_REF_FALSE_POSITIVES.match(head) or (re.fullmatch(r"[0-9A-F]{6}", tok) and re.search(r"(hex|colou?r|rgb|#)\s*(code)?\s*$", pre)):
             # keep obvious cell-ish ones like "B12" only when preceded by the word cell
             continue
         refs.append(tok)
