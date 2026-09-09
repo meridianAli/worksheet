@@ -36,10 +36,10 @@ BULLET_RE = re.compile(r"^\s*(?:[-*•◦▪]|\d+[.)]|[a-z][.)]|\(?[ivx]+\))\s+"
 HEADER_RE = re.compile(r"^\s*(?:#{1,6}\s*)?(?:\d+[.)]\s*)?(?:\*\*)?\s*(?P<name>[A-Za-z][A-Za-z /_&-]{2,40}?)\s*(?:\*\*)?\s*:?\s*(?:[(\[–—-]?\s*\d+\s*(?:pts?|points?)\)?\]?)?\s*$")
 
 PERTURB_RE = re.compile(
-    r"^\s*(?:if|when)\s+(?P<input>.+?)\s+(?:is\s+|are\s+|were\s+|gets\s+)?(?:changed|switched|set|moved|updated|toggled|flipped|increased|decreased|raised|lowered|reduced)\s+"
+    r"^\s*(?:if|when|with|after|once)\s+(?:only\s+)?(?P<input>.+?)\s+(?:is\s+|are\s+|were\s+|gets\s+)?(?:changed|switched|set|moved|updated|toggled|flipped|increased|decreased|raised|lowered|reduced|cut|doubled|halved)\s+"
     r"(?:from\s+(?P<from>.+?)\s+)?to\s+(?P<to>.+?)\s*,\s*(?:does|do|is|are|will|would)\s+(?P<output>.+?)\s+"
-    r"(?:update|change|become|equal|move|flow|recalculate|result|go|shift|switch|now\s+equal|remain|stay|hold|still\s+equal|still\s+show|show|read|return)\w*"
-    r"(?:\s+\w+ly)?(?:\s+(?:at|to|as|from\s+.+?\s+to))?(?:\s+(?:approximately|about|roughly|around|~))?\s+(?P<target>.+?)\??\s*$",
+    r"(?:update|change|become|equal|move|flow|recalculate|result|go|shift|switch|now\s+equal|remain|stay|hold|still\s+equal|still\s+show|show|read|return|increase|decrease|rise|fall|drop|grow|decline)\w*"
+    r"(?:\s+\w+ly)?(?:\s+(?:at|to|as|by|from\s+.+?\s+to))?(?:\s+(?:approximately|about|roughly|around|~))?\s+(?P<target>.+?)\??\s*$",
     re.IGNORECASE | re.DOTALL,
 )
 SHEET_REF_RE = re.compile(
@@ -255,8 +255,9 @@ def parse_json(obj) -> Rubric:
                     pts = None
             cid = item.get("id") or item.get("criterion_id") or fallback_id
         idx = len(s.criteria) + 1
+        text_ = BULLET_RE.sub("", text_.strip())
         s.criteria.append(Criterion(id=str(cid or f"{_abbr(s.name)}-{idx}"), section=s.name,
-                                    text=text_.strip(), points=pts, index=idx, raw=json.dumps(item)))
+                                    text=text_, points=pts, index=idx, raw=json.dumps(item)))
 
     if isinstance(obj, dict) and "sections" in obj:
         obj = obj["sections"]

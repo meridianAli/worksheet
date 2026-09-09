@@ -126,7 +126,7 @@ def run(ctx, report):
             report.add(Finding("R009", ERROR, "Perturbation has no numeric 'to' value.", file=f, location=c.id, evidence=c.text))
         if p["from_is_date"] and p["to_is_date"] and p["from"].strip().lower() == p["to"].strip().lower():
             report.add(Finding("R009", ERROR, "Perturbation 'from' and 'to' dates are identical.", file=f, location=c.id, evidence=c.text))
-        if p["target_num"] is None and not re.search(r"\b(yes|no|true|false|blank|zero|empty|switch|change|from .* to)\b", p["target"] or "", re.I):
+        if p["target_num"] is None and not re.search(r"\b(yes|no|true|false|blank|zero|empty|switch|change|unchanged|stay|remain|formula|from .* to)\b", p["target"] or "", re.I):
             report.add(Finding("R009", ERROR, "Perturbation has no numeric expected result.", file=f, location=c.id, evidence=c.text))
         if p["from_num"] and p["to_num"] and p["from_num"].unit != "date" and p["to_num"].unit != "date" and p["from_num"].value == p["to_num"].value:
             report.add(Finding("R009", ERROR, "Perturbation 'from' and 'to' values are identical.", file=f, location=c.id, evidence=c.text))
