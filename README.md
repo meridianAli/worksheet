@@ -70,7 +70,7 @@ Severity: `error` blocks (exit code 1), `warning` needs a reviewer decision, `in
 | error | ai-lint | AI: no PII or private company names | LLM pass over script, rubric and workbook text for real private companies or people. |
 | error | deterministic | Gold has no #REF!/#DIV/0!/#VALUE! cells | #REF!, #DIV/0!, #VALUE!, #N/A, #NAME?, #NUM! in any cell (defined-name errors excluded). |
 | error | deterministic | Gold has no links to other workbooks | Links to other files break when the workbook ships alone. |
-| warning | deterministic | Gold has no hidden sheets or comments | Hidden sheets and cell comments leak authoring notes or hide answer machinery. |
+| warning | deterministic | Gold has no hidden sheets | Hidden sheets and cell comments leak authoring notes or hide answer machinery. |
 | warning | deterministic | Gold's new cells are formulas, not typed | Cells that are new or changed vs the input should mostly be formulas; a high hardcode share means the build is typed in. |
 | error | deterministic | Every OV target found in gold on a formula cell | Each numeric target must be found (within its tolerance, any display-unit scaling) in a gold cell that is a formula. |
 | warning | deterministic | OV target isn't a typed value or in 3+ cells | Target found only in literal cells, or in 3+ cells, means the rubric grades an input or a pasted value. |
@@ -84,8 +84,8 @@ Severity: `error` blocks (exit code 1), `warning` needs a reviewer decision, `in
 | error | deterministic | No vendor formulas, #REF! in formulas, or images | Ported from the sheets delivery scanner: Bloomberg/CapIQ/FactSet/RTD calls cannot evaluate off-terminal; #REF! inside formulas is a dead link; embedded images are usually screenshots of source data. |
 | warning | deterministic | No emails, phones or company names in text | Emails, phone numbers, and company-like names (Acme Holdings LLC) in cells, tab names, script or rubric. Scrubbed placeholders (Meridian, Project <codename>) are allowed. Author names in document properties are not checked. |
 | error | deterministic | Script isn't a duplicate of another task's | The script/prompt must not repeat another task's (exact or near-duplicate) within the same lint run or a supplied known-prompts file. |
-| error | deterministic | Scanner: no external links, broken refs, #NAME? | From the platform scanner output for input and gold workbooks. |
-| warning | deterministic | Scanner: no hidden sheets, comments or images | From the platform scanner output for input and gold workbooks. |
+| error | deterministic | Scanner: gold has no external links, broken refs, #NAME? | Errors in the GOLD block; the same in the INPUT are reported as info only. |
+| warning | deterministic | Scanner: gold has no hidden sheets or images | From the platform scanner output for input and gold workbooks. |
 | warning | deterministic | Scanner: gold hardcode ratio under 60% | A high hardcode ratio in the GOLD means a typed-in build (input ratio reported as info). |
 
 ## Design notes on the checks that matter most

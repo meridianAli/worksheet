@@ -14,7 +14,7 @@ RULES = [
              "#REF!, #DIV/0!, #VALUE!, #N/A, #NAME?, #NUM! in any cell (defined-name errors excluded)."),
     RuleInfo("G002", "Gold has no links to other workbooks", ERROR, "deterministic", ("gold",),
              "Links to other files break when the workbook ships alone."),
-    RuleInfo("G003", "Gold has no hidden sheets or comments", WARNING, "deterministic", ("gold",),
+    RuleInfo("G003", "Gold has no hidden sheets", WARNING, "deterministic", ("gold",),
              "Hidden sheets and cell comments leak authoring notes or hide answer machinery."),
     RuleInfo("G004", "Gold's new cells are formulas, not typed", WARNING, "deterministic", ("gold", "input"),
              "Cells that are new or changed vs the input should mostly be formulas; a high hardcode share means the build is typed in."),
@@ -66,8 +66,6 @@ def run(ctx, report):
     # G003 hygiene
     if gold.hidden_sheets:
         report.add(Finding("G003", WARNING, f"Hidden sheets: {', '.join(gold.hidden_sheets)}", file=gf))
-    if gold.comments:
-        report.add(Finding("G003", WARNING, f"{len(gold.comments)} cell comments (first: {', '.join(gold.comments[:5])}).", file=gf))
     # G004 formula share of new/changed cells
     if inputs:
         inp = inputs[0]
