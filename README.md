@@ -86,6 +86,8 @@ Severity: `error` blocks (exit code 1), `warning` needs a reviewer decision, `in
 | I002 | error | deterministic | Input holds no pre-computed gold values | Cells that are literals in the input but formulas in the gold, with equal values, are hardcoded dependencies of the unbuilt work. |
 | I003 | warning | deterministic | Input has no downstream tabs | Tabs the script asks the analyst to build (Transaction, Output, Returns, Debt schedule, ...) must not already exist in the input. |
 | I004 | warning | deterministic | Input has no pre-linked blanks | Formulas in the input that evaluate to 0/blank because they point at not-yet-built cells telegraph the layout. |
+| G008 | error | deterministic | No hidden hardcodes inside gold formulas | A numeric constant typed into a formula (=F5*8.5, =B4+0.05) must be spoken in the script or already present as a value in the input workbook; otherwise it is an untraceable assumption. Constants that do exist as an assumption cell should be linked, not retyped. |
+| G009 | error | deterministic | No data-vendor formulas, broken refs, broken named ranges or embedded images | Ported from the sheets delivery scanner: Bloomberg/CapIQ/FactSet/RTD calls cannot evaluate off-terminal; #REF! inside formulas and defined names are dead links; embedded images are usually screenshots of source data. |
 
 ## Design notes on the checks that matter most
 
@@ -98,6 +100,14 @@ Severity: `error` blocks (exit code 1), `warning` needs a reviewer decision, `in
   are actually applied: the input cell is found by value + row label, changed, the book recalculated, and the
   named output checked against the target. `P002` flags a perturbation whose output does not move at all
   (the non-discriminating criteria pattern).
+- **Hidden hardcodes in formulas (G008).** Every numeric literal typed inside a gold formula (`=F5*8.5`,
+  `=B4+0.05`) is extracted, ignoring cell refs, sheet names, strings and index arguments (VLOOKUP column,
+  ROUND digits, CHOOSE index). Each constant must be traceable: spoken in the script (digits or words,
+  "twenty-one percent", "four hundred", "thirteen and a half") or already a value in the input workbook.
+  Untraceable constants are errors when repeated, warnings when single; traceable ones that also sit in an
+  assumption cell get an info nudge to link rather than retype.
+- **Sheets scanner ports (G009).** Data-vendor formulas (BDP/BDH/CIQ/FDS/RTD), `#REF!` inside formulas and
+  defined names, embedded images.
 - **Illogical build (I001–I004).** Rubric targets found as literals in the input, cells that are literal in
   the input but formulas in the gold with the same value, downstream tabs already present, and pre-linked
   blank cross-sheet formulas, straight from the illogical-build QC reference.

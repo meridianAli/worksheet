@@ -294,3 +294,147 @@ def _nearest_by_label(pw, gold, phrase, sheet):
         g = gold.cells.get((c.sheet, c.coord))
         return f"closest label match {c.ref} ('{pw.label_for(c)}' / {pw.header_for(c)}) = {c.value} after perturbation (gold {g.value if g else '?'})"
     return None
+
+
+# ---------------------------------------------------------------------------------------------
+# G008: hidden hardcodes inside gold formulas
+# ---------------------------------------------------------------------------------------------
+from ..spoken import spoken_values  # noqa: E402
+
+RULES.append(RuleInfo("G008", "No hidden hardcodes inside gold formulas", ERROR, "deterministic", ("gold", "input", "script"),
+                      "A numeric constant typed into a formula (=F5*8.5, =B4+0.05) must be spoken in the script or already present as a "
+                      "value in the input workbook; otherwise it is an untraceable assumption. Constants that do exist as an assumption "
+                      "cell should be linked, not retyped."))
+
+_TRIVIAL_CONSTANTS = {0, 1, 2, 3, 4, 10, 12, 100, 1000, 10000, 100000, 1000000, 360, 365, 0.5, -1}
+_STRING_LIT = re.compile(r'"[^"]*"')
+_SHEET_REF = re.compile(r"'[^']+'!|[A-Za-z_][\w\.]*!")
+_CELL_TOKEN = re.compile(r"\$?[A-Z]{1,3}\$?\d{1,7}(?::\$?[A-Z]{1,3}\$?\d{1,7})?")
+_FUNC_NAME = re.compile(r"[A-Z][A-Z0-9\._]*\s*\(")
+_NUM_IN_FORMULA = re.compile(r"(?<![A-Za-z0-9_\.])(\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)(%?)")
+# argument positions that are indices/flags, not economics: VLOOKUP col, MATCH type, ROUND digits, CHOOSE index, OFFSET/INDEX offsets
+_INDEX_FUNCS = ("VLOOKUP", "HLOOKUP", "MATCH", "ROUND", "ROUNDUP", "ROUNDDOWN", "CHOOSE", "INDEX", "OFFSET", "MROUND",
+                "SMALL", "LARGE", "EOMONTH", "EDATE", "TEXT", "LEFT", "RIGHT", "MID", "IFERROR", "RANK", "QUARTILE", "PERCENTILE")
+
+
+def formula_constants(formula: str) -> list[float]:
+    """Numeric literals typed into a formula, excluding cell refs, sheet names, strings and index arguments."""
+    f = _STRING_LIT.sub('""', formula)
+    f = _SHEET_REF.sub("", f)
+    f = _CELL_TOKEN.sub("REF", f)
+    # blank out arguments of index-style functions (crude: everything inside their parentheses that is a bare integer)
+    for fn in _INDEX_FUNCS:
+        for m in re.finditer(fn + r"\s*\(", f):
+            depth, k = 0, m.end() - 1
+            while k < len(f):
+                if f[k] == "(":
+                    depth += 1
+                elif f[k] == ")":
+                    depth -= 1
+                    if depth == 0:
+                        break
+                k += 1
+            inner = f[m.end():k]
+            inner = re.sub(r"(?<![A-Za-z0-9_\.])\d+(?![\.\d])", "IDX", inner)
+            f = f[:m.end()] + inner + f[k:]
+    out = []
+    for m in _NUM_IN_FORMULA.finditer(f):
+        v = float(m.group(1))
+        if m.group(2) == "%":
+            v /= 100.0
+        if v in _TRIVIAL_CONSTANTS:
+            continue
+        # exponents like ^(1/4) and /4 style period conversions are trivial
+        out.append(v)
+    return out
+
+
+def run_hidden_hardcodes(ctx, report):
+    gold = ctx.gold
+    if gold is None:
+        report.skip("G008", "no gold workbook")
+        return
+    inputs = ctx.inputs
+    inp = inputs[0] if inputs else None
+    spoken = spoken_values(ctx.script) if ctx.script else set()
+    input_values = set()
+    for w in inputs:
+        for c in w.numeric_cells():
+            v = float(c.value)
+            for x in (v, -v, v * 100, v / 100.0):
+                input_values.add(round(x, 6))
+    gold_literals = {}
+    for c in gold.literal_numbers():
+        gold_literals.setdefault(round(float(c.value), 6), []).append(c.ref)
+
+    by_const: dict = {}
+    for c in gold.formula_cells():
+        if not c.formula:
+            continue
+        if inp is not None and not k_changed(inp, c):
+            continue  # inherited from the input untouched: not this task's build
+        for v in formula_constants(c.formula):
+            key = round(v, 6)
+            by_const.setdefault(key, []).append(c)
+
+    for key, cells in sorted(by_const.items(), key=lambda kv: -len(kv[1])):
+        in_script = key in spoken or round(-key, 6) in spoken
+        in_input = key in input_values
+        sample = ", ".join(f"{c.ref} {c.formula[:50]}" for c in cells[:4])
+        if in_script or in_input:
+            linkable = gold_literals.get(key) or gold_literals.get(round(key * 100, 6)) or gold_literals.get(round(key / 100, 6))
+            if linkable and len(cells) >= 1:
+                src = "spoken in the script" if in_script else "present in the input"
+                report.add(Finding("G008", INFO, f"Constant {key:g} is typed into {len(cells)} formula(s) but also sits as a value at {', '.join(linkable[:3])}; link to the cell instead of retyping ({src}).",
+                                   file=ctx.rel(gold.path), evidence=sample))
+            continue
+        sev = ERROR if len(cells) >= 2 else WARNING
+        report.add(Finding("G008", sev, f"Hidden hardcode {key:g} in {len(cells)} formula cell(s): not spoken in the script and not in the input workbook.",
+                           file=ctx.rel(gold.path), evidence=sample))
+
+
+_orig_run = run
+
+
+def run(ctx, report):  # noqa: F811
+    _orig_run(ctx, report)
+    run_hidden_hardcodes(ctx, report)
+
+
+# ---------------------------------------------------------------------------------------------
+# G009: sheets-pipeline scanner checks ported over (broken refs, named ranges, data-vendor formulas, images)
+# ---------------------------------------------------------------------------------------------
+RULES.append(RuleInfo("G009", "No data-vendor formulas, broken refs, broken named ranges or embedded images", ERROR, "deterministic", ("gold",),
+                      "Ported from the sheets delivery scanner: Bloomberg/CapIQ/FactSet/RTD calls cannot evaluate off-terminal; #REF! inside "
+                      "formulas and defined names are dead links; embedded images are usually screenshots of source data."))
+
+_VENDOR_FN = re.compile(r"\b(BDP|BDH|BDS|BQL|BLP|CIQ|CIQRANGE|FDS|FDSB|RTD|CAPIQ|GETQUOTE|STOCKHISTORY|WDS)\s*\(", re.I)
+
+
+def run_scanner_checks(ctx, report):
+    gold = ctx.gold
+    if gold is None:
+        report.skip("G009", "no gold workbook")
+        return
+    gf = ctx.rel(gold.path)
+    vendor = [c for c in gold.formula_cells() if c.formula and _VENDOR_FN.search(c.formula)]
+    if vendor:
+        report.add(Finding("G009", ERROR, f"{len(vendor)} data-vendor formula(s) in the gold.", file=gf,
+                           evidence=", ".join(f"{c.ref} {c.formula[:40]}" for c in vendor[:5])))
+    broken = [c for c in gold.formula_cells() if c.formula and "#REF!" in c.formula]
+    if broken:
+        report.add(Finding("G009", ERROR, f"{len(broken)} formula(s) contain #REF! (broken references).", file=gf,
+                           evidence=", ".join(f"{c.ref} {c.formula[:40]}" for c in broken[:5])))
+    bad_names = [n for n, t in gold.defined_names.items() if t and "#REF!" in str(t)]
+    if bad_names:
+        report.add(Finding("G009", WARNING, f"{len(bad_names)} broken named range(s): {', '.join(bad_names[:6])}", file=gf))
+    if gold.images:
+        report.add(Finding("G009", WARNING, f"Embedded images on: {', '.join(gold.images)}", file=gf))
+
+
+_orig_run2 = run
+
+
+def run(ctx, report):  # noqa: F811
+    _orig_run2(ctx, report)
+    run_scanner_checks(ctx, report)

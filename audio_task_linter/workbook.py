@@ -46,6 +46,7 @@ class Workbook:
     external_links: list = field(default_factory=list)
     defined_names: dict = field(default_factory=dict)
     comments: list = field(default_factory=list)
+    images: list = field(default_factory=list)      # sheet names carrying embedded images
     row_labels: dict = field(default_factory=dict)   # (sheet, row) -> label text
     col_headers: dict = field(default_factory=dict)  # (sheet, col) -> header text
     sha256: str = ""
@@ -127,6 +128,8 @@ def load_workbook(path: Path, max_cells_per_sheet: int = 400_000) -> Workbook:
         wb.defined_names = {}
     for ws_f in wf.worksheets:
         ws_v = wv[ws_f.title]
+        if getattr(ws_f, '_images', None):
+            wb.images.append(ws_f.title)
         n = 0
         for row in ws_f.iter_rows():
             for cf in row:

@@ -21,7 +21,7 @@ def test_bad_bundle_flags_every_planted_defect(tmp_path):
     rep = lint_dir(root, recalc=recalc.engine() is not None, work_dir=tmp_path / "work")
     assert not rep.ok
     errors = rule_ids(rep, "error")
-    expected_errors = {"R001", "R002", "R003", "R004", "R006", "R008", "R009", "S004", "G005", "I001"}
+    expected_errors = {"R001", "R002", "R003", "R004", "R006", "R008", "R009", "S004", "G005", "I001", "G008", "G009"}
     assert expected_errors <= errors, expected_errors - errors
     warnings = rule_ids(rep, "warning")
     expected_warnings = {"R005", "R010", "R011", "R012", "R013", "R014", "I002"}
@@ -54,3 +54,17 @@ def test_json_output_roundtrip(tmp_path):
     d = rep.to_dict()
     assert d["summary"]["error"] == 0
     assert d["bundle"]["gold_workbook"] == "Meridian-abc123-gold-output.xlsx"
+
+
+def test_hidden_hardcode_messages(tmp_path):
+    root = build_bundle(tmp_path / "bad", good=False, hints=True)
+    rep = lint_dir(root, recalc=False, work_dir=tmp_path / "work")
+    g008 = [f for f in rep.findings if f.rule == "G008"]
+    assert any("1.075" in f.message and f.severity == "error" for f in g008)      # two cells, not spoken, not in input
+    assert any("8.5" in f.message and f.severity == "warning" for f in g008)      # one cell
+    assert not any("0.05" in f.message and f.severity != "info" for f in g008)    # spoken as "five points"
+
+
+def test_spoken_numbers():
+    from audio_task_linter.spoken import words_to_numbers
+    assert words_to_numbers("Four hundred at close, five percent amort, thirteen and a half percent of revenue, two point two five times") == [400, 5, 13.5, 2.25]

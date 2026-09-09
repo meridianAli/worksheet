@@ -9,7 +9,7 @@ YEARS = [2024, 2025, 2026, 2027, 2028]
 
 SCRIPT = """Rich (MD): Chad, quick debrief from the Vision call. Here's what we need before tomorrow.
 Mike (VP): First, on the Inputs tab turn the case selector into a live driver. Case one is Base, two is Bull,
-three is Bear. Flex the Bull and Bear growth and margin off Base formulaically, don't type the numbers in.
+three is Bear. Bull is five points of growth and three points of margin above Base, Bear the same below. Flex them off Base formulaically, don't type the numbers in.
 Rich: Tax rate stays at twenty-one percent in Base, NWC at thirteen and a half percent of revenue.
 Mike: Then build the model out. Revenue grows at the case growth rate off the twenty twenty-four actual,
 EBITDA at the case margin, cash taxes off EBITDA at the tax rate, NWC as a percent of revenue, and free cash
@@ -76,7 +76,7 @@ def _blue(cell):
     cell.font = openpyxl.styles.Font(color="FF0000FF")
 
 
-def build_gold(path: Path):
+def build_gold(path: Path, hidden_hardcode: bool = False):
     wb = openpyxl.Workbook()
     inp = wb.active
     inp.title = "Inputs"
@@ -152,7 +152,11 @@ def build_gold(path: Path):
         m[f"{col}18"] = f"={prev}18+{col}10+{col}13+{col}14" if prev else f"={col}10+{col}13+{col}14"
         m[f"{col}19"] = f"={col}15-{col}18"
         m[f"{col}21"] = f"={col}10+{col}13+{col}14-({col}18-{prev}18)" if prev else f"={col}10+{col}13+{col}14-{col}18"
-    m["F24"] = "=F5*Inputs!$B$17-F15+F18"
+    m["F24"] = "=F5*8.5-F15+F18" if hidden_hardcode else "=F5*Inputs!$B$17-F15+F18"
+    if hidden_hardcode:
+        m["F27"] = "=F26*1.075"           # second untraceable constant
+        m["F28"] = "=F27*1.075"
+        m["H2"] = '=BDP("SPX Index","PX_LAST")'  # data-vendor formula
     m["F25"] = "=F24/Inputs!$B$18"
     m["F26"] = "=(F24/Inputs!$B$18)^(1/4)-1"
     m["F26"].number_format = "0.0%"
@@ -189,7 +193,7 @@ def build_input(path: Path, hints: bool = False):
 def build_bundle(root: Path, good: bool = True, hints: bool = False, audio_bytes: int = 200_000) -> Path:
     root.mkdir(parents=True, exist_ok=True)
     build_input(root / "Meridian-abc123-input.xlsx", hints=hints)
-    build_gold(root / "Meridian-abc123-gold-output.xlsx")
+    build_gold(root / "Meridian-abc123-gold-output.xlsx", hidden_hardcode=not good)
     (root / "rubric.md").write_text(RUBRIC_GOOD if good else RUBRIC_BAD)
     (root / "script.txt").write_text(SCRIPT)
     (root / "MD Call Recording.m4a").write_bytes(b"\0" * audio_bytes)
