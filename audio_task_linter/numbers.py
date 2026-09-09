@@ -27,7 +27,7 @@ TOLERANCE_WITHIN_RE = re.compile(
 CELL_REF_RE = re.compile(
     r"(?<![A-Za-z0-9_#$/])(?:\$?[A-Z]{1,3}\$?\d{1,6})(?::\$?[A-Z]{1,3}\$?\d{1,6})?(?![A-Za-z0-9_])"
 )
-_CELL_REF_FALSE_POSITIVES = re.compile(r"^(?:Q[1-4]|H[12]|FY\d{2,4}|CY\d{2,4}|T12|TTM|LTM|NTM|L12|L3|L6|Y[1-9]|YR\d)$")
+_CELL_REF_FALSE_POSITIVES = re.compile(r"^(?:Q[1-4]|H[12]|FY\d{1,4}|CY\d{1,4}|T12|TTM|LTM|NTM|L12|L3|L6|Y[1-9]|YR\d)$")
 # "cell D42", "cells D42:D50", "row 12", "column D", "col F"
 CELL_WORD_RE = re.compile(r"\b(?:cells?)\s+\$?[A-Z]{1,3}\$?\d{1,6}\b", re.IGNORECASE)
 ROW_COL_RE = re.compile(r"\b(?:[Rr]ows?\s+\d{1,5}\b(?![,.]\d)|[Cc]olumns?\s+\$?[A-Z]{1,3}\b(?![a-z])|[Cc]ol\.?\s+\$?[A-Z]{1,3}\b(?![a-z]))")

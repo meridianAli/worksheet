@@ -124,7 +124,10 @@ def run(ctx, report):
         if p["from_num"] is None:
             report.add(Finding("R009", WARNING, "Perturbation does not state the baseline ('from') value; the judge cannot confirm the starting state.", file=f, location=c.id, evidence=c.text))
         if p["to_num"] is None:
-            report.add(Finding("R009", ERROR, "Perturbation has no numeric 'to' value.", file=f, location=c.id, evidence=c.text))
+            if p.get("to") and p.get("from") and re.search(r"[A-Za-z]", p["to"]) and not re.search(r"\d", p["to"]):
+                report.add(Finding("R009", INFO, f"Perturbation switches a non-numeric input ('{p['from']}' to '{p['to']}'); make sure the judge can locate that selector.", file=f, location=c.id))
+            else:
+                report.add(Finding("R009", ERROR, "Perturbation has no numeric 'to' value.", file=f, location=c.id, evidence=c.text))
         if p["from_is_date"] and p["to_is_date"] and p["from"].strip().lower() == p["to"].strip().lower():
             report.add(Finding("R009", ERROR, "Perturbation 'from' and 'to' dates are identical.", file=f, location=c.id, evidence=c.text))
         if p["target_num"] is None and not re.search(r"\b(yes|no|true|false|blank|zero|empty|switch|change|unchanged|stay|remain|formula|from .* to)\b", p["target"] or "", re.I):

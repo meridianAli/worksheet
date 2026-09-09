@@ -16,6 +16,10 @@ CANONICAL_SECTIONS = {
     "perturbation": "Perturbation",
     "perturbations": "Perturbation",
     "presentation": "Presentation",
+    "presenation": "Presentation",
+    "general": "Presentation",
+    "content": "Presentation",
+    "slides": "Presentation",
     "formatting": "Presentation",
     "pitfalls": "Pitfalls",
     "pitfall": "Pitfalls",
@@ -38,7 +42,8 @@ BULLET_RE = re.compile(r"^\s*(?:[-*•◦▪]|\d+[.)]|[a-z][.)]|\(?[ivx]+\))\s+"
 HEADER_RE = re.compile(r"^\s*(?:#{1,6}\s*)?(?:\d+[.)]\s*)?(?:\*\*)?\s*(?P<name>[A-Za-z][A-Za-z /_&-]{2,40}?)\s*(?:\*\*)?\s*:?\s*(?:[(\[–—-]?\s*\d+\s*(?:pts?|points?)\)?\]?)?\s*$")
 
 PERTURB_RE = re.compile(
-    r"^\s*(?:if|when|with|after|once)\s+(?:only\s+)?(?P<input>.+?)\s+(?:is\s+|are\s+|were\s+|gets\s+)?(?P<verb>changed|switched|set|moved|updated|toggled|flipped|increased|decreased|raised|lowered|reduced|cut|doubled|halved|zeroed|removed)"
+    r"^\s*(?:if|when|with|after|once|upon)\s+(?:only\s+)?(?:(?P<verb0>changing|setting|switching|moving|updating|toggling|flipping|increasing|decreasing|raising|lowering|reducing|cutting|doubling|halving)\s+(?P<input0>.+?)"
+    r"|(?P<input>.+?)\s+(?:is\s+|are\s+|were\s+|gets\s+)?(?P<verb>changed|switched|set|moved|updated|toggled|flipped|increased|decreased|raised|lowered|reduced|cut|doubled|halved|zeroed|removed))"
     r"(?:\s+(?:from\s+(?P<from>.+?)\s+)?(?:to|by)\s+(?P<to>.+?))?\s*,\s*(?:does|do|is|are|will|would)\s+(?P<output>.+?)\s+"
     r"(?:update|change|become|equal|move|flow|recalculate|result|go|shift|switch|now\s+equal|remain|stay|hold|still\s+equal|still\s+show|show|read|return|increase|decrease|rise|fall|drop|grow|decline)\w*"
     r"(?:\s+\w+ly)?(?:\s+(?:at|to|as|by|from\s+.+?\s+to))?(?:\s+(?:approximately|about|roughly|around|~))?\s+(?P<target>.+?)\??\s*$",
@@ -91,6 +96,9 @@ class Criterion:
         if not m:
             return None
         d = {k: (v.strip() if v else None) for k, v in m.groupdict().items()}
+        d["input"] = d["input"] or d.pop("input0", None) or ""
+        d["verb"] = d["verb"] or d.get("verb0") or ""
+        d.pop("input0", None); d.pop("verb0", None)
         from .numbers import date_spans
         d["from_is_date"] = bool(d["from"] and date_spans(d["from"]))
         d["to_is_date"] = bool(d["to"] and date_spans(d["to"]))

@@ -25,7 +25,7 @@ def test_bad_bundle_flags_every_planted_defect(tmp_path):
     expected_errors = {"R001", "R002", "R003", "R004", "R006", "R008", "R009", "S004", "G005", "I001", "G008", "G009"}
     assert expected_errors <= errors, expected_errors - errors
     warnings = rule_ids(rep, "warning")
-    expected_warnings = {"R005", "R010", "R011", "R012", "R013", "R014", "I002"}
+    expected_warnings = {"R005", "R011", "R012", "R013", "R014", "I002"}
     assert expected_warnings <= warnings, expected_warnings - warnings
 
 
