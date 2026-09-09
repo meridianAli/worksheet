@@ -20,6 +20,14 @@ def run(ctx, report):
     b = ctx.bundle
     remote = b.remote_fields()
     missing, remote_only = [], []
+    if b.kind == "deck":
+        pieces = ((None, "draft deck", "draft_deck"), (None, "gold deck", "golden_output_deck"), (None, "markup", "markup_pdf"), (b.rubric, "rubric", "rubric"))
+        missing = [label for present, label, field in pieces if not present and field not in remote]
+        if missing:
+            report.add(Finding("X001", ERROR, "Deck bundle is missing: " + ", ".join(missing)))
+        else:
+            report.add(Finding("X001", INFO, "Deck task: draft deck, gold deck and markup are on the platform (binary checks skipped)."))
+        return
     for present, label, field in ((b.input_workbooks, "input workbook", "markup_workbook"), (b.gold_workbook, "gold output workbook", "golden_output_workbook"),
                                   (b.rubric, "rubric", "rubric"), (b.script, "script / prompt", "prompt"), (b.audio, "audio recording", "audio_recording")):
         if present:

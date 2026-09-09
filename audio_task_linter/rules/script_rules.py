@@ -53,7 +53,9 @@ def run(ctx, report):
         return
     wc = len(re.findall(r"[A-Za-z0-9$%']+", s))
     has_audio = bool(ctx.bundle.audio) or "audio_recording" in ctx.bundle.remote_fields()
-    if wc < 120 and has_audio:
+    if ctx.bundle.kind == "deck":
+        pass  # the instructions live in the markup PDF; a one-line prompt is expected
+    elif wc < 120 and has_audio:
         report.add(Finding("S001", INFO, f"Only the {wc}-word platform prompt is available as text; the instructions live in the recording, so script-based checks (S002-S006, G008) run on the prompt only. Supply a transcript as script.txt for full coverage.", file=sf))
     elif wc < 120:
         report.add(Finding("S001", WARNING, f"Script is only {wc} words; a debrief that dictates a build is usually several hundred.", file=sf))

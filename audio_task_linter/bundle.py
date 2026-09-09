@@ -37,6 +37,14 @@ class Bundle:
     unclassified: list = field(default_factory=list)
     manifest: Optional[dict] = None    # remote file listing exported from the platform
 
+    @property
+    def kind(self) -> str:
+        """'deck' for PowerPoint markup tasks (draft_deck / golden_output_deck), else 'audio'."""
+        f = self.remote_fields()
+        if any("deck" in (x or "") for x in f) or any(p.suffix.lower() == ".pptx" for p in self.supporting_files):
+            return "deck"
+        return "audio"
+
     def remote_fields(self) -> set:
         return {f.get('field_id') for f in (self.manifest or {}).get('files', [])}
 

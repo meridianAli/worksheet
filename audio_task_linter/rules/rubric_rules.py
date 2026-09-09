@@ -6,7 +6,7 @@ from collections import Counter
 
 from ..findings import Finding, RuleInfo, ERROR, WARNING, INFO
 from ..numbers import find_cell_refs, find_excel_functions, find_numbers, is_tolerance_number
-from ..rubric import REQUIRED_SECTIONS, NEGATIVE_SECTIONS
+from ..rubric import REQUIRED_SECTIONS, NEGATIVE_SECTIONS, EITHER_SIGN_SECTIONS, DECK_REQUIRED_SECTIONS
 
 RULES = [
     RuleInfo("R001", "No cell/row/column refs in criteria", ERROR, "deterministic", ("rubric",),
@@ -79,7 +79,7 @@ def run(ctx, report):
         neg_section = c.section in NEGATIVE_SECTIONS
         if neg_section and c.points > 0:
             report.add(Finding("R004", ERROR, f"Pitfall carries positive points ({c.points:+g}).", file=f, location=c.id, evidence=c.text))
-        if not neg_section and c.points < 0 and c.section != "(unsectioned)":
+        if not neg_section and c.points < 0 and c.section not in ("(unsectioned)",) + EITHER_SIGN_SECTIONS:
             report.add(Finding("R004", ERROR, f"Non-pitfall criterion carries negative points ({c.points:+g}).", file=f, location=c.id, evidence=c.text))
         if c.points == 0:
             report.add(Finding("R004", ERROR, "Criterion carries zero points.", file=f, location=c.id, evidence=c.text))
@@ -90,7 +90,8 @@ def run(ctx, report):
             report.add(Finding("R005", WARNING, f"|points| = {abs(c.points):g} is below 1.", file=f, location=c.id))
     # R006 sections
     names = {s.name for s in r.sections}
-    for req in REQUIRED_SECTIONS:
+    deck = ctx.bundle.kind == "deck"
+    for req in (DECK_REQUIRED_SECTIONS if deck else REQUIRED_SECTIONS):
         if req not in names:
             report.add(Finding("R006", ERROR, f"Missing section: {req}.", file=f))
     for s in r.sections:
@@ -99,9 +100,9 @@ def run(ctx, report):
     if "(unsectioned)" in names:
         report.add(Finding("R006", WARNING, f"{len(r.by_section('(unsectioned)'))} criteria are not under a recognised section header.", file=f))
     # R007 count
-    if len(crits) < ctx.min_criteria:
+    if not deck and len(crits) < ctx.min_criteria:
         report.add(Finding("R007", WARNING, f"Only {len(crits)} criteria; expected at least {ctx.min_criteria}.", file=f))
-    ov, pt = len(r.by_section("Output Validation")), len(r.by_section("Perturbation"))
+    ov, pt = (0, 0) if deck else (len(r.by_section("Output Validation")), len(r.by_section("Perturbation")))
     if ov and ov < 5:
         report.add(Finding("R007", WARNING, f"Only {ov} Output Validation criteria.", file=f))
     if pt and pt < 3:
@@ -132,7 +133,7 @@ def run(ctx, report):
             report.add(Finding("R009", ERROR, "Perturbation 'from' and 'to' values are identical.", file=f, location=c.id, evidence=c.text))
     # R010 / R013 tolerances
     for c in crits:
-        if c.section in ("Presentation", "Pitfalls"):
+        if c.section in ("Presentation", "Pitfalls") or deck:
             continue
         tols = c.tolerances()
         nums = [n for n in c.numbers() if not _is_tolerance_number(n, c.text)]
@@ -145,7 +146,7 @@ def run(ctx, report):
         if has_numeric_target and not tols:
             if not re.search(r"\bexactly\b|\bequal to 0\b|\bis 0\b|\bzero\b|\bblank\b|\bempty\b|\bTRUE\b|\bFALSE\b|\bequal 1\b|\bor 1\b", c.text):
                 report.add(Finding("R010", WARNING, "Numeric target with no tolerance stated.", file=f, location=c.id, evidence=c.text))
-        if len(tols) > 1 and c.section != "Perturbation":
+        if len(tols) > 1 and c.section != "Perturbation" and len(tols) > max(1, len(targets)):
             report.add(Finding("R010", WARNING, f"Tolerance stated {len(tols)} times ({', '.join(t['raw'] for t in tols)}); the band compounds.", file=f, location=c.id, evidence=c.text))
         if len(tols) > 1 and c.section == "Perturbation":
             # one tolerance is legitimate per numeric quantity; two on the same target is the compounding case
@@ -177,7 +178,7 @@ def run(ctx, report):
         if fns:
             report.add(Finding("R014", WARNING, f"Criterion names Excel functions: {', '.join(fns)}.", file=f, location=c.id, evidence=c.text))
     # R016 error pitfall
-    if r.section("Pitfalls") and not any(re.search(r"#REF|#DIV|#VALUE|error values?", c.text, re.I) for c in r.by_section("Pitfalls")):
+    if not deck and r.section("Pitfalls") and not any(re.search(r"#REF|#DIV|#VALUE|error values?", c.text, re.I) for c in r.by_section("Pitfalls")):
         report.add(Finding("R016", WARNING, "Pitfalls section has no error-value (#REF!/#DIV/0!/#VALUE!) check.", file=f))
 
 
