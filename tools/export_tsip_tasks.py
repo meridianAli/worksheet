@@ -7,7 +7,8 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(__file__))
 from metabase import q
 
-ids = [x.strip().strip("'") for x in open(sys.argv[1]).read().split(",")]
+import re as _re
+ids = _re.findall(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", open(sys.argv[1]).read())
 out_root = Path(sys.argv[2] if len(sys.argv) > 2 else "tasks"); out_root.mkdir(exist_ok=True)
 idlist = ",".join(f"'{i}'" for i in ids)
 # latest attempt per task (by created_at) with messages
