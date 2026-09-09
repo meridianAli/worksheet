@@ -58,7 +58,7 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
     if args.cmd == "rules":
         for r in catalog():
-            print(f"{r.id}  {r.severity:7s} {r.mode:13s} {r.title}\n        {r.description}")
+            print(f"[{r.severity}] {r.title}\n        {r.description}")
         return 0
     if args.cmd == "ai-prompts":
         from .ai_prompts import build_prompt

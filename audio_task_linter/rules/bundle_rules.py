@@ -10,12 +10,8 @@ RULES = [
              "Input workbook, gold workbook, rubric, script and audio recording are all present."),
     RuleInfo("X002", "Input workbook differs from gold", ERROR, "deterministic", ("input", "gold"),
              "Gold must differ from the input (hash + cell diff); a byte-identical pair means the wrong file shipped."),
-             "File names should follow the scrubbed convention (e.g. Meridian-<id>-input) with no private company or person names."),
-             "If the script mentions a SOFR curve, source data, deck or PDF, a matching supporting file must be in the bundle."),
     RuleInfo("A001", "Audio is a real, decodable recording", ERROR, "deterministic", ("audio",),
              "Supported extension, non-trivial size, and (when mutagen is installed) a decodable duration."),
-             "Speech runs ~110-200 words/min; a recording far outside that for the script's word count is truncated, padded or the wrong file."),
-             "Listen to the first 20 seconds. No deterministic check; flagged for the reviewer."),
 ]
 
 

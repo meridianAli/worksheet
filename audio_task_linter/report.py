@@ -4,6 +4,13 @@ import json
 from collections import defaultdict
 
 from .findings import ERROR, WARNING, INFO
+from .rules import catalog
+
+TITLES = {r.id: r.title for r in catalog()}
+
+
+def title(rule_id: str) -> str:
+    return TITLES.get(rule_id, rule_id)
 
 _ORDER = {ERROR: 0, WARNING: 1, INFO: 2}
 _MARK = {ERROR: "✖", WARNING: "▲", INFO: "·"}
@@ -22,11 +29,11 @@ def render_text(report, verbose: bool = False) -> str:
     for rule in sorted(by_rule, key=lambda r: (min(_ORDER[f.severity] for f in by_rule[r]), r)):
         for f in sorted(by_rule[rule], key=lambda f: _ORDER[f.severity]):
             loc = " ".join(x for x in (f.file, f.location) if x)
-            lines.append(f" {_MARK[f.severity]} {f.rule} {f.severity:7s} {loc + ': ' if loc else ''}{f.message}")
+            lines.append(f" {_MARK[f.severity]} [{f.severity}] {title(f.rule)}{' | ' + loc if loc else ''}: {f.message}")
             if f.evidence and (verbose or f.severity != INFO):
                 lines.append(f"       {f.evidence[:300]}")
     if report.skipped:
-        lines.append("   skipped: " + "; ".join(f"{r} ({why})" for r, why in report.skipped))
+        lines.append("   skipped: " + "; ".join(f"{title(r)} ({why})" for r, why in report.skipped))
     lines.append(f"   summary: {report.count(ERROR)} errors, {report.count(WARNING)} warnings, {report.count(INFO)} info -> {'PASS' if report.ok else 'FAIL'}")
     return "\n".join(lines)
 

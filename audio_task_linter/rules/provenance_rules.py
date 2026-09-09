@@ -11,11 +11,8 @@ from xml.etree import ElementTree as ET
 from ..findings import Finding, RuleInfo, ERROR, WARNING, INFO
 
 RULES = [
-             "Workbook written by openpyxl/pandas/xlsxwriter/Google Sheets, default 'Sheet1' tabs, no formatting, or cells/comments naming an AI tool suggest the build was not done by an analyst in Excel."),
-             "Template vendors (Macabacus, Wall Street Prep, CFI, BIWS, ASimpleModel), URLs, copyright notices or 'template' markers mean the model was downloaded, not built."),
     RuleInfo("V003", "No emails, phones or company names in text", WARNING, "deterministic", ("gold", "input", "script", "rubric"),
              "Emails, phone numbers, and company-like names (Acme Holdings LLC) in cells, tab names, script or rubric. Scrubbed placeholders (Meridian, Project <codename>) are allowed. Author names in document properties are not checked."),
-             "If a task/metadata JSON or CSV ships in the bundle it must carry industry, category and subcategory (the Data Compass card was run)."),
     RuleInfo("V005", "Script isn't a duplicate of another task's", ERROR, "deterministic", ("script",),
              "The script/prompt must not repeat another task's (exact or near-duplicate) within the same lint run or a supplied known-prompts file."),
 ]

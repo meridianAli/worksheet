@@ -19,7 +19,10 @@ class Finding:
     evidence: Optional[str] = None
 
     def to_dict(self) -> dict:
-        return {k: v for k, v in asdict(self).items() if v is not None}
+        from .report import title
+        d = {k: v for k, v in asdict(self).items() if v is not None}
+        d["check"] = title(self.rule)
+        return d
 
 
 @dataclass
@@ -58,5 +61,5 @@ class Report:
             "bundle": self.bundle,
             "summary": {s: self.count(s) for s in SEVERITIES},
             "findings": [f.to_dict() for f in self.findings],
-            "skipped": [{"rule": r, "reason": why} for r, why in self.skipped],
+            "skipped": [{"rule": r, "check": __import__("audio_task_linter.report", fromlist=["title"]).title(r), "reason": why} for r, why in self.skipped],
         }

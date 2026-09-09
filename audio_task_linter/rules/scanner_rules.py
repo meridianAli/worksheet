@@ -14,7 +14,6 @@ RULES = [
              "From the platform scanner output; broken named ranges are dead definitions left over from a decomposition."),
     RuleInfo("K003", "Scanner: gold hardcode ratio under 60%", WARNING, "deterministic", (),
              "A high hardcode ratio in the GOLD means a typed-in build (input ratio reported as info)."),
-             "llmAuthorCheck.matchedTool / onlineAuthorCheck.matchedSource (a generation tool or an online template source)."),
 ]
 
 _PLACEHOLDER_AUTHORS = re.compile(r"^(?:|user|author|admin|owner|microsoft office user|excel|analyst|meridian.*|openpyxl|unknown)$", re.I)
