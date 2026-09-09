@@ -1,6 +1,7 @@
 """Discover and classify the files that make up one audio task bundle."""
 from __future__ import annotations
 
+import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -34,6 +35,10 @@ class Bundle:
     sota_output: Optional[Path] = None
     sota_selfgrade: Optional[Path] = None
     unclassified: list = field(default_factory=list)
+    manifest: Optional[dict] = None    # remote file listing exported from the platform
+
+    def remote_fields(self) -> set:
+        return {f.get('field_id') for f in (self.manifest or {}).get('files', [])}
 
     def to_dict(self) -> dict:
         def s(p):
@@ -49,6 +54,7 @@ class Bundle:
             "sota_output": s(self.sota_output),
             "sota_selfgrade": s(self.sota_selfgrade),
             "unclassified": [s(p) for p in self.unclassified],
+            "remote_only": sorted(self.remote_fields()) if self.manifest else None,
         }
 
 
@@ -67,6 +73,14 @@ def discover(root: Path, overrides: Optional[dict] = None) -> Bundle:
     for p in files:
         ext = p.suffix.lower()
         stem = p.stem
+        if p.name == "manifest.json":
+            try:
+                b.manifest = json.loads(p.read_text())
+            except (json.JSONDecodeError, OSError):
+                pass
+            continue
+        if stem.startswith("scan_") and ext == ".json":
+            continue
         role = _role(stem)
         if ext in AUDIO_EXT:
             b.audio.append(p)

@@ -9,7 +9,7 @@ from typing import Optional
 _NUM = r"\(?-?\$?\s?\d{1,3}(?:,\d{3})*(?:\.\d+)?|\(?-?\$?\s?\d+(?:\.\d+)?"
 NUMBER_RE = re.compile(
     rf"(?<![A-Za-z0-9_.#])(?P<neg_open>\()?(?P<sign>-)?\$?\s?(?P<num>\d{{1,3}}(?:,\d{{3}})+(?:\.\d+)?|\d+(?:\.\d+)?)"
-    rf"(?P<suffix>%|x|X|\s?percentage points|\s?pp|\s?bps|\s?bn|\s?mm|\s?m|\s?k)?(?P<neg_close>\))?"
+    rf"(?P<suffix>%|\s?percentage points|\s?percent(?!age)|x|X|\s?pp|\s?bps|\s?bn|\s?mm|\s?m|\s?k)?(?P<neg_close>\))?"
 )
 
 TOLERANCE_RE = re.compile(
@@ -19,7 +19,7 @@ TOLERANCE_RE = re.compile(
 )
 # "within 2%" without the +/-
 TOLERANCE_WITHIN_RE = re.compile(
-    r"within\s+(?P<val>\d+(?:\.\d+)?)\s*(?P<unit>percentage points?|percent|%|pp|bps|x)?\b(?!\s*of\s+\d)",
+    r"within\s+(?P<val>\d+(?:\.\d+)?)\s*(?P<unit>percentage points?|percent|%|pp|bps|x)?(?![\w%])(?!\s*of\s+\d)",
     re.IGNORECASE,
 )
 
@@ -30,7 +30,7 @@ CELL_REF_RE = re.compile(
 _CELL_REF_FALSE_POSITIVES = re.compile(r"^(?:Q[1-4]|H[12]|FY\d{2,4}|CY\d{2,4})$")
 # "cell D42", "cells D42:D50", "row 12", "column D", "col F"
 CELL_WORD_RE = re.compile(r"\b(?:cells?)\s+\$?[A-Z]{1,3}\$?\d{1,6}\b", re.IGNORECASE)
-ROW_COL_RE = re.compile(r"\b(?:rows?\s+\d{1,6}|columns?\s+[A-Z]{1,3}\b|col\.?\s+[A-Z]{1,3}\b)", re.IGNORECASE)
+ROW_COL_RE = re.compile(r"\b(?:[Rr]ows?\s+\d{1,6}\b|[Cc]olumns?\s+\$?[A-Z]{1,3}\b(?![a-z])|[Cc]ol\.?\s+\$?[A-Z]{1,3}\b(?![a-z]))")
 
 EXCEL_FUNCTIONS = (
     "SUMIFS", "SUMIF", "VLOOKUP", "HLOOKUP", "XLOOKUP", "INDEX", "MATCH", "OFFSET", "IFERROR",
@@ -73,11 +73,11 @@ def _num_from_match(m: re.Match) -> Num:
     if neg:
         val = -val
     suffix = (m.group("suffix") or "").strip().lower()
-    unit = {"%": "%", "x": "x", "percentage points": "pp", "pp": "pp", "bps": "bps"}.get(suffix, "")
+    unit = {"%": "%", "percent": "%", "x": "x", "percentage points": "pp", "pp": "pp", "bps": "bps"}.get(suffix, "")
     return Num(val, m.group(0), unit, m.start(), m.end())
 
 
-_TOL_PREFIX_RE = re.compile(r"(?:\+\s?/\s?-?|±|\+-|-/\+|plus or minus|within|by)\s*$", re.IGNORECASE)
+_TOL_PREFIX_RE = re.compile(r"(?:\+\s?/\s?-?|±|\+-|-/\+|plus or minus|within)\s*$", re.IGNORECASE)
 
 
 def is_tolerance_number(n: "Num", text: str) -> bool:
@@ -95,7 +95,11 @@ def find_numbers(text: str, skip_tolerances: bool = True) -> list[Num]:
             continue
         # skip years and things like "Q3 2023", "2028", "September 30, 2023"
         if n.unit == "" and 1900 <= abs(n.value) <= 2100 and re.fullmatch(r"\d{4}", raw):
-            continue
+            pre = text[max(0, m.start() - 12):m.start()]
+            post = text[m.end():m.end() + 8]
+            if re.search(r"(?:\bin|\bfor|\bby|\bof|\bthrough|\bto|FY|CY|Q[1-4]|H[12]|\bexit|\byear|\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\w*\.?\s*\d{0,2},?)\s*$", pre, re.I) \
+                    or re.match(r"\s*(?:E|A|P|exit|EBITDA|revenue|through|to|-|–)", post, re.I) or re.search(r"(?:19|20)\d{2}\D{1,12}$", pre):
+                continue
         # skip ordinal-ish tokens directly after Q/H/FY
         pre = text[max(0, m.start() - 2):m.start()]
         if re.search(r"(?:Q|H|FY|CY)$", pre, re.IGNORECASE):

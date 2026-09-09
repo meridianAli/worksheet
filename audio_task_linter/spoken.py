@@ -46,8 +46,8 @@ def words_to_numbers(text: str) -> list[float]:
                 if j + 2 < len(tokens) and tokens[j + 1] in ("a", "an") and tokens[j + 2] in _FRACTIONS:
                     current += _FRACTIONS[tokens[j + 2]]; j += 3; seen = True
                     continue
-                if not seen:
-                    break
+                if not seen or current == 0 or current % 100 != 0:
+                    break  # "five and six percent" are two numbers; only "hundred and ten" continues
             elif w == "point":
                 if not seen:
                     break
@@ -74,6 +74,6 @@ def spoken_values(text: str) -> set[float]:
     (5 -> 5, 0.05; 400 -> 400, 400000, 0.4). Rounded to 6 decimals."""
     vals = set()
     for v in [n.value for n in find_numbers(text, skip_tolerances=False)] + words_to_numbers(text):
-        for x in (v, v / 100.0, v * 1000, v * 1_000_000, v / 1000.0, v / 10_000.0, -v):
+        for x in (v, v / 100.0, 1 + v / 100.0, 1 - v / 100.0, v * 1000, v * 1_000_000, v / 1000.0, v / 10_000.0, -v):
             vals.add(round(x, 6))
     return vals

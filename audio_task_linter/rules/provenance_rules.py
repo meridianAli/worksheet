@@ -23,15 +23,24 @@ RULES = [
              "The script/prompt must not repeat another task's (exact or near-duplicate) within the same lint run or a supplied known-prompts file."),
 ]
 
-_LLM_APPS = re.compile(r"openpyxl|xlsxwriter|pandas|python|google sheets|libreoffice|numbers|apache poi|closedxml|npoi|sheetjs|exceljs", re.I)
+_LLM_APPS = re.compile(r"openpyxl|xlsxwriter|pandas|python|google sheets|apache poi|closedxml|npoi|sheetjs|exceljs", re.I)
 _AI_WORDS = re.compile(r"\b(chatgpt|gpt-?[45]|claude|copilot|gemini|openai|anthropic|as an ai|language model)\b", re.I)
-_VENDORS = re.compile(r"macabacus|wall ?street ?prep|wsp\b|corporate finance institute|\bcfi\b|breaking into wall street|biws|asimplemodel|a simple model|efinancialmodels|eloquens|investopedia|mergers ?& ?inquisitions|template", re.I)
+_VENDORS = re.compile(r"macabacus|wall ?street ?prep|wsp\b|corporate finance institute|breaking into wall street|biws|asimplemodel|a simple model|efinancialmodels|eloquens|investopedia|mergers ?& ?inquisitions|downloaded from|free template", re.I)
 _URL = re.compile(r"https?://|www\.[a-z0-9-]+\.[a-z]{2,}", re.I)
 _COPYRIGHT = re.compile(r"©|\(c\)\s*20\d\d|copyright|all rights reserved", re.I)
 _EMAIL = re.compile(r"\b[\w.+-]+@[\w-]+\.[\w.-]+\b")
 _PHONE = re.compile(r"(?<!\d)(?:\+?1[\s.-]?)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}(?!\d)")
 _COMPANY = re.compile(r"\b([A-Z][A-Za-z&'\.]+(?:\s+[A-Z][A-Za-z&'\.]+){0,3})\s+(Inc\.?|LLC|L\.L\.C\.|Ltd\.?|Limited|Corp\.?|Corporation|Co\.|Holdings|Partners|LP|L\.P\.|PLC|GmbH|S\.A\.|N\.V\.|AG|Bank|Capital|Group|Ventures|Industries|Enterprises|Technologies|Pharmaceuticals|Therapeutics)\b")
-_ALLOW = re.compile(r"\b(meridian|project\s+[a-z]+|blackstone|sofr|libor|acme|newco|holdco|opco|bidco|topco|midco|target|sponsor|lender|company|the company|(?:net\\s+)?working capital|(?:total|net|equity|debt|share|invested|paid[- ]in|regulatory|tier ?1|human)\\s+capital|(?:weighted average )?cost of capital|return on capital|capital (?:expenditures?|structure|lease|markets?|gains?|call|reserve|ratio|base)|peer group|consolidated group|(?:bank|term|revolving) (?:debt|loan)|(?:the )?bank(?: debt| loan| balance)?|(?:base|bull|bear|management|downside|upside) case|holding company|operating company|limited partners?|general partners?|senior (?:notes|debt|secured))\\b", re.I)
+_ALLOW_TERMS = [
+    r"meridian", r"project\s+[a-z]+", r"blackstone", r"sofr", r"libor", r"acme", r"newco", r"holdco", r"opco", r"bidco", r"topco",
+    r"midco", r"target", r"sponsor", r"lender", r"company", r"the company",
+    r"(?:net\s+)?working capital", r"(?:total|net|equity|debt|share|invested|paid[- ]in|regulatory|tier ?1|human)\s+capital",
+    r"(?:weighted average )?cost of capital", r"return on capital",
+    r"capital (?:expenditures?|structure|lease|markets?|gains?|call|reserve|ratio|base)", r"peer group", r"consolidated group",
+    r"(?:bank|term|revolving) (?:debt|loan)", r"(?:the )?bank(?: debt| loan| balance)?", r"(?:base|bull|bear|management|downside|upside) case",
+    r"holding company", r"operating company", r"limited partners?", r"general partners?", r"senior (?:notes|debt|secured)",
+]
+_ALLOW = re.compile(r"\b(" + "|".join(_ALLOW_TERMS) + r")\b", re.I)
 _SSN = re.compile(r"(?<!\d)\d{3}-\d{2}-\d{4}(?!\d)")
 
 
@@ -150,7 +159,7 @@ def _formatting_share(path: Path):
                 n += 1
                 if (c.number_format and c.number_format != "General") or c.font.bold or (c.font.color is not None and getattr(c.font.color, "rgb", None) not in (None, "FF000000")) or c.fill.fgColor.rgb not in (None, "00000000"):
                     styled += 1
-                if n > 50000:
+                if n > 20000:
                     return styled / n
     return styled / n if n else None
 

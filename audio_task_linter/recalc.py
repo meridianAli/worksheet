@@ -15,6 +15,9 @@ from typing import Optional
 import openpyxl
 
 
+_PROFILE: Optional[Path] = None
+
+
 def soffice_path() -> Optional[str]:
     for name in ("soffice", "libreoffice"):
         p = shutil.which(name)
@@ -46,7 +49,10 @@ def recalculate(src: Path, out_dir: Path, timeout: int = 180) -> Path:
         raise RuntimeError("LibreOffice (soffice) not found on PATH; cannot recalculate")
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
-    profile = Path(tempfile.mkdtemp(prefix="lo-profile-", dir=out_dir))
+    global _PROFILE
+    if _PROFILE is None:
+        _PROFILE = Path(tempfile.mkdtemp(prefix="lo-profile-"))
+    profile = _PROFILE
     cmd = [exe, "--headless", "--norestore", "--nologo",
            f"-env:UserInstallation=file://{profile}",
            "--convert-to", "xlsx:Calc MS Excel 2007 XML", "--outdir", str(out_dir), str(src)]

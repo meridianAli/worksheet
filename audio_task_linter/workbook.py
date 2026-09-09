@@ -76,7 +76,7 @@ class Workbook:
     def find_value(self, target: Num, tol: Optional[dict] = None, sheet: Optional[str] = None,
                    allow_scales: bool = True) -> list[tuple[Cell, float]]:
         """Cells whose numeric value equals target (any display-unit scaling). Returns (cell, scale)."""
-        scales = list(_UNIT_SCALES) if allow_scales else [1.0]
+        scales = list(_UNIT_SCALES) if (allow_scales and target.unit == "" and abs(target.value) >= 1) else [1.0]
         variants = []
         for s in scales:
             variants.append((target.value * s, s))
@@ -157,10 +157,15 @@ def load_workbook(path: Path, max_cells_per_sheet: int = 400_000) -> Workbook:
         # date-like header rows: also record numeric headers (years / periods) in the top rows
         for row in ws_v.iter_rows(min_row=1, max_row=12):
             for cv in row:
-                if isinstance(cv.value, (int, float)) and 1990 <= cv.value <= 2100:
-                    wb.col_headers.setdefault((ws_f.title, cv.column), str(int(cv.value)))
+                key = (ws_f.title, cv.column)
+                existing = wb.col_headers.get(key, "")
+                has_year = bool(re.search(r"(?:19|20)\d{2}|(?:FY|CY|')\s?\d{2}\b", existing))
+                if isinstance(cv.value, (int, float)) and not isinstance(cv.value, bool) and 1990 <= cv.value <= 2100:
+                    if not has_year:
+                        wb.col_headers[key] = (existing + " " + str(int(cv.value))).strip()
                 elif hasattr(cv.value, "year"):
-                    wb.col_headers.setdefault((ws_f.title, cv.column), cv.value.strftime("%Y-%m-%d"))
+                    if not has_year:
+                        wb.col_headers[key] = (existing + " " + cv.value.strftime("%Y-%m-%d")).strip()
     return wb
 
 

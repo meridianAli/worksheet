@@ -31,20 +31,18 @@ _SUPPORT_WORDS = {
 
 def run(ctx, report):
     b = ctx.bundle
-    missing = []
-    if not b.input_workbooks:
-        missing.append("input workbook")
-    if not b.gold_workbook:
-        missing.append("gold output workbook")
-    if not b.rubric:
-        missing.append("rubric")
-    if not b.script:
-        missing.append("script / prompt")
-    if not b.audio:
-        missing.append("audio recording")
+    remote = b.remote_fields()
+    missing, remote_only = [], []
+    for present, label, field in ((b.input_workbooks, "input workbook", "markup_workbook"), (b.gold_workbook, "gold output workbook", "golden_output_workbook"),
+                                  (b.rubric, "rubric", "rubric"), (b.script, "script / prompt", "prompt"), (b.audio, "audio recording", "audio_recording")):
+        if present:
+            continue
+        (remote_only if field in remote else missing).append(label)
     if missing:
         report.add(Finding("X001", ERROR, "Bundle is missing: " + ", ".join(missing),
                            evidence="classified: " + ", ".join(f"{k}={v}" for k, v in b.to_dict().items() if v)))
+    if remote_only:
+        report.add(Finding("X001", INFO, "Present on the platform but not downloaded (binary checks skipped): " + ", ".join(remote_only)))
     if not b.sota_output:
         report.add(Finding("X001", INFO, "No SOTA 'Solved' output in bundle; model-fault vs task-fault review will be skipped."))
 

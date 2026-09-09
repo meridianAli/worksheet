@@ -156,7 +156,7 @@ def run(ctx, report):
                                file=rf, location=c.id))
         # I001 in inputs
         for inp in inputs:
-            ihits = [h for h in inp.find_value(target, tol) if not h[0].is_formula]
+            ihits = [h for h in inp.find_value(target, tol, allow_scales=False) if not h[0].is_formula]
             if ihits and abs(target.value) >= 1:
                 report.add(Finding("I001", ERROR, f"Output-validation target {target.raw.strip()} already sits as a literal in the input ({', '.join(h[0].ref for h in ihits[:5])}) — answer hint / tests an input.",
                                    file=ctx.rel(inp.path), location=c.id, evidence=c.text))
@@ -176,7 +176,7 @@ def run(ctx, report):
         from_n = p["from_num"]
         candidates = []
         if from_n is not None:
-            for cell, scale in gold.find_value(from_n, {"kind": "relative", "value": 0.01}, sheet=in_sheet):
+            for cell, scale in gold.find_value(from_n, {"kind": "relative", "value": 0.5}, sheet=in_sheet):
                 if cell.is_formula:
                     continue
                 candidates.append((label_score(p["input"], gold.label_for(cell), gold.header_for(cell)), cell, scale))
@@ -197,7 +197,7 @@ def run(ctx, report):
         tol = p["tolerances"][-1] if p["tolerances"] else None
         if tgt is not None:
             for inp in inputs:
-                ihits = [h for h in inp.find_value(tgt, tol) if not h[0].is_formula]
+                ihits = [h for h in inp.find_value(tgt, tol, allow_scales=False) if not h[0].is_formula]
                 if ihits and abs(tgt.value) >= 1:
                     report.add(Finding("I001", ERROR, f"Perturbation target {tgt.raw.strip()} already sits as a literal in the input ({', '.join(h[0].ref for h in ihits[:5])}).",
                                        file=ctx.rel(inp.path), location=c.id, evidence=c.text))
@@ -254,9 +254,16 @@ def filter_by_period(hits, text, wb):
     years = set(_PERIOD_RE.findall(text or ""))
     if not years or not hits:
         return hits
-    matched = [h for h in hits if any(y in (wb.header_for(h[0]) or "") for y in years)]
-    any_headers = any(wb.header_for(h[0]) for h in hits)
-    return matched if (matched or any_headers) else hits
+
+    def hdr_years(h):
+        hd = wb.header_for(h[0]) or ""
+        full = set(re.findall(r"(?:19|20)\d{2}", hd))
+        short = {"20" + m for m in re.findall(r"(?:FY|CY|')\s?(\d{2})(?!\d)", hd, re.I)}
+        return full | short
+
+    matched = [h for h in hits if years & hdr_years(h)]
+    any_year_headers = any(hdr_years(h) for h in hits)
+    return matched if (matched or any_year_headers) else hits
 
 
 def _sheet_from(phrase):
@@ -313,8 +320,8 @@ _CELL_TOKEN = re.compile(r"\$?[A-Z]{1,3}\$?\d{1,7}(?::\$?[A-Z]{1,3}\$?\d{1,7})?"
 _FUNC_NAME = re.compile(r"[A-Z][A-Z0-9\._]*\s*\(")
 _NUM_IN_FORMULA = re.compile(r"(?<![A-Za-z0-9_\.])(\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)(%?)")
 # argument positions that are indices/flags, not economics: VLOOKUP col, MATCH type, ROUND digits, CHOOSE index, OFFSET/INDEX offsets
-_INDEX_FUNCS = ("VLOOKUP", "HLOOKUP", "MATCH", "ROUND", "ROUNDUP", "ROUNDDOWN", "CHOOSE", "INDEX", "OFFSET", "MROUND",
-                "SMALL", "LARGE", "EOMONTH", "EDATE", "TEXT", "LEFT", "RIGHT", "MID", "IFERROR", "RANK", "QUARTILE", "PERCENTILE")
+_INDEX_FUNCS = ("VLOOKUP", "HLOOKUP", "MATCH", "ROUND", "ROUNDUP", "ROUNDDOWN", "CHOOSE", "MROUND",
+                "SMALL", "LARGE", "EOMONTH", "EDATE", "TEXT", "LEFT", "RIGHT", "MID", "RANK", "QUARTILE", "PERCENTILE")
 
 
 def formula_constants(formula: str) -> list[float]:
@@ -322,9 +329,10 @@ def formula_constants(formula: str) -> list[float]:
     f = _STRING_LIT.sub('""', formula)
     f = _SHEET_REF.sub("", f)
     f = _CELL_TOKEN.sub("REF", f)
-    # blank out arguments of index-style functions (crude: everything inside their parentheses that is a bare integer)
+    # blank bare integers inside index-style functions; rebuild from the end so offsets stay valid
+    spans = []
     for fn in _INDEX_FUNCS:
-        for m in re.finditer(fn + r"\s*\(", f):
+        for m in re.finditer(r"\b" + fn + r"\s*\(", f):
             depth, k = 0, m.end() - 1
             while k < len(f):
                 if f[k] == "(":
@@ -334,9 +342,10 @@ def formula_constants(formula: str) -> list[float]:
                     if depth == 0:
                         break
                 k += 1
-            inner = f[m.end():k]
-            inner = re.sub(r"(?<![A-Za-z0-9_\.])\d+(?![\.\d])", "IDX", inner)
-            f = f[:m.end()] + inner + f[k:]
+            spans.append((m.end(), k))
+    for a, b in sorted(spans, reverse=True):
+        inner = re.sub(r"(?<![A-Za-z0-9_\.])\d+(?![\.\d])", "IDX", f[a:b])
+        f = f[:a] + inner + f[b:]
     out = []
     for m in _NUM_IN_FORMULA.finditer(f):
         v = float(m.group(1))
@@ -344,7 +353,6 @@ def formula_constants(formula: str) -> list[float]:
             v /= 100.0
         if v in _TRIVIAL_CONSTANTS:
             continue
-        # exponents like ^(1/4) and /4 style period conversions are trivial
         out.append(v)
     return out
 

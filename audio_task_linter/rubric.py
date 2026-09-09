@@ -33,7 +33,7 @@ POINTS_RE = re.compile(
     r"(?:[\s–—:]*)(?:\[|\()?\s*(?P<pts>[+\-−]?\s?\d+(?:\.\d+)?)\s*(?:pts?|points?)?\s*(?:\]|\))?\s*$"
 )
 BULLET_RE = re.compile(r"^\s*(?:[-*•◦▪]|\d+[.)]|[a-z][.)]|\(?[ivx]+\))\s+", re.IGNORECASE)
-HEADER_RE = re.compile(r"^\s*(?:#{1,6}\s*)?(?:\*\*)?\s*(?P<name>[A-Za-z][A-Za-z /_&-]{2,40}?)\s*(?:\*\*)?\s*:?\s*(?:\(\d+\s*(?:pts?|points?)\))?\s*$")
+HEADER_RE = re.compile(r"^\s*(?:#{1,6}\s*)?(?:\d+[.)]\s*)?(?:\*\*)?\s*(?P<name>[A-Za-z][A-Za-z /_&-]{2,40}?)\s*(?:\*\*)?\s*:?\s*(?:[(\[–—-]?\s*\d+\s*(?:pts?|points?)\)?\]?)?\s*$")
 
 PERTURB_RE = re.compile(
     r"^\s*(?:if|when)\s+(?P<input>.+?)\s+(?:is\s+|are\s+|were\s+|gets\s+)?(?:changed|switched|set|moved|updated|toggled|flipped|increased|decreased|raised|lowered|reduced)\s+"
@@ -158,6 +158,8 @@ def split_points(line: str) -> tuple[str, Optional[float]]:
     worded = bool(re.search(r"pts?|points?", m.group(0)))
     if not (signed or bracketed or worded):
         return line.strip(), None
+    if not signed and not worded and not body.rstrip().endswith("?"):
+        return line.strip(), None
     if not body.endswith("?") and not (bracketed or worded):
         # "+3" glued to the sentence without a question mark before it: still accept
         pass
@@ -176,7 +178,7 @@ def parse_text(text: str) -> Rubric:
         if not line:
             continue
         # section header?
-        if "?" not in line and not BULLET_RE.match(line):
+        if "?" not in line and (not BULLET_RE.match(line) or canonical_section(re.sub(r"^\s*\d+[.)]\s*", "", line))):
             hm = HEADER_RE.match(line)
             if hm:
                 canon = canonical_section(hm.group("name")) or hm.group("name").strip().strip("*#: ")
