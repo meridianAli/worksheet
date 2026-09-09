@@ -1,0 +1,5 @@
+openpyxl>=3.1
+# optional
+# formulas>=1.2      # pure-Python recalculation fallback when LibreOffice Calc is absent
+# mutagen>=1.47      # audio duration for A001/A002
+# pytest>=8          # tests
