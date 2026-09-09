@@ -47,7 +47,7 @@ Pitfalls
 
 RUBRIC_BAD = """Output Validation
 - Does cell D42 on the Model sheet equal $1,464.1 (within +/-2%)? +5
-- Does EBITDA for 2028 equal $439.2 (within +/-2%) and does Net Debt equal ($637.8) (within +/-2%) and does FCF equal $277.3? +6
+- Does EBITDA for 2028 equal $439.2 (within +/-2%) and does Net Debt equal ($637.8) (within +/-2%) and does FCF equal $277.3? +12
 - Does Total Revenue for 2028 on the Model sheet equal $1,464.1 in the sheet's displayed units (within +/-2%)? +5
 - Does Total Revenue for 2028 on the Model sheet equal $1,464.1 in the sheet's displayed units (within +/-2%)? +5
 - Is the revenue build correct? +3
