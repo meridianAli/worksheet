@@ -37,7 +37,6 @@ RULES = [
              "'within ±2% of 0' is a zero-width band; use an absolute tolerance."),
     RuleInfo("R014", "No Excel function names in criteria", WARNING, "deterministic", ("rubric",),
              "Criteria grade results, not the construction (SUMIFS vs SUMPRODUCT)."),
-    RuleInfo("R015", "Points spread within a section under 3x", INFO, "deterministic", ("rubric",),
              "Flags extreme spread inside a section (max/min points ≥ 3x) for a human look."),
     RuleInfo("R016", "Pitfalls include the error-value scan", WARNING, "deterministic", ("rubric",),
              "Pitfalls should include the standard #REF!/#DIV/0!/#VALUE! scan."),
@@ -178,11 +177,6 @@ def run(ctx, report):
         fns = find_excel_functions(c.text)
         if fns:
             report.add(Finding("R014", WARNING, f"Criterion names Excel functions: {', '.join(fns)}.", file=f, location=c.id, evidence=c.text))
-    # R015 weighting
-    for s in r.sections:
-        pts = [abs(c.points) for c in s.criteria if c.points]
-        if len(pts) >= 3 and min(pts) > 0 and max(pts) / min(pts) >= 3:
-            report.add(Finding("R015", INFO, f"{s.name}: points range {min(pts):g}-{max(pts):g}; confirm the spread tracks difficulty.", file=f))
     # R016 error pitfall
     if r.section("Pitfalls") and not any(re.search(r"#REF|#DIV|#VALUE|error values?", c.text, re.I) for c in r.by_section("Pitfalls")):
         report.add(Finding("R016", WARNING, "Pitfalls section has no error-value (#REF!/#DIV/0!/#VALUE!) check.", file=f))

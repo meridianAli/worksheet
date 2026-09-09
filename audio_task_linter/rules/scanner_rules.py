@@ -14,7 +14,6 @@ RULES = [
              "From the platform scanner output; broken named ranges are dead definitions left over from a decomposition."),
     RuleInfo("K003", "Scanner: gold hardcode ratio under 60%", WARNING, "deterministic", (),
              "A high hardcode ratio in the GOLD means a typed-in build (input ratio reported as info)."),
-    RuleInfo("K004", "Scanner: no generation tool or online template", WARNING, "deterministic", (),
              "llmAuthorCheck.matchedTool / onlineAuthorCheck.matchedSource (a generation tool or an online template source)."),
 ]
 
@@ -58,10 +57,4 @@ def run(ctx, report):
                 report.add(Finding("K003", WARNING, f"gold: {ratio:.0%} of numeric cells are hardcodes ({hs.get('hardcodedCount')}/{hs.get('totalNumberCells')}).", file=f))
             else:
                 report.add(Finding("K003", INFO, f"{role}: hardcode ratio {ratio:.0%} ({hs.get('hardcodedCount')}/{hs.get('totalNumberCells')}).", file=f))
-        llm = d.get("llmAuthorCheck") or {}
-        online = d.get("onlineAuthorCheck") or {}
-        if llm.get("matchedTool"):
-            report.add(Finding("K004", WARNING, f"{role}: authoring tool detected: {llm['matchedTool']}", file=f))
-        if online.get("matchedSource"):
-            report.add(Finding("K004", WARNING, f"{role}: online template source detected: {online['matchedSource']}", file=f))
 

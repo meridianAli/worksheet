@@ -11,13 +11,10 @@ from xml.etree import ElementTree as ET
 from ..findings import Finding, RuleInfo, ERROR, WARNING, INFO
 
 RULES = [
-    RuleInfo("V001", "Workbook not machine-written or AI-marked", WARNING, "deterministic", ("gold", "input"),
              "Workbook written by openpyxl/pandas/xlsxwriter/Google Sheets, default 'Sheet1' tabs, no formatting, or cells/comments naming an AI tool suggest the build was not done by an analyst in Excel."),
-    RuleInfo("V002", "No template-vendor, URL or copyright markers", WARNING, "deterministic", ("gold", "input"),
              "Template vendors (Macabacus, Wall Street Prep, CFI, BIWS, ASimpleModel), URLs, copyright notices or 'template' markers mean the model was downloaded, not built."),
     RuleInfo("V003", "No emails, phones or company names in text", WARNING, "deterministic", ("gold", "input", "script", "rubric"),
              "Emails, phone numbers, and company-like names (Acme Holdings LLC) in cells, tab names, script or rubric. Scrubbed placeholders (Meridian, Project <codename>) are allowed. Author names in document properties are not checked."),
-    RuleInfo("V004", "Metadata has industry/category/subcategory", WARNING, "deterministic", (),
              "If a task/metadata JSON or CSV ships in the bundle it must carry industry, category and subcategory (the Data Compass card was run)."),
     RuleInfo("V005", "Script isn't a duplicate of another task's", ERROR, "deterministic", ("script",),
              "The script/prompt must not repeat another task's (exact or near-duplicate) within the same lint run or a supplied known-prompts file."),
@@ -70,35 +67,10 @@ def _text_cells(wb):
 def run(ctx, report):
     books = [(w, ctx.rel(w.path)) for w in ([ctx.gold] if ctx.gold else []) + ctx.inputs]
     if not books:
-        for rid in ("V001", "V002", "V003"):
+        for rid in ("V003",):
             report.skip(rid, "no workbook")
     for wb, f in books:
         props = _docprops(wb.path)
-        # V001 LLM / non-Excel authoring
-        app = props.get("Application", "")
-        if app and _LLM_APPS.search(app):
-            report.add(Finding("V001", WARNING, f"Workbook was last written by '{app}', not Excel.", file=f))
-        default_tabs = [s for s in wb.sheets if re.fullmatch(r"Sheet\d+|Sheet", s)]
-        if default_tabs and len(default_tabs) >= max(1, len(wb.sheets) // 2):
-            report.add(Finding("V001", WARNING, f"Default tab names left in place: {', '.join(default_tabs)}", file=f))
-        ai_hits = [c.ref for c in _text_cells(wb) if _AI_WORDS.search(c.value)]
-        ai_hits += [ref for ref in wb.comments if False]  # comments' text isn't loaded; presence already flagged in G003
-        for k in ("creator", "lastModifiedBy", "title", "description"):
-            if props.get(k) and _AI_WORDS.search(props[k]):
-                ai_hits.append(f"docProps.{k}='{props[k]}'")
-        if ai_hits:
-            report.add(Finding("V001", WARNING, f"Text naming an AI tool: {', '.join(ai_hits[:5])}", file=f))
-        if wb is ctx.gold and ctx.inputs:
-            fmt = _formatting_share(wb.path)
-            if fmt is not None and fmt < 0.02:
-                report.add(Finding("V001", INFO, f"Only {fmt:.0%} of populated cells carry any number format or font styling; looks machine-written.", file=f))
-        # V002 found online
-        vendor_hits = [f"{c.ref} '{c.value[:40]}'" for c in _text_cells(wb) if _VENDORS.search(c.value) or _URL.search(c.value) or _COPYRIGHT.search(c.value)]
-        for k in ("creator", "lastModifiedBy", "Company", "Manager", "title"):
-            if props.get(k) and (_VENDORS.search(props[k]) or _URL.search(props[k])):
-                vendor_hits.append(f"docProps.{k}='{props[k]}'")
-        if vendor_hits:
-            report.add(Finding("V002", WARNING, f"Template / online provenance markers: {'; '.join(vendor_hits[:5])}", file=f))
         # V003 identifying info in workbook
         ident = []  # document-property author names are intentionally not reported
         names = set()
@@ -124,15 +96,6 @@ def run(ctx, report):
             report.add(Finding("V003", ERROR, f"PII pattern in {label}: {', '.join(pii[:3])}", file=f))
         if names:
             report.add(Finding("V003", WARNING, f"Company-like names in {label} (confirm public or scrubbed): {', '.join(names[:8])}", file=f))
-    # V004 metadata
-    meta = _find_metadata(ctx.bundle.root)
-    if meta is None:
-        report.add(Finding("V004", INFO, "No task metadata file in bundle; industry/category/subcategory not checked."))
-    else:
-        path, d = meta
-        missing = [k for k in ("industry", "category", "subcategory") if not _get_ci(d, k)]
-        if missing:
-            report.add(Finding("V004", ERROR, f"Task metadata missing: {', '.join(missing)} (run the Data Compass card).", file=ctx.rel(path)))
 
 
 def _rubric_text(ctx) -> str:

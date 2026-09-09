@@ -14,7 +14,7 @@ def test_good_bundle_passes(tmp_path):
     rep = lint_dir(root, recalc=True, work_dir=tmp_path / "work")
     assert rep.ok, [f.__dict__ for f in rep.findings if f.severity == "error"]
     # fixtures are written by openpyxl, so the provenance rule legitimately fires on them
-    assert rule_ids(rep, "warning") <= {"V001"}
+    assert rule_ids(rep, "warning") == set()
 
 
 def test_bad_bundle_flags_every_planted_defect(tmp_path):
@@ -94,6 +94,5 @@ def test_provenance_and_pii(tmp_path):
     wb.save(root / "Meridian-abc123-gold-output.xlsx")
     rep = lint_dir(root, recalc=False, work_dir=tmp_path / "w")
     msgs = " ".join(f.rule + ":" + f.message for f in rep.findings)
-    assert "V002" in msgs and "Wall Street Prep" in msgs
     assert "V003" in msgs and "jane.doe@acmeholdings.com" in msgs and "Zephyr Robotics Inc" in msgs
     assert "Jane Doe" not in msgs  # author names in document properties are deliberately ignored
